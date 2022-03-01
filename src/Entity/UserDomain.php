@@ -3,20 +3,21 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\CompanyRepository;
+use App\Repository\UserDomainRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CompanyRepository::class)]
+#[ORM\Entity(repositoryClass: UserDomainRepository::class)]
 #[ApiResource]
-class Company
+class UserDomain
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    #[ORM\ManyToOne(targetEntity: Domain::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $domain;
 
     #[ORM\OneToOne(targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -27,14 +28,14 @@ class Company
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getDomain(): ?Domain
     {
-        return $this->name;
+        return $this->domain;
     }
 
-    public function setName(string $name): self
+    public function setDomain(?Domain $domain): self
     {
-        $this->name = $name;
+        $this->domain = $domain;
 
         return $this;
     }

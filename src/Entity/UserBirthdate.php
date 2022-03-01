@@ -3,20 +3,21 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\CompanyRepository;
+use App\Repository\UserBirthdateRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CompanyRepository::class)]
+#[ORM\Entity(repositoryClass: UserBirthdateRepository::class)]
 #[ApiResource]
-class Company
+class UserBirthdate
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    #[ORM\OneToOne(targetEntity: Birthdate::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $birthdate;
 
     #[ORM\OneToOne(targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -27,14 +28,14 @@ class Company
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getBirthdate(): ?Birthdate
     {
-        return $this->name;
+        return $this->birthdate;
     }
 
-    public function setName(string $name): self
+    public function setBirthdate(Birthdate $birthdate): self
     {
-        $this->name = $name;
+        $this->birthdate = $birthdate;
 
         return $this;
     }

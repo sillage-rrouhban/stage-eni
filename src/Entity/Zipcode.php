@@ -18,6 +18,10 @@ class Zipcode
     #[ORM\Column(type: 'string', length: 255)]
     private $label;
 
+    #[ORM\OneToOne(targetEntity: City::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $city;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -31,6 +35,18 @@ class Zipcode
     public function setLabel(string $label): self
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(City $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

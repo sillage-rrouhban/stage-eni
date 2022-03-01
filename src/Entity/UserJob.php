@@ -3,20 +3,21 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\CompanyRepository;
+use App\Repository\UserJobRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CompanyRepository::class)]
+#[ORM\Entity(repositoryClass: UserJobRepository::class)]
 #[ApiResource]
-class Company
+class UserJob
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    #[ORM\ManyToOne(targetEntity: Job::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $job;
 
     #[ORM\OneToOne(targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -27,14 +28,14 @@ class Company
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getJob(): ?Job
     {
-        return $this->name;
+        return $this->job;
     }
 
-    public function setName(string $name): self
+    public function setJob(?Job $job): self
     {
-        $this->name = $name;
+        $this->job = $job;
 
         return $this;
     }

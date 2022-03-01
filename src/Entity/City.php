@@ -18,6 +18,10 @@ class City
     #[ORM\Column(type: 'string', length: 255)]
     private $label;
 
+    #[ORM\ManyToOne(targetEntity: Address::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $address;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -31,6 +35,18 @@ class City
     public function setLabel(string $label): self
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }
