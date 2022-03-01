@@ -7,7 +7,10 @@ use App\Repository\PortfolioRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PortfolioRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get','post'],
+    itemOperations: ['get','patch','delete'],
+)]
 class Portfolio
 {
     #[ORM\Id]

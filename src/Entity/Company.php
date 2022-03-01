@@ -7,7 +7,10 @@ use App\Repository\CompanyRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get','post'],
+    itemOperations: ['get','patch','delete'],
+)]
 class Company
 {
     #[ORM\Id]
@@ -21,6 +24,10 @@ class Company
     #[ORM\OneToOne(targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
+
+    #[ORM\ManyToOne(targetEntity: CompanySize::class, inversedBy: 'company')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $size;
 
     public function getId(): ?int
     {
@@ -47,6 +54,18 @@ class Company
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getSize(): ?CompanySize
+    {
+        return $this->size;
+    }
+
+    public function setSize(?CompanySize $size): self
+    {
+        $this->size = $size;
 
         return $this;
     }

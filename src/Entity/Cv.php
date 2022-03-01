@@ -7,8 +7,11 @@ use App\Repository\CVRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CVRepository::class)]
-#[ApiResource]
-class CV
+#[ApiResource(
+    collectionOperations: ['get','post'],
+    itemOperations: ['get','patch','delete'],
+)]
+class Cv
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

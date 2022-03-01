@@ -7,7 +7,10 @@ use App\Repository\JobRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: JobRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get','post'],
+    itemOperations: ['get','patch','delete'],
+)]
 class Job
 {
     #[ORM\Id]

@@ -7,7 +7,10 @@ use App\Repository\LastnameRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LastnameRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get','post'],
+    itemOperations: ['get','patch','delete'],
+)]
 class Lastname
 {
     #[ORM\Id]

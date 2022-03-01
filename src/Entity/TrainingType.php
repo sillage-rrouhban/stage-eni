@@ -3,15 +3,15 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\FirstnameRepository;
+use App\Repository\TrainingTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: FirstnameRepository::class)]
+#[ORM\Entity(repositoryClass: TrainingTypeRepository::class)]
 #[ApiResource(
-    collectionOperations: ['get','post'],
-    itemOperations: ['get','patch','delete'],
+    collectionOperations: ['get'],
+    itemOperations: ['get'],
 )]
-class Firstname
+class TrainingType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,10 +20,6 @@ class Firstname
 
     #[ORM\Column(type: 'string', length: 255)]
     private $label;
-
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private $user;
 
     public function getId(): ?int
     {
@@ -38,18 +34,6 @@ class Firstname
     public function setLabel(string $label): self
     {
         $this->label = $label;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }

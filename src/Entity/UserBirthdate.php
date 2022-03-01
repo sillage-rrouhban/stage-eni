@@ -7,7 +7,10 @@ use App\Repository\UserBirthdateRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserBirthdateRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get','post'],
+    itemOperations: ['get','patch','delete'],
+)]
 class UserBirthdate
 {
     #[ORM\Id]

@@ -7,7 +7,10 @@ use App\Repository\OnlinePresenceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OnlinePresenceRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get','post'],
+    itemOperations: ['get','patch','delete'],
+)]
 class OnlinePresence
 {
     #[ORM\Id]

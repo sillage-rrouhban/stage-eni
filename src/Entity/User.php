@@ -7,10 +7,16 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get','post'],
+    itemOperations: ['get','put'],
+    denormalizationContext: ['groups'=>['write:user']],
+    normalizationContext: ['groups'=>['read:user']],
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -19,9 +25,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Groups(['read:user','write:user'])]
     private $email;
 
     #[ORM\Column(type: 'json')]
+    #[Groups(['read:user','write:user'])]
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
@@ -29,7 +37,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Type::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:user','write:user'])]
     private $type;
+
+    #[Groups(['write:user'])]
+    private $plainPassword;
 
 
     public function getId(): ?int
@@ -110,6 +122,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setType(?Type $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?String
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?String $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }

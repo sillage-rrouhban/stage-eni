@@ -7,7 +7,10 @@ use App\Repository\LinkedInRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LinkedInRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get','post'],
+    itemOperations: ['get','patch','delete'],
+)]
 class LinkedIn
 {
     #[ORM\Id]
