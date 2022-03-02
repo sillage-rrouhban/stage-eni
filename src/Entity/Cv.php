@@ -84,10 +84,9 @@ class Cv
     #[Groups(['read:cv','write:cv'])]
     private $filename;
 
-
-    #[Groups(['read:cv'])]
     #[ORM\Column(type: 'datetime_immutable')]
-    private $updloadedAt;
+    #[Groups(['read:cv'])]
+    private $uploadedAt;
 
 
     public function getId(): ?int
@@ -123,24 +122,22 @@ class Cv
         $this->file = $file;
 
         if (null !== $file) {
-            $this->updloadedAt = new \DateTimeImmutable();
+            $this->uploadedAt = new \DateTime();
         }
     }
 
-    public function getUpdloadedAt(): ?\DateTimeImmutable
+    public function getUploadedAt(): ?\DateTimeInterface
     {
-        return $this->updloadedAt;
+        return $this->uploadedAt;
     }
 
     /**
      * @ORM\PrePersist
      * @ORM\PreUpdate
      */
-    public function setUpdloadedAt(\DateTimeImmutable $updloadedAt): self
+    public function setUploadedAt(): void
     {
-        $this->updloadedAt= new \DateTime();
-
-        return $this;
+        $this->uploadedAt= new \DateTime();
     }
 
 }

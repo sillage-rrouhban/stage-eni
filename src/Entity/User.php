@@ -47,10 +47,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $plainPassword;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Groups(['read:user'])]
     private $createdAt;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private $UpdatedAt;
+    #[Groups(['read:user'])]
+    private $updatedAt;
 
 
     public function getId(): ?int
@@ -147,36 +149,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
     /**
      * @ORM\PrePersist
-     * @ORM\PreUpdate
      */
-    public function setCreatedAt(\DateTimeImmutable $UpdatedAt): self
+    public function setCreatedAt(): void
     {
         $this->createdAt = new \DateTimeImmutable();
-        dd($this->createdAt);
-        return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->UpdatedAt;
+        return $this->updatedAt;
     }
 
     /**
      * @ORM\PreUpdate
      */
-    public function setUpdatedAt(\DateTimeImmutable $UpdatedAt): self
+    public function setUpdatedAt(): void
     {
-
-        $this->UpdatedAt = new \DateTimeImmutable();
-
-        return $this;
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
 }
