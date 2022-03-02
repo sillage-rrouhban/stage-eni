@@ -6,7 +6,12 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateCvObjectAction;
 use App\Repository\CVRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
+/**
+ * @Vich\Uploadable()
+ */
 #[ORM\Entity(repositoryClass: CVRepository::class)]
 #[ApiResource(
     collectionOperations: ['get',
@@ -42,8 +47,14 @@ class Cv
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    /**
+     * @Vich\UploadableField(mapping="user_cv", fileNameProperty="fileName")
+     */
+    private $file;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $filename;
+
 
     public function getId(): ?int
     {
@@ -61,4 +72,23 @@ class Cv
 
         return $this;
     }
+
+    /**
+     * @return File|null
+     */
+    public function getFile(): ?File
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param File|null $file
+     * @return Cv
+     */
+    public function setFile(?File $file): Cv
+    {
+        $this->file = $file;
+        return $this;
+    }
+
 }
