@@ -12,8 +12,8 @@ class CreateCvObjectAction extends AbstractController
     public function __invoke(Request $request): Cv {
 
 
-        $cv = $request->attributes->get('file');
-        dd($request->attributes);
+        $cv = $request->files->get('file');
+        dd($cv);
         if(!($cv instanceof Cv)){
             throw new RuntimeException('file is required');
         }

@@ -48,7 +48,7 @@ class Cv
     private $id;
 
     /**
-     * @Vich\UploadableField(mapping="user_cv", fileNameProperty="fileName")
+     * @Vich\UploadableField(mapping="user_cv", fileNameProperty="filename")
      */
     private $file;
 
