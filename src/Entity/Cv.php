@@ -7,6 +7,7 @@ use App\Controller\CreateCvObjectAction;
 use App\Repository\CVRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -18,7 +19,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
         'post' => [
             'controller' => CreateCvObjectAction::class,
             'deserialize' => false,
-            'validation_groups' => ['Default', 'media_object_create'],
+            'validation_groups' => ['Default', 'write:cv'],
             'openapi_context' => [
                 'requestBody' => [
                     'content' => [
@@ -38,7 +39,33 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
             ],
         ],
     ],
-    itemOperations: ['get','patch','delete'],
+    itemOperations: ['get', 'delete',
+        'patch' => [
+            'method'=>'POST',
+            'controller' => CreateCvObjectAction::class,
+            'deserialize' => false,
+            'validation_groups' => ['Default', 'write:cv'],
+            'openapi_context' => [
+                'requestBody' => [
+                    'content' => [
+                        'multipart/form-data' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'file' => [
+                                        'type' => 'string',
+                                        'format' => 'binary',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+    denormalizationContext: ['groups'=>['write:cv']],
+    normalizationContext: ['groups'=>['read:cv']],
 )]
 class Cv
 {
@@ -50,9 +77,11 @@ class Cv
     /**
      * @Vich\UploadableField(mapping="user_cv", fileNameProperty="filename")
      */
+    #[Groups(['read:cv','write:cv'])]
     private $file;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Groups(['read:cv','write:cv'])]
     private $filename;
 
 
