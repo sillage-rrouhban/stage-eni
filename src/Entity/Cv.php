@@ -3,22 +3,37 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Controller\CvFileController;
+use App\Controller\CreateCvObjectAction;
 use App\Repository\CVRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CVRepository::class)]
 #[ApiResource(
-    collectionOperations: ['get','post'],
-    itemOperations: ['get','patch','delete',
-        'file'=>[
-            'method'=>'POST',
-            'path'=>'/cvs/{id}/file',
-            'deserialize'=>false,
-            'controller'=>CvFileController::class
-        ]
+    collectionOperations: ['get',
+        'post' => [
+            'controller' => CreateCvObjectAction::class,
+            'deserialize' => false,
+            'validation_groups' => ['Default', 'media_object_create'],
+            'openapi_context' => [
+                'requestBody' => [
+                    'content' => [
+                        'multipart/form-data' => [
+                            'schema' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'file' => [
+                                        'type' => 'string',
+                                        'format' => 'binary',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ],
-
+    ],
+    itemOperations: ['get','patch','delete'],
 )]
 class Cv
 {
