@@ -9,13 +9,16 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+/**
+ * @ORM\HasLifecycleCallbacks()
+ */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ApiResource(
-    collectionOperations: ['get','post'],
-    itemOperations: ['get','put'],
-    denormalizationContext: ['groups'=>['write:user']],
-    normalizationContext: ['groups'=>['read:user']],
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get', 'put'],
+    denormalizationContext: ['groups' => ['write:user']],
+    normalizationContext: ['groups' => ['read:user']],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -25,11 +28,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Groups(['read:user','write:user'])]
+    #[Groups(['read:user', 'write:user'])]
     private $email;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['read:user','write:user'])]
+    #[Groups(['read:user', 'write:user'])]
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
@@ -37,11 +40,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Type::class)]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['read:user','write:user'])]
+    #[Groups(['read:user', 'write:user'])]
     private $type;
 
     #[Groups(['write:user'])]
     private $plainPassword;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private $UpdatedAt;
 
 
     public function getId(): ?int
@@ -68,7 +77,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -126,14 +135,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPlainPassword(): ?String
+    public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
-    public function setPlainPassword(?String $plainPassword): self
+    public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function setCreatedAt(\DateTimeImmutable $UpdatedAt): self
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        dd($this->createdAt);
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->UpdatedAt;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAt(\DateTimeImmutable $UpdatedAt): self
+    {
+
+        $this->UpdatedAt = new \DateTimeImmutable();
 
         return $this;
     }
