@@ -12,6 +12,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @Vich\Uploadable()
+ * @ORM\HasLifecycleCallbacks()
  */
 #[ORM\Entity(repositoryClass: CVRepository::class)]
 #[ApiResource(
@@ -77,12 +78,16 @@ class Cv
     /**
      * @Vich\UploadableField(mapping="user_cv", fileNameProperty="filename")
      */
-    #[Groups(['read:cv','write:cv'])]
     private $file;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Groups(['read:cv','write:cv'])]
     private $filename;
+
+
+    #[Groups(['read:cv'])]
+    #[ORM\Column(type: 'datetime_immutable')]
+    private $updloadedAt;
 
 
     public function getId(): ?int
@@ -112,11 +117,29 @@ class Cv
 
     /**
      * @param File|null $file
-     * @return Cv
      */
-    public function setFile(?File $file): Cv
+    public function setFile(?File $file = null): void
     {
         $this->file = $file;
+
+        if (null !== $file) {
+            $this->updloadedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getUpdloadedAt(): ?\DateTimeImmutable
+    {
+        return $this->updloadedAt;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function setUpdloadedAt(\DateTimeImmutable $updloadedAt): self
+    {
+        $this->updloadedAt= new \DateTime();
+
         return $this;
     }
 
