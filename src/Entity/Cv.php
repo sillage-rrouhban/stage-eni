@@ -5,7 +5,10 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateCvObjectAction;
 use App\Repository\CVRepository;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Mapping\PreUpdate;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -85,7 +88,6 @@ class Cv
     private $filename;
 
     #[ORM\Column(type: 'datetime_immutable')]
-    #[Groups(['read:cv'])]
     private $uploadedAt;
 
 
@@ -126,18 +128,23 @@ class Cv
         }
     }
 
-    public function getUploadedAt(): ?\DateTimeInterface
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
-        return $this->uploadedAt;
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 
-    /**
-     * @ORM\PrePersist
-     * @ORM\PreUpdate
-     */
-    public function setUploadedAt(): void
+    #[PrePersist]
+    public function onPrePersist(LifecycleEventArgs $eventArgs)
     {
-        $this->uploadedAt= new \DateTime();
+        $this->uploadedAt = new \DateTimeImmutable();
+    }
+
+    #[PreUpdate]
+    public function onPreUpdate(LifecycleEventArgs $eventArgs)
+    {
+        $this->uploadedAt = new \DateTimeImmutable();
     }
 
 }

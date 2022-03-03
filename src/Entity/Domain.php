@@ -4,15 +4,19 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\DomainRepository;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PrePersist;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\HasLifecycleCallbacks()
- */
 #[ORM\Entity(repositoryClass: DomainRepository::class)]
+#[HasLifecycleCallbacks]
 #[ApiResource(
     collectionOperations: ['get','post'],
     itemOperations: ['get'],
+    denormalizationContext: ['groups' => ['write:domain']],
+    normalizationContext: ['groups' => ['read:domain']],
 )]
 class Domain
 {
@@ -22,11 +26,8 @@ class Domain
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['read:domain', 'write:domain'])]
     private $label;
-
-    #[ORM\Column(type: 'datetime_immutable')]
-    private $createdAt;
-
 
     public function getId(): ?int
     {
@@ -44,18 +45,4 @@ class Domain
 
         return $this;
     }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreatedAt(): void
-    {
-        $this->createdAt = new \DateTimeImmutable();
-    }
-
 }
