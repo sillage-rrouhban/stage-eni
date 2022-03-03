@@ -34,8 +34,6 @@ class CreatePortfolioObjectAction extends AbstractController
 
         $portfolio->setFile($uploadedFile);
 
-        dd($portfolio);
-
         return $portfolio;
     }
 

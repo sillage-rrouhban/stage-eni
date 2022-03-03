@@ -6,7 +6,11 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateCvObjectAction;
 use App\Controller\CreatePortfolioObjectAction;
 use App\Repository\PortfolioRepository;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Mapping\PreUpdate;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -16,6 +20,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\HasLifecycleCallbacks()
  */
 #[ORM\Entity(repositoryClass: PortfolioRepository::class)]
+#[HasLifecycleCallbacks]
 #[ApiResource(
     collectionOperations: ['get',
         'post' => [
@@ -85,6 +90,9 @@ class Portfolio
     #[Groups(['read:portfolio','write:portfolio'])]
     private $filename;
 
+    #[ORM\Column(type: 'datetime_immutable')]
+    private $uploadedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -116,5 +124,33 @@ class Portfolio
     public function setFile(?File $file = null): void
     {
         $this->file = $file;
+
+        if (null !== $file) {
+            $this->uploadedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getUploadedAt(): ?\DateTimeInterface
+    {
+        return $this->uploadedAt;
+    }
+
+    public function setUploadedAt(\DateTimeImmutable $uploadedAt): self
+    {
+        $this->uploadedAt = $uploadedAt;
+
+        return $this;
+    }
+
+    #[PrePersist]
+    public function onPrePersist(LifecycleEventArgs $eventArgs)
+    {
+        $this->uploadedAt = new \DateTimeImmutable();
+    }
+
+    #[PreUpdate]
+    public function onPreUpdate(LifecycleEventArgs $eventArgs)
+    {
+        $this->uploadedAt = new \DateTimeImmutable();
     }
 }
