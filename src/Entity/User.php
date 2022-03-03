@@ -6,16 +6,15 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\HasLifecycleCallbacks()
- */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[HasLifecycleCallbacks]
 #[ORM\Table(name: '`user`')]
 #[ApiResource(
     collectionOperations: ['get', 'post'],

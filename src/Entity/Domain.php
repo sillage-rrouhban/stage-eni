@@ -4,14 +4,10 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\DomainRepository;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
-use Doctrine\ORM\Mapping\PrePersist;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DomainRepository::class)]
-#[HasLifecycleCallbacks]
 #[ApiResource(
     collectionOperations: ['get','post'],
     itemOperations: ['get'],

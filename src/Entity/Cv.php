@@ -7,6 +7,7 @@ use App\Controller\CreateCvObjectAction;
 use App\Repository\CVRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
 use Symfony\Component\HttpFoundation\File\File;
@@ -15,9 +16,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @Vich\Uploadable()
- * @ORM\HasLifecycleCallbacks()
  */
 #[ORM\Entity(repositoryClass: CVRepository::class)]
+#[HasLifecycleCallbacks]
 #[ApiResource(
     collectionOperations: ['get',
         'post' => [
