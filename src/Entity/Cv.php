@@ -129,6 +129,11 @@ class Cv
         }
     }
 
+    public function getUploadedAt(): ?\DateTimeInterface
+    {
+        return $this->uploadedAt;
+    }
+
     public function setUploadedAt(\DateTimeImmutable $uploadedAt): self
     {
         $this->uploadedAt = $uploadedAt;

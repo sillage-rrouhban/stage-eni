@@ -7,6 +7,7 @@ use App\Controller\CreateCvObjectAction;
 use App\Controller\CreatePortfolioObjectAction;
 use App\Repository\PortfolioRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -18,7 +19,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ApiResource(
     collectionOperations: ['get',
         'post' => [
-            'controller' => CreateCvObjectAction::class,
+            'controller' => CreatePortfolioObjectAction::class,
             'deserialize' => false,
             'validation_groups' => ['Default', 'write:portfolio'],
             'openapi_context' => [
@@ -75,12 +76,14 @@ class Portfolio
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:portfolio','write:portfolio'])]
-    private $filename;
+    /**
+     * @Vich\UploadableField(mapping="user_portfolio", fileNameProperty="filename")
+     */
+    private $file;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $file;
+    #[Groups(['read:portfolio','write:portfolio'])]
+    private $filename;
 
     public function getId(): ?int
     {
@@ -99,15 +102,19 @@ class Portfolio
         return $this;
     }
 
-    public function getFile(): ?string
+    /**
+     * @return File|null
+     */
+    public function getFile(): ?File
     {
         return $this->file;
     }
 
-    public function setFile(?string $file): self
+    /**
+     * @param File|null $file
+     */
+    public function setFile(?File $file = null): void
     {
         $this->file = $file;
-
-        return $this;
     }
 }
