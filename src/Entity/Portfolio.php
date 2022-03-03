@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateCvObjectAction;
+use App\Controller\CreatePortfolioObjectAction;
 use App\Repository\PortfolioRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -42,7 +43,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     itemOperations: ['get', 'delete',
         'patch'=>[
             'method'=>'POST',
-            'controller' => CreateCvObjectAction::class,
+            'controller' => CreatePortfolioObjectAction::class,
             'deserialize' => false,
             'validation_groups' => ['Default', 'write:portfolio'],
             'openapi_context' => [
