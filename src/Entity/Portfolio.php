@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Controller\CreateCvObjectAction;
 use App\Controller\CreatePortfolioObjectAction;
 use App\Repository\PortfolioRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -17,7 +16,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @Vich\Uploadable()
- * @ORM\HasLifecycleCallbacks()
  */
 #[ORM\Entity(repositoryClass: PortfolioRepository::class)]
 #[HasLifecycleCallbacks]
