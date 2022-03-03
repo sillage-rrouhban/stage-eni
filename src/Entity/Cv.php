@@ -129,9 +129,9 @@ class Cv
         }
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setUploadedAt(\DateTimeImmutable $uploadedAt): self
     {
-        $this->createdAt = $createdAt;
+        $this->uploadedAt = $uploadedAt;
 
         return $this;
     }
