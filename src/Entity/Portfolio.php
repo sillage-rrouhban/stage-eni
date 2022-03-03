@@ -76,7 +76,7 @@ class Portfolio
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:cv','write:portfolio'])]
+    #[Groups(['read:portfolio','write:portfolio'])]
     private $filename;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]

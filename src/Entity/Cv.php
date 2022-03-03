@@ -125,7 +125,7 @@ class Cv
         $this->file = $file;
 
         if (null !== $file) {
-            $this->uploadedAt = new \DateTime();
+            $this->uploadedAt = new \DateTimeImmutable();
         }
     }
 
