@@ -56,6 +56,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['read:user'])]
     private $updatedAt;
 
+    #[ORM\Column(type: 'smallint')]
+    private $status;
+
 
     public function getId(): ?int
     {
@@ -186,6 +189,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function onPreUpdate(LifecycleEventArgs $eventArgs)
     {
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
+
+        return $this;
     }
 
 }
