@@ -6,9 +6,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TrainingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Mapping\PreUpdate;
 
 #[ORM\Entity(repositoryClass: TrainingRepository::class)]
+#[HasLifecycleCallbacks]
 #[ApiResource]
 class Training
 {
@@ -36,6 +41,16 @@ class Training
 
     #[ORM\ManyToMany(targetEntity: City::class)]
     private $city;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    private $updatedAt;
+
+    #[ORM\ManyToOne(targetEntity: Status::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $status;
 
     public function __construct()
     {
@@ -124,6 +139,54 @@ class Training
     public function removeCity(City $city): self
     {
         $this->city->removeElement($city);
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    #[PrePersist]
+    public function onPrePersist(LifecycleEventArgs $eventArgs)
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
+    #[PreUpdate]
+    public function onPreUpdate(LifecycleEventArgs $eventArgs)
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function getStatus(): ?Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?Status $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

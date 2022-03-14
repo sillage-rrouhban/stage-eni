@@ -18,9 +18,7 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
     {
         $this->passwordHasher= $passwordHasher;
         $this->entityManager = $entityManager;
-
     }
-
 
     public function supports($data, array $context = []): bool
     {
@@ -29,22 +27,20 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
 
     public function persist($data, array $context = [])
     {
-       if($data->getPlainPassword()){
+        if($data->getPlainPassword()){
             $password = $this->passwordHasher->hashPassword($data, $data->getPlainPassword());
             $data->setPassword($password);
+
+            $data->eraseCredentials();
         }
-       $this->entityManager->persist($data);
-       $this->entityManager->flush();
 
-
+        $this->entityManager->persist($data);
+        $this->entityManager->flush();
     }
 
     public function remove($data, array $context = [])
     {
-        // TODO: Implement remove() method.
+        $this->entityManager->remove($data);
+        $this->entityManager->flush();
     }
-
-
-
-
 }

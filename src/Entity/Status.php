@@ -2,19 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\DomainRepository;
+use App\Repository\StatusRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: DomainRepository::class)]
-#[ApiResource(
-    collectionOperations: ['get','post'],
-    itemOperations: ['get'],
-    denormalizationContext: ['groups' => ['write:domain']],
-    normalizationContext: ['groups' => ['read:domain']],
-)]
-class Domain
+#[ORM\Entity(repositoryClass: StatusRepository::class)]
+class Status
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,7 +14,6 @@ class Domain
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:domain', 'write:domain'])]
     private $label;
 
     public function getId(): ?int

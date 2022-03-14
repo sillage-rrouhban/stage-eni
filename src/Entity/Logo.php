@@ -4,7 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateCvObjectAction;
-use App\Repository\CVRepository;
+use App\Controller\CreateLogoObjectAction;
+use App\Repository\LogoRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
@@ -17,14 +18,14 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * @Vich\Uploadable()
  */
-#[ORM\Entity(repositoryClass: CVRepository::class)]
+#[ORM\Entity(repositoryClass: LogoRepository::class)]
 #[HasLifecycleCallbacks]
 #[ApiResource(
     collectionOperations: ['get',
         'post' => [
-            'controller' => CreateCvObjectAction::class,
+            'controller' => CreateLogoObjectAction::class,
             'deserialize' => false,
-            'validation_groups' => ['Default', 'write:cv'],
+            'validation_groups' => ['Default', 'write:logo'],
             'openapi_context' => [
                 'requestBody' => [
                     'content' => [
@@ -47,9 +48,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     itemOperations: ['get', 'delete',
         'patch' => [
             'method'=>'POST',
-            'controller' => CreateCvObjectAction::class,
+            'controller' => CreateLogoObjectAction::class,
             'deserialize' => false,
-            'validation_groups' => ['Default', 'write:cv'],
+            'validation_groups' => ['Default', 'write:logo'],
             'openapi_context' => [
                 'requestBody' => [
                     'content' => [
@@ -69,10 +70,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
             ],
         ],
     ],
-    denormalizationContext: ['groups'=>['write:cv']],
-    normalizationContext: ['groups'=>['read:cv']],
+    denormalizationContext: ['groups'=>['write:logo']],
+    normalizationContext: ['groups'=>['read:logo']],
 )]
-class Cv
+class Logo
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -80,17 +81,22 @@ class Cv
     private $id;
 
     /**
-     * @Vich\UploadableField(mapping="user_cv", fileNameProperty="filename")
+     * @Vich\UploadableField(mapping="user_logo", fileNameProperty="filename")
      */
     private $file;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['read:cv','write:cv'])]
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['read:logo','write:logo'])]
     private $filename;
+/*
+    #[ORM\OneToOne(targetEntity: User::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:logo','write:logo'])]
+    private $user;
+*/
 
     #[ORM\Column(type: 'datetime_immutable')]
-    private $uploadedAt;
-
+    private $updatedAt;
 
     public function getId(): ?int
     {
@@ -125,18 +131,31 @@ class Cv
         $this->file = $file;
 
         if (null !== $file) {
-            $this->uploadedAt = new \DateTimeImmutable();
+            $this->updatedAt = new \DateTimeImmutable();
         }
     }
-
-    public function getUploadedAt(): ?\DateTimeInterface
+/*
+    public function getUser(): ?User
     {
-        return $this->uploadedAt;
+        return $this->user;
     }
 
-    public function setUploadedAt(\DateTimeImmutable $uploadedAt): self
+    public function setUser(User $user): self
     {
-        $this->uploadedAt = $uploadedAt;
+        $this->user = $user;
+
+        return $this;
+    }
+*/
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -144,13 +163,14 @@ class Cv
     #[PrePersist]
     public function onPrePersist(LifecycleEventArgs $eventArgs)
     {
-        $this->uploadedAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     #[PreUpdate]
     public function onPreUpdate(LifecycleEventArgs $eventArgs)
     {
-        $this->uploadedAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
+
 
 }

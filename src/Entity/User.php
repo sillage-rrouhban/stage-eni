@@ -4,18 +4,23 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Mapping\PreUpdate;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[HasLifecycleCallbacks]
 #[ORM\Table(name: '`user`')]
 #[ApiResource(
-    collectionOperations: ['get','post'],
-    itemOperations: ['get','put'],
-    denormalizationContext: ['groups'=>['write:user']],
-    normalizationContext: ['groups'=>['read:user']],
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get', 'put'],
+    denormalizationContext: ['groups' => ['write:user']],
+    normalizationContext: ['groups' => ['read:user']],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -25,11 +30,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Groups(['read:user','write:user'])]
+    #[Groups(['read:user', 'write:user'])]
     private $email;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['read:user','write:user'])]
+    #[Groups(['read:user', 'write:user'])]
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
@@ -37,11 +42,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Type::class)]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['read:user','write:user'])]
+    #[Groups(['read:user', 'write:user'])]
     private $type;
 
     #[Groups(['write:user'])]
     private $plainPassword;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Groups(['read:user'])]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Groups(['read:user'])]
+    private $updatedAt;
+
+    #[ORM\Column(type: 'smallint')]
+    private $status;
 
 
     public function getId(): ?int
@@ -68,7 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -126,14 +142,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPlainPassword(): ?String
+    public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
-    public function setPlainPassword(?String $plainPassword): self
+    public function setPlainPassword(?string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    #[PrePersist]
+    public function onPrePersist(LifecycleEventArgs $eventArgs)
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    #[PreUpdate]
+    public function onPreUpdate(LifecycleEventArgs $eventArgs)
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
