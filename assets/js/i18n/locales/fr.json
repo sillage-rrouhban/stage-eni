@@ -1,0 +1,13 @@
+{
+  "navbar": {
+    "offers": "Offres",
+    "companies": "Recruteurs",
+    "schools": "Centres de formation",
+    "signup": "Se connecter",
+    "languages": "Langues"
+  },
+  "footer": {
+    "legal-notice": "Mentions légales",
+    "contact-us": "Contactez nous"
+  }
+}

@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import App from './pages/Register'
+import App from './pages/AppRegister'
 
 const app = createApp(App);
 

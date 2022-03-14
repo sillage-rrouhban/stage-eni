@@ -1,12 +1,12 @@
 <template>
 <div>
-  hello world
+  Register page
 </div>
 </template>
 
 <script>
 export default {
-  name: "home"
+  name: "AppRegister"
 }
 </script>
 

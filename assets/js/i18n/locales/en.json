@@ -1,0 +1,13 @@
+{
+  "navbar": {
+    "offers": "Offers",
+    "companies": "Companies",
+    "schools": "Schools",
+    "signup": "Sign up",
+    "languages": "Languages"
+  },
+  "footer": {
+    "legal-notice": "Legal Notice",
+    "contact-us": "Contact Us"
+  }
+}
