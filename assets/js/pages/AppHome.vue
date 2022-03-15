@@ -3,7 +3,7 @@
     <app-loader v-if="showLoader"/>
     <app-navbar/>
     <div class="columns home-header">
-      <div class="column is-two-thirds  home-header__intro">
+      <div class="column is-two-thirds home-header__intro">
         <h1 class="is-size-1 ">Lorem ipsum dolor sit amet</h1>
         <p>Lorem ipsum dolor sit amet. Ea voluptas enim qui excepturi similique ad deserunt
           nobis et consequatur omnis
@@ -26,7 +26,7 @@
 
     <div class="columns is-centered home-header__counters">
       <div class="column is-one-third has-text-centered">
-        <h2 class="is-size-2">{{stundentsCount}}</h2>
+        <h2 class="is-size-2">{{ studentsCount }}</h2>
         <img :src="student">
         <h3 class="is-size-3">{{ $t("home.students") }}</h3>
 
@@ -62,7 +62,7 @@ export default {
     }
   },
   computed:{
-    stundentsCount(){
+    studentsCount(){
       return this.users.filter(user => user.type.id ===1).length;
     },
     companiesCount(){
@@ -81,25 +81,25 @@ export default {
     studentApi(){
       return axios.get('/api/users');
     },
-     fetchStudents() {
-       /*
-       add asynch devant methode
-       récup le call api avec .then pour la promesse
-       donc promesses avec response qu'on va link à users
-       On rajoute un loader pour aller récup les datas
-       Une fois les datas récup, on rajoute finally => inqique la fin du loading
-        */
+    fetchStudents() {
+      /*
+      add asynch devant methode
+      récup le call api avec .then pour la promesse
+      donc promesses avec response qu'on va link à users
+      On rajoute un loader pour aller récup les datas
+      Une fois les datas récup, on rajoute finally => inqique la fin du loading
+       */
 
-     // let response = await this.studentApi();
-    //  this.users = response.data;
-       this.showLoader = true;
+      // let response = await this.studentApi();
+      //  this.users = response.data;
+      this.showLoader = true;
       this.studentApi().then((response)=>{
         this.users = response.data;
       }).catch((error) => {
-       })
+      })
           .finally(()=>{
             this.showLoader = false;
-      });
+          });
 
     }
   }
@@ -110,20 +110,17 @@ export default {
 @import "styles/abstract/all";
 
 .home-header {
-  background: lightgrey;
   align-items: center;
-
+  background: lightgrey;
+  padding-bottom: 8.875rem;
+  padding-top: 8.875rem;
   &__intro {
-    padding: 8.875rem 5rem 8.875rem 0;
-    margin-left: 10%;
-
+    padding-left: 10%;
     h1 {
       font-family: $title-family;
       margin-bottom: 1.250rem;
     }
-
     p {
-
       font-size: 1.5rem;
       line-height: 2.188rem;
       font-weight: 300;
@@ -132,7 +129,11 @@ export default {
   }
 
   &__buttons {
-    padding: 8.875em 5rem;
+    .wide-button {
+      &:first-of-type {
+        margin-bottom: 2.5rem;
+      }
+    }
   }
   &__counters{
     padding: 3.125em;
