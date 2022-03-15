@@ -1,10 +1,7 @@
 <template>
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://bulma.io">
-        <img src="https://bulma.io/images/bulma-logo.png">
-      </a>
-
+        <img :src="logo">
     </div>
 
     <div class="navbar-menu">
@@ -23,16 +20,12 @@
       </div>
 
       <div class="navbar-end">
-        <div class="navbar-item">
-          <div class="buttons">
-            <a class="button is-primary">
-              <strong>{{$t("navbar.signup")}}</strong>
-            </a>
-            <a class="button is-light">
-              Log in
-            </a>
-          </div>
-        </div>
+        <a class="navbar-item" href="#">
+          {{ $t("navbar.signup") }}
+        </a>
+        <a class="navbar-item" href="#">
+          {{ $t("navbar.languages") }}
+        </a>
       </div>
     </div>
   </nav>
@@ -40,7 +33,13 @@
 
 <script>
 export default {
-  name: "AppNavbar"
+  name: "AppNavbar",
+  data(){
+    return{
+      logo: require('/assets/images/common/logo.svg'),
+    }
+}
+
 }
 </script>
 
@@ -48,9 +47,12 @@ export default {
 @import "styles/abstract/all";
 .navbar {
   padding:1.250rem 3.125rem 1.875rem;
+  text-transform:uppercase;
   &-brand{
+    margin-right:3.125rem;
     img{
-      max-height:3.750rem;
+
+      width: 6.542vw;
     }
   }
   &-menu{
@@ -61,7 +63,9 @@ export default {
   &-end{
     font-size:1rem;
     font-weight:400;
+    align-items: flex-start;
   }
+
 
 
 }

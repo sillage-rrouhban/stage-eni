@@ -1,8 +1,9 @@
 <template>
   <div>
+    <app-loader/>
     <app-navbar/>
     <div class="columns home-header">
-      <div class="column is-three-fifths">
+      <div class="column is-two-thirds  home-header__intro">
         <h1 class="is-size-1 ">Lorem ipsum dolor sit amet</h1>
         <p>Lorem ipsum dolor sit amet. Ea voluptas enim qui excepturi similique ad deserunt
           nobis et consequatur omnis
@@ -13,30 +14,29 @@
           tempora est
           maiores adipisci ut quia asperiores id neque aliquid. </p>
       </div>
-      <div class="column is-two-fifths">
+      <div class="column is-one-third home-header__buttons">
         <div class="buttons">
-          <button class="button">Parcourir les offres</button>
+          <button class="button wide-button">Parcourir les offres</button>
         </div>
         <div class="buttons">
-          <button class="button">Parcourir les entreprises</button>
+          <button class="button wide-button">Parcourir les entreprises</button>
         </div>
       </div>
     </div>
 
-    <div class="columns is-centered">
+    <div class="columns is-centered home-header__counters">
       <div class="column is-one-third has-text-centered">
-        <h2 class="is-size-2">1000</h2>
-        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-        <h3 class="is-size-3">ETUDIANTS</h3>
+        <h2 class="is-size-2">{{stundentsCount}}</h2>
+        <img :src="student">
+        <h3 class="is-size-3">{{ $t("home.students") }}</h3>
 
       </div>
       <div class="column is-one-third has-text-centered">
-        <h2 class="is-size-2">1000</h2>
-        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-        <h3 class="is-size-3">RECRUTEURS</h3>
+        <h2 class="is-size-2">{{ companiesCount }}</h2>
+        <img :src="company">
+        <h3 class="is-size-3">{{ $t("home.companies") }}</h3>
       </div>
     </div>
-
     <app-footer/>
 
 
@@ -46,16 +46,101 @@
 <script>
 import AppNavbar from "../components/AppNavbar";
 import AppFooter from "../components/AppFooter";
+import axios from "axios";
+import AppLoader from "../components/AppLoader";
 
 export default {
   name: "AppHome",
-  components: {AppFooter, AppNavbar}
+  components: {AppLoader, AppFooter, AppNavbar},
+  data() {
+    return {
+      student: require('/assets/images/home/student.svg'),
+      company: require('/assets/images/home/company.svg'),
+      users: [],
+
+    }
+  },
+  computed:{
+    stundentsCount(){
+      return this.users.filter(user => user.type.id ===1).length;
+    },
+    companiesCount(){
+      return this.users.filter(user => user.type.id === 2).length;
+    }
+
+  },
+  mounted() {
+    console.log("mounted");
+    this.fetchStudents();
+  },
+  methods: {
+    /*
+    Appel axios.get => récup url api pour la partie concercnée
+     */
+    studentApi(){
+      return axios.get('/api/users');
+    },
+     fetchStudents() {
+       /*
+       add asynch devant methode
+       récup le call api avec .then pour la promesse
+       donc promesses avec response qu'on va link à users
+       On rajoute un loader pour aller récup les datas
+       Une fois les datas récup, on rajoute finally => inqique la fin du loading
+        */
+
+     // let response = await this.studentApi();
+    //  this.users = response.data;
+
+      this.studentApi().then((response)=>{
+        this.users = response.data;
+        console.log("loading");
+      }).catch((error) => {
+        console.warn(error);
+       })
+          .finally(()=>{
+        console.log("finish loading");
+      });
+      console.log(this.users);
+    }
+  }
 }
 </script>
 
 <style scoped lang="scss">
-.home-header{
+@import "styles/abstract/all";
 
+.home-header {
+  background: lightgrey;
+  align-items: center;
+
+  &__intro {
+    padding: 8.875rem 5rem 8.875rem 0;
+    margin-left: 10%;
+
+    h1 {
+      font-family: $title-family;
+      margin-bottom: 1.250rem;
+    }
+
+    p {
+
+      font-size: 1.5rem;
+      line-height: 2.188rem;
+      font-weight: 300;
+      width: 41.667vw;
+    }
+  }
+
+  &__buttons {
+    padding: 8.875em 5rem;
+  }
+  &__counters{
+    padding: 3.125em;
+    img{
+      margin:1.2rem 0;
+    }
+  }
 }
 
 </style>

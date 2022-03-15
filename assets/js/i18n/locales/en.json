@@ -9,5 +9,9 @@
   "footer": {
     "legal-notice": "Legal Notice",
     "contact-us": "Contact Us"
+  },
+  "home": {
+    "students": "STUDENTS",
+    "companies": "COMPANIES"
   }
 }

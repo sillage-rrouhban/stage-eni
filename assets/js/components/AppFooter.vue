@@ -1,11 +1,11 @@
 <template>
   <footer class="footer columns">
-    <div class="column">
-      <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-      <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+    <div class="column footer__icons">
+      <img :src="twitter">
+      <img :src="linkedin">
     </div>
 
-    <div class="column">
+    <div class="column footer__links">
       <div class="columns is-justify-content-flex-end">
         <div class="column is-one-fifth has-text-right">
           <a href="#">{{$t("footer.legal-notice")}}</a>
@@ -25,10 +25,37 @@
 
 <script>
 export default {
-  name: "AppFooter"
+  name: "AppFooter",
+  data(){
+    return{
+      twitter:require('/assets/images/common/twitter.svg'),
+      linkedin:require('/assets/images/common/linkedin.svg'),
+    }
+  }
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.footer{
+  padding: 3.125rem 2.188rem;
+
+  &__icons{
+      img{
+        width: 1.875rem;
+        &:first-of-type{
+          margin-right:1.250em;
+        }
+      }
+   }
+  &__links{
+    a{
+      color: black;
+      text-decoration: underline;
+    }
+  }
+
+}
+
+
 
 </style>
