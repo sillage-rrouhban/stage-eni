@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <app-loader/>
+    <app-loader v-if="showLoader"/>
     <app-navbar/>
     <div class="columns home-header">
       <div class="column is-two-thirds  home-header__intro">
@@ -16,10 +16,10 @@
       </div>
       <div class="column is-one-third home-header__buttons">
         <div class="buttons">
-          <button class="button wide-button">Parcourir les offres</button>
+          <button class="button wide-button">{{$t("home.offers")}}</button>
         </div>
         <div class="buttons">
-          <button class="button wide-button">Parcourir les entreprises</button>
+          <button class="button wide-button">{{$t("home.recruiters")}}</button>
         </div>
       </div>
     </div>
@@ -57,6 +57,7 @@ export default {
       student: require('/assets/images/home/student.svg'),
       company: require('/assets/images/home/company.svg'),
       users: [],
+      showLoader: false,
 
     }
   },
@@ -91,17 +92,15 @@ export default {
 
      // let response = await this.studentApi();
     //  this.users = response.data;
-
+       this.showLoader = true;
       this.studentApi().then((response)=>{
         this.users = response.data;
-        console.log("loading");
       }).catch((error) => {
-        console.warn(error);
        })
           .finally(()=>{
-        console.log("finish loading");
+            this.showLoader = false;
       });
-      console.log(this.users);
+
     }
   }
 }

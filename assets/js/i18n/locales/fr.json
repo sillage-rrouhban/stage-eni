@@ -12,7 +12,9 @@
   },
   "home": {
     "students": "ETUDIANTS",
-    "companies": "RECRUTEURS"
+    "companies": "RECRUTEURS",
+    "offers": "Parcourir les offre",
+    "recruiters": "Parcourir les entreprises"
   }
 
 }

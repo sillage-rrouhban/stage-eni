@@ -12,6 +12,8 @@
   },
   "home": {
     "students": "STUDENTS",
-    "companies": "COMPANIES"
+    "companies": "COMPANIES",
+    "offers": "Show trainings",
+    "recruiters": "Show recruiters"
   }
 }
