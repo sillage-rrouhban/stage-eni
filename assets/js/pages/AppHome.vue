@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home">
     <app-loader/>
     <app-navbar/>
     <div class="columns home-header">
