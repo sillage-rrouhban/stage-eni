@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        <img :src="logo">
+        <img :src="logo" alt="">
     </div>
 
     <div class="navbar-menu">
@@ -9,16 +9,13 @@
         <a class="navbar-item" href="#">
           {{ $t("navbar.offers") }}
         </a>
-
         <a class="navbar-item" href="#">
           {{ $t("navbar.companies") }}
         </a>
-
         <a class="navbar-item" href="#">
           {{ $t("navbar.schools") }}
         </a>
       </div>
-
       <div class="navbar-end">
         <a class="navbar-item" href="#">
           {{ $t("navbar.signup") }}
@@ -48,26 +45,29 @@ export default {
 .navbar {
   padding:1.250rem 3.125rem 1.875rem;
   text-transform:uppercase;
-  &-brand{
+  &-brand {
     margin-right:3.125rem;
-    img{
-
+    img {
       width: 6.542vw;
     }
   }
-  &-menu{
+  &-menu {
     font-size:1.125rem;
     font-weight:400;
-
   }
-  &-end{
+  &-item {
+    &:not(:last-of-type) {
+      margin-right: 2.5rem;
+    }
+    &:hover {
+      background-color: transparent;
+    }
+  }
+  &-end {
     font-size:1rem;
     font-weight:400;
     align-items: flex-start;
   }
-
-
-
 }
 
 
