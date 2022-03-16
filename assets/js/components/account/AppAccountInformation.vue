@@ -57,12 +57,24 @@
           </div>
         </div>
       </div>
+      <div class="columns">
+        <div class="field is-one-third column">
+          <button class="button" type="button" @click="submitForm">Button</button>
+        </div>
+      </div>
     </div>
   </div>
 
 </template>
 
 <script>
+import axios from "axios";
+const config = {
+  headers: {
+    'Content-Type': 'application/json;'
+  }
+};
+
 export default {
   name: "AppAccountInformation",
   data(){
@@ -75,6 +87,39 @@ export default {
       city:'',
       zipcode:null,
       birthdate:null,
+    }
+  },
+  methods:{
+    firstnameApiPost(payload){
+      return axios.post('/api/firstnames',payload,config);
+    },
+    lastnameApiPost(payload){
+      return axios.post('/api/lastnames',payload,config);
+    },
+    submitForm(){
+      let payload = {};
+       payload = {
+        label: this.firstname,
+        user: "/api/users/5"
+      };
+    /*   this.firstnameApiPost(payload).then((response)=>{
+         console.log(response);
+       }).finally(()=>{
+         payload={};
+       });
+      payload = {
+        label: this.lastname,
+        user: "/api/users/5"
+      }; */
+      this.lastnameApiPost({
+        label: this.lastname,
+        user: "/api/users/5"})
+          .then((response)=>{
+        console.log(response);
+      })
+          .finally(()=>{
+        payload={};
+      })
     }
   }
 }

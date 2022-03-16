@@ -4,10 +4,9 @@
     <app-account-navigation/>
     <div class="columns">
       <app-account-aside class="column is-one-fifth"/>
-    <!--  <app-account-information class="column is-four-fifths" v-if="selectedPanel === 0"/> -->
-      <app-account-setting/>
+    <app-account-information class="column is-four-fifths" v-if="selectedPanel === 1"/>
+      <app-account-setting v-if="selectedPanel === 2"/>
     </div>
-
     <app-footer/>
   </div>
 </template>
@@ -25,8 +24,13 @@ export default {
   components: {AppAccountSetting, AppAccountInformation, AppAccountAside, AppAccountNavigation, AppFooter, AppNavbar},
   data() {
     return {
-      selectedPanel: 0
+      selectedPanel: 1
     }
+  },
+  created() {
+    this.emitter.on('navigate-to',(e)=>{
+      this.selectedPanel = e.panelSelected;
+    })
   }
 }
 </script>
