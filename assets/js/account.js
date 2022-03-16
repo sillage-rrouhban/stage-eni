@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import App from './pages/AppRegister'
+import App from './pages/AppAccount'
 import{setupI18n} from "./i18n"
 import fr from '@/i18n/locales/fr.json'
 import en from '@/i18n/locales/en.json'

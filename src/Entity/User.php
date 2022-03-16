@@ -57,6 +57,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $updatedAt;
 
     #[ORM\Column(type: 'smallint')]
+    #[Groups(['read:user', 'write:user'])]
     private $status;
 
 

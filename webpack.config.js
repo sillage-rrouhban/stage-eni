@@ -24,6 +24,7 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('home','./assets/js/home.js')
     .addEntry('register','./assets/js/register.js')
+    .addEntry('account','./assets/js/account.js')
 
     .enableVueLoader()
 

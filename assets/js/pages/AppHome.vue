@@ -78,7 +78,7 @@ export default {
     /*
     Appel axios.get => récup url api pour la partie concercnée
      */
-    studentApi(){
+    userApiGet(){
       return axios.get('/api/users');
     },
     fetchStudents() {
@@ -93,7 +93,7 @@ export default {
       // let response = await this.studentApi();
       //  this.users = response.data;
       this.showLoader = true;
-      this.studentApi().then((response)=>{
+      this.userApiGet().then((response)=>{
         this.users = response.data;
       }).catch((error) => {
       })
