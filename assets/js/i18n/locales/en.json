@@ -1,0 +1,52 @@
+{
+  "navbar": {
+    "offers": "Offers",
+    "companies": "Companies",
+    "schools": "Schools",
+    "signup": "Sign up",
+    "languages": "Languages"
+  },
+  "footer": {
+    "legal-notice": "Legal Notice",
+    "contact-us": "Contact Us"
+  },
+  "home": {
+    "students": "STUDENTS",
+    "companies": "COMPANIES",
+    "offers": "Show trainings",
+    "recruiters": "Show recruiters"
+  },
+  "register": {
+    "email": "Email",
+    "password": "Password"
+  },
+
+  "account": {
+    "navigation": {
+      "account": "Account",
+      "dashboard": "Dashboard"
+    },
+    "aside": {
+      "information": "My information",
+      "studies": "My studies",
+      "online-presence": "Online presence",
+      "setting": "Setting"
+    },
+    "information": {
+      "firstname": "First name",
+      "lastname": "Last name",
+      "email": "Email",
+      "phone": "Phone number",
+      "address": "Address",
+      "city": "City",
+      "zipcode": "Zipcode",
+      "birthdate": "Birthdate"
+    },
+    "setting": {
+      "password": "Your new password",
+      "actual_password": "Current password",
+      "new_password": "Your new password",
+      "confirmation": "Confirm your password"
+    }
+  }
+}

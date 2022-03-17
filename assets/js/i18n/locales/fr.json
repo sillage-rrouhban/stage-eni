@@ -1,0 +1,54 @@
+{
+  "navbar": {
+    "offers": "Offres",
+    "companies": "Recruteurs",
+    "schools": "Centres de formation",
+    "signup": "Se connecter",
+    "languages": "Langues"
+  },
+  "footer": {
+    "legal-notice": "Mentions légales",
+    "contact-us": "Contactez nous"
+  },
+  "home": {
+    "students": "ETUDIANTS",
+    "companies": "RECRUTEURS",
+    "offers": "Parcourir les offre",
+    "recruiters": "Parcourir les entreprises"
+  },
+
+  "register": {
+    "email": "Email",
+    "password": "Mot de passe"
+  },
+
+  "account": {
+    "navigation": {
+      "account": "Mon compte",
+      "dashboard": "Mon tableau de bord"
+    },
+    "aside": {
+      "information": "Mes informations",
+      "studies": "Mon parcours",
+      "online-presence": "Ma présence en ligne",
+      "setting": "Paramètres"
+    },
+    "information": {
+      "firstname": "Prénom",
+      "lastname": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "address": "Adresse",
+      "city": "Ville",
+      "zipcode": "Code postal",
+      "birthdate": "Date de naissance"
+    },
+    "setting": {
+      "password": "Nouveau mot de passe",
+      "actual_password": "Mot de passe actuel",
+      "new_password": "Nouveau mot de passe",
+      "confirmation": "Confirmation de mot de passe"
+    }
+  }
+
+}
