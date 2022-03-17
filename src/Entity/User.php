@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\MeController;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,10 +19,24 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[HasLifecycleCallbacks]
 #[ORM\Table(name: '`user`')]
 #[ApiResource(
-    collectionOperations: ['get', 'post'],
-    itemOperations: ['get', 'put'],
+    collectionOperations: ['me'=>[
+        'pagination_enable'=> false,
+        'path'=> '/me',
+        'method'=>'get',
+        'controller'=> MeController::class,
+        'read'=> false,
+    ],
+        'get', 'post'],
+    itemOperations: ['get'=>[
+        'controller' => NotFoundAction::class,
+        'openapi_context' =>['summary'=> 'hidden'],
+        'read' => false,
+        'output' => false
+    ],
+        'put'],
     denormalizationContext: ['groups' => ['write:user']],
     normalizationContext: ['groups' => ['read:user']],
+    security: 'is_granted("ROLE_USER")',
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {

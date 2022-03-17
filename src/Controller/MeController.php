@@ -3,16 +3,18 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class MeController extends AbstractController
 {
-    #[Route('/me', name: 'app_me')]
-    public function index(): Response
+    public function __construct(private Security $secrutiy)
     {
-        return $this->render('me/index.html.twig', [
-            'controller_name' => 'MeController',
-        ]);
+
     }
+    public function __invoke()
+    {
+        $user = $this->secrutiy->getUser();
+        return $user;
+    }
+
 }

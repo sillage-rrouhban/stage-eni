@@ -3,16 +3,26 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 
 class SecurityController extends AbstractController
 {
-    #[Route('/security', name: 'app_security')]
-    public function index(): Response
-    {
-        return $this->render('security/index.html.twig', [
-            'controller_name' => 'SecurityController',
+    #[Route(path: '/api/login', name: 'api_login', methods: ['POST'])]
+    public function login(){
+        $user = $this->getUser();
+        return $this->json([
+           'email' => $user->getEmail(),
+            'roles' => $user->getRoles(),
         ]);
     }
+
+    #[Route(path: '/api/logout', name: 'api_logout', methods: ['POST'])]
+    public function logout()
+    {
+
+
+    }
+
+
 }
