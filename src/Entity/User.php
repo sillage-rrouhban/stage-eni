@@ -36,7 +36,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'put'],
     denormalizationContext: ['groups' => ['write:user']],
     normalizationContext: ['groups' => ['read:user']],
-    security: 'is_granted("ROLE_USER")',
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
