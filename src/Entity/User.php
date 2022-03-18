@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
+use JetBrains\PhpStorm\NoReturn;
 use JetBrains\PhpStorm\Pure;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -226,11 +227,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
         return $this->getUserIdentifier();
     }
 
-    public static function createFromPayload($username, array $payload)
+    #[NoReturn] public static function createFromPayload($username, array $payload): User
     {
-      $user = new User();
-      $user->setEmail($username);
-      //dd($username, $payload);
-      return $user;
+        dd($username, $payload);
+        $user = new User();
+        $user->setEmail($username);
+        return $user;
     }
 }
