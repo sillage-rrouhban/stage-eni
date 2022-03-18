@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -217,6 +218,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->status = $status;
 
         return $this;
+    }
+
+    #[Pure] public function getUsername(): string
+    {
+        return $this->getUserIdentifier();
     }
 
 }
