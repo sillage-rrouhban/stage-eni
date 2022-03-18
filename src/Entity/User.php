@@ -230,6 +230,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
     {
       $user = new User();
       $user->setEmail($username);
-      return "HELLO";
+      //dd($username, $payload);
+      return $user;
     }
 }
