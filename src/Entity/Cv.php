@@ -91,6 +91,13 @@ class Cv
     #[ORM\Column(type: 'datetime_immutable')]
     private $uploadedAt;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private $title;
+
 
     public function getId(): ?int
     {
@@ -151,6 +158,30 @@ class Cv
     public function onPreUpdate(LifecycleEventArgs $eventArgs)
     {
         $this->uploadedAt = new \DateTimeImmutable();
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
     }
 
 }

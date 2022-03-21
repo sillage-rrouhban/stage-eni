@@ -1,8 +1,18 @@
 <template>
   <div class="register">
     <app-navbar/>
-  <div class="columns is-centered">
-    <div class=" column is-one-third ">
+    <div class="columns is-centered">
+      <div class="column is-half has-text-centered">
+        <h2 class="is-size-4">{{$t('register.choose-type')}}</h2>
+        <div class="control">
+          <button class="button is-info m-4" type="button" v-for="type of types" @click="toggleForm(type.id)" :class="{'disable':selectedType !==type.id && selectedType > 0}">
+            {{$t('global.' + type.label)}}
+          </button>
+        </div>
+      </div>
+    </div>
+  <div class="columns is-centered" v-if="selectedType > 0">
+    <div class=" column is-one-third">
       <div class="field">
         <label class="label">{{ $t("register.email") }}</label>
         <div class="control">
@@ -43,11 +53,28 @@ export default {
     return {
       email: '',
       password: '',
+      types:[],
+      selectedType: 0
     }
   },
+  mounted() {
+    this.fetchTypes();
+  },
+
   methods: {
     userApiPost(payload){
       return axios.post('/api/users',payload,config);
+    },
+
+    fetchTypes(){
+      return axios.get('/api/types',config).then((response)=>{
+        this.types = response.data;
+      });
+    },
+
+    toggleForm(id){
+      this.selectedType = id;
+      console.log(this.selectedType);
     },
 
     sumbitForm(){
@@ -55,7 +82,7 @@ export default {
       let payload = {
         email: this.email,
         plainPassword: this.password,
-        type : "/api/types/1",
+        type : "/api/types/" + this.selectedType,
         status: 0,
         roles:['ROLE_USER']
       };
@@ -75,5 +102,12 @@ export default {
 <style scoped lang="scss">
 .register{
   width: 100%;
+  .disable{
+    background-color: #fff;
+    border-color: #3e8ed0;
+    box-shadow: none;
+    color: #3e8ed0;
+  }
 }
+
 </style>

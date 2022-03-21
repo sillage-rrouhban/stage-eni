@@ -48,5 +48,9 @@
       "new_password": "Your new password",
       "confirmation": "Confirm your password"
     }
+  },
+  "modal": {
+    "login": "Login",
+    "register": "Register"
   }
 }

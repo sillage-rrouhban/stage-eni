@@ -1,4 +1,9 @@
 {
+  "global": {
+    "student": "Etudiant",
+    "company": "Entreprise",
+    "school": "Centre de formation"
+  },
   "navbar": {
     "offers": "Offres",
     "companies": "Recruteurs",
@@ -19,7 +24,8 @@
 
   "register": {
     "email": "Email",
-    "password": "Mot de passe"
+    "password": "Mot de passe",
+    "choose-type": "Avant de pouvoir vous inscrire, dites-nous qui vous êtes ?"
   },
 
   "account": {
@@ -49,6 +55,13 @@
       "new_password": "Nouveau mot de passe",
       "confirmation": "Confirmation de mot de passe"
     }
+  },
+
+  "modal": {
+    "login": "Se connecter",
+    "register": "S'incrire"
   }
+
+
 
 }

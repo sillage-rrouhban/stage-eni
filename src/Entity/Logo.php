@@ -88,12 +88,12 @@ class Logo
     #[ORM\Column(type: 'string', length: 255)]
     #[Groups(['read:logo','write:logo'])]
     private $filename;
-/*
+
     #[ORM\OneToOne(targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['read:logo','write:logo'])]
     private $user;
-*/
+
 
     #[ORM\Column(type: 'datetime_immutable')]
     private $updatedAt;
@@ -134,7 +134,7 @@ class Logo
             $this->updatedAt = new \DateTimeImmutable();
         }
     }
-/*
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -146,7 +146,7 @@ class Logo
 
         return $this;
     }
-*/
+
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {

@@ -3,6 +3,7 @@ import App from './pages/AppRegister'
 import{setupI18n} from "./i18n"
 import fr from '@/i18n/locales/fr.json'
 import en from '@/i18n/locales/en.json'
+import mitt from "mitt"
 
 const i18n = setupI18n({
     globalInjection: true,
@@ -15,7 +16,9 @@ const i18n = setupI18n({
     }
 })
 
+const emitter = mitt();
 const app = createApp(App);
 
+app.config.globalProperties.emitter = emitter;
 app.use(i18n)
 app.mount('#app')

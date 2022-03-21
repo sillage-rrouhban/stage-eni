@@ -74,11 +74,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
     #[Groups(['read:user'])]
     private $updatedAt;
 
-    #[ORM\Column(type: 'smallint')]
-    #[Groups(['read:user', 'write:user'])]
-    private $status;
-
     private $tokenExp;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified;
 
     /**
      * @return mixed
@@ -241,18 +240,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
         $this->updatedAt = new \DateTimeImmutable();
     }
 
-    public function getStatus(): ?int
-    {
-        return $this->status;
-    }
-
-    public function setStatus(int $status): self
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
     #[Pure] public function getUsername(): string
     {
         return $this->getUserIdentifier();
@@ -267,6 +254,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
         $user->setTokenExp($payload['exp']);
         dd($user);
         return $user;
+    }
+
+    public function getIsVerified(): ?bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
     }
 
 

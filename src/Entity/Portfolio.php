@@ -91,6 +91,10 @@ class Portfolio
     #[ORM\Column(type: 'datetime_immutable')]
     private $uploadedAt;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -150,5 +154,17 @@ class Portfolio
     public function onPreUpdate(LifecycleEventArgs $eventArgs)
     {
         $this->uploadedAt = new \DateTimeImmutable();
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }
