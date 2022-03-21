@@ -2,13 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Controller\MeController;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
+use JetBrains\PhpStorm\NoReturn;
+use JetBrains\PhpStorm\Pure;
+use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -17,12 +22,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[HasLifecycleCallbacks]
 #[ORM\Table(name: '`user`')]
 #[ApiResource(
-    collectionOperations: ['get', 'post'],
-    itemOperations: ['get', 'put'],
+    collectionOperations: ['me'=>[
+        'pagination_enable'=> false,
+        'path'=> '/me',
+        'method'=>'get',
+        'controller'=> MeController::class,
+        'read'=> false,
+    ],
+        'get', 'post'],
+    itemOperations: ['get'=>[
+        'controller' => NotFoundAction::class,
+        'openapi_context' =>['summary'=> 'hidden'],
+        'read' => false,
+        'output' => false
+    ],
+        'put'],
     denormalizationContext: ['groups' => ['write:user']],
     normalizationContext: ['groups' => ['read:user']],
 )]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -60,10 +78,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['read:user', 'write:user'])]
     private $status;
 
+    private $tokenExp;
+
+    /**
+     * @return mixed
+     */
+    #[Groups(['read:user'])]
+    public function getTokenExp()
+    {
+        return $this->tokenExp;
+    }
+
+    /**
+     * @param mixed $tokenExp
+     * @return User
+     */
+    public function setTokenExp($tokenExp)
+    {
+        $this->tokenExp = $tokenExp;
+        return $this;
+    }
+
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     * @return User
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -203,5 +252,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    #[Pure] public function getUsername(): string
+    {
+        return $this->getUserIdentifier();
+    }
+
+    #[NoReturn] public static function createFromPayload($username, array $payload): User
+    {
+        $user = new User();
+        $user->setId($payload['id']);
+        $user->setRoles($payload['roles']);
+        $user->setEmail($username);
+        $user->setTokenExp($payload['exp']);
+        dd($user);
+        return $user;
+    }
+
 
 }
