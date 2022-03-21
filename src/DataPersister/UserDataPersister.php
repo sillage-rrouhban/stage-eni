@@ -44,9 +44,10 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
             $data->eraseCredentials();
         }
 
+        $data->setIsVerified(false);
         $this->entityManager->persist($data);
-        $this->sendConfirmationEmail($data);
         $this->entityManager->flush();
+        $this->sendConfirmationEmail($data);
     }
 
     /**
@@ -59,9 +60,9 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
             $user->getEmail(),
         );
         $email= new TemplatedEmail();
-        $email->from('sophie@chooseyourtraining.com');
+        $email->from('audrey@tasqs-by.europtima.com');
         $email->to($user->getEmail());
-        $email->htmlTemplate('email/confirmation_email.htm.twig');
+        $email->htmlTemplate('email/confirmation_email.html.twig');
         $email->context(['signedUrl'=>$signatureComponents->getSignedUrl()]);
         $this->mailer->send($email);
 
