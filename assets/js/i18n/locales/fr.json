@@ -16,8 +16,8 @@
     "contact-us": "Contactez nous"
   },
   "home": {
-    "students": "ETUDIANTS",
-    "companies": "RECRUTEURS",
+    "students": "Etudiants",
+    "companies": "Recruteurs",
     "offers": "Parcourir les offre",
     "recruiters": "Parcourir les entreprises"
   },
@@ -55,8 +55,9 @@
 
     "studies": {
       "my_studies": "Mon parcours",
+      "current-resume": "CV actuel",
       "resume": "CV",
-      "professional_designation": "Titre profesionnel",
+      "professional_designation": "Titre professionnel",
       "domain": "Domaine",
       "update": "Mettre à jour"
     },

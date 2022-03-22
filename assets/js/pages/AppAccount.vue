@@ -1,14 +1,13 @@
 <template>
   <div class="account">
     <app-navbar/>
-    <app-account-navigation/>
-    <div class="columns">
+    <div class="columns is-multiline">
+      <app-account-navigation/>
       <app-account-aside class="column is-one-fifth"/>
       <app-account-information class="column is-four-fifths" v-if="selectedPanel === 1"/>
       <app-account-studies v-if="selectedPanel=== 2"/>
       <app-account-online-presence v-if="selectedPanel=== 3"/>
-      <app-account-setting v-if="selectedPanel === 4"/>
-
+      <app-account-settings v-if="selectedPanel === 4"/>
     </div>
     <app-footer/>
   </div>
@@ -20,16 +19,21 @@ import AppFooter from "../components/AppFooter";
 import AppAccountNavigation from "../components/account/AppAccountNavigation";
 import AppAccountAside from "../components/account/AppAccountAside";
 import AppAccountInformation from "../components/account/AppAccountInformation";
-import AppAccountSetting from "../components/account/AppAccountSetting";
+import AppAccountSettings from "../components/account/AppAccountSettings";
 import AppAccountOnlinePresence from "../components/account/AppAccountOnlinePresence";
 import AppAccountStudies from "../components/account/AppAccountStudies";
 
 export default {
   name: "AppAccount",
   components: {
-    AppAccountStudies,
+    AppAccountAside,
+    AppAccountInformation,
+    AppAccountNavigation,
     AppAccountOnlinePresence,
-    AppAccountSetting, AppAccountInformation, AppAccountAside, AppAccountNavigation, AppFooter, AppNavbar
+    AppAccountSettings,
+    AppAccountStudies,
+    AppFooter,
+    AppNavbar
   },
   data() {
     return {

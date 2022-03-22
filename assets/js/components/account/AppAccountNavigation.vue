@@ -1,5 +1,5 @@
 <template>
-  <div class="account">
+  <div class="account column is-full">
     <div class="tabs">
       <ul>
         <li><a>{{$t('account.navigation.account')}}</a></li>
