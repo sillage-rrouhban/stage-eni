@@ -40,13 +40,22 @@
       "address": "Address",
       "city": "City",
       "zipcode": "Zipcode",
-      "birthdate": "Birthdate"
+      "birthdate": "Birthdate",
+      "update": "Mettre à jour"
+    },
+    "studies": {
+      "my_studies": "My studies",
+      "resume": "CV",
+      "professional_designation": "Titre profesionnel",
+      "domain": "Domaine",
+      "update": "Mettre à jour"
     },
     "setting": {
       "password": "Your new password",
       "actual_password": "Current password",
       "new_password": "Your new password",
-      "confirmation": "Confirm your password"
+      "confirmation": "Confirm your password",
+      "delete": "Delete your account"
     }
   },
   "modal": {

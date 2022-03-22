@@ -33,12 +33,14 @@
       "account": "Mon compte",
       "dashboard": "Mon tableau de bord"
     },
+
     "aside": {
       "information": "Mes informations",
       "studies": "Mon parcours",
       "online-presence": "Ma présence en ligne",
       "setting": "Paramètres"
     },
+
     "information": {
       "firstname": "Prénom",
       "lastname": "Nom",
@@ -47,13 +49,31 @@
       "address": "Adresse",
       "city": "Ville",
       "zipcode": "Code postal",
-      "birthdate": "Date de naissance"
+      "birthdate": "Date de naissance",
+      "update": "Mettre à jour"
     },
+
+    "studies": {
+      "my_studies": "Mon parcours",
+      "resume": "CV",
+      "professional_designation": "Titre profesionnel",
+      "domain": "Domaine",
+      "update": "Mettre à jour"
+    },
+
+    "online_presence": {
+      "website": "Mon site web",
+      "other": "Autres site",
+      "update": "Mettre à jour"
+    },
+
     "setting": {
       "password": "Nouveau mot de passe",
       "actual_password": "Mot de passe actuel",
       "new_password": "Nouveau mot de passe",
-      "confirmation": "Confirmation de mot de passe"
+      "confirmation": "Confirmation de mot de passe",
+      "delete_title": "Supprimer votre compte",
+      "delete_button": "Supprimer"
     }
   },
 

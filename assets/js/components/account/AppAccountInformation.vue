@@ -59,12 +59,11 @@
       </div>
       <div class="columns">
         <div class="field is-one-third column">
-          <button class="button" type="button" @click="submitForm">Button</button>
+          <button class="button" type="button" @click="submitForm">{{$t("account.information.update")}}</button>
         </div>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
