@@ -7,8 +7,8 @@
     "languages": "Languages"
   },
   "footer": {
-    "legal-notice": "Legal Notice",
-    "contact-us": "Contact Us"
+    "legal_notice": "Legal Notice",
+    "contact_us": "Contact Us"
   },
   "home": {
     "students": "STUDENTS",
@@ -29,7 +29,7 @@
     "aside": {
       "information": "My information",
       "studies": "My studies",
-      "online-presence": "Online presence",
+      "online_presence": "Online presence",
       "setting": "Setting"
     },
     "information": {
@@ -48,7 +48,8 @@
       "resume": "CV",
       "professional_designation": "Titre profesionnel",
       "domain": "Domaine",
-      "update": "Mettre à jour"
+      "update": "Mettre à jour",
+      "level": "Study level"
     },
     "setting": {
       "password": "Your new password",

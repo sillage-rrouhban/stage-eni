@@ -8,10 +8,10 @@
     <div class="column footer__links">
       <div class="columns is-justify-content-flex-end">
         <div class="column is-one-fifth has-text-right">
-          <a href="#">{{$t("footer.legal-notice")}}</a>
+          <a href="#">{{$t("footer.legal_notice")}}</a>
         </div>
         <div class="column is-one-fifth has-text-right">
-          <a href="#">{{$t("footer.contact-us")}}</a>
+          <a href="#">{{$t("footer.contact_us")}}</a>
         </div>
 
 

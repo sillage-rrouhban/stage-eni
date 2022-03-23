@@ -31,7 +31,7 @@ export default {
       website:'',
       other:'',
     }
-  }
+  },
 }
 </script>
 

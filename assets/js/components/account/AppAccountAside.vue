@@ -11,7 +11,7 @@
       </li>
       <li :class="{'has-text-weight-bold': panelSelected === 3}"
           @click="emitNavigationClick(3)">
-        {{$t("account.aside.online-presence")}}
+        {{$t("account.aside.online_presence")}}
       </li>
       <li :class="{'has-text-weight-bold': panelSelected === 4}"
           @click="emitNavigationClick(4)">

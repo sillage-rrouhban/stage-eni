@@ -12,8 +12,8 @@
     "languages": "Langues"
   },
   "footer": {
-    "legal-notice": "Mentions légales",
-    "contact-us": "Contactez nous"
+    "legal_notice": "Mentions légales",
+    "contact_us": "Contactez nous"
   },
   "home": {
     "students": "Etudiants",
@@ -37,7 +37,7 @@
     "aside": {
       "information": "Mes informations",
       "studies": "Mon parcours",
-      "online-presence": "Ma présence en ligne",
+      "online_presence": "Ma présence en ligne",
       "setting": "Paramètres"
     },
 
@@ -55,11 +55,12 @@
 
     "studies": {
       "my_studies": "Mon parcours",
-      "current-resume": "CV actuel",
+      "resume_title": "Titre CV",
       "resume": "CV",
       "professional_designation": "Titre professionnel",
       "domain": "Domaine",
-      "update": "Mettre à jour"
+      "update": "Mettre à jour",
+      "level": "Niveau d'étude"
     },
 
     "online_presence": {

@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "AppAccountSettings",
   data() {
@@ -52,7 +53,12 @@ export default {
     }
   },
 
-  methods: {}
+  methods: {
+    deleteUser(){
+      return axios.delete('/api/users/'+ id);
+    },
+
+  }
 }
 </script>
 
