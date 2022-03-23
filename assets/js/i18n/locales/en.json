@@ -61,6 +61,10 @@
   },
   "modal": {
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "validation": "Confirm",
+    "return": "Retour"
   }
 }

@@ -77,6 +77,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
 
     private $tokenExp;
 
+    private $typeId;
+
+    /**
+     * @return mixed
+     */
+    public function getTypeId()
+    {
+        return $this->typeId;
+    }
+
+    /**
+     * @param mixed $typeId
+     * @return User
+     */
+    public function setTypeId($typeId)
+    {
+        $this->typeId = $typeId;
+        return $this;
+    }
+
     #[ORM\Column(type: 'boolean')]
     private $isVerified;
 
@@ -246,14 +266,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
         return $this->getUserIdentifier();
     }
 
-    #[NoReturn] public static function createFromPayload($username, array $payload): User
+    public static function createFromPayload($id, array $payload): User
     {
         $user = new User();
-        $user->setId($payload['id']);
+        $user->setId($id);
+        $user->setEmail($payload['username']);
         $user->setRoles($payload['roles']);
-        $user->setEmail($username);
+        $user->setTypeId($payload['typeId']);
         $user->setTokenExp($payload['exp']);
-        dd($user);
         return $user;
     }
 

@@ -81,7 +81,11 @@
 
   "modal": {
     "login": "Se connecter",
-    "register": "S'incrire"
+    "register": "S'incrire",
+    "email": "Email",
+    "password": "Password",
+    "validation": "Valider",
+    "return": "Retour"
   }
 
 

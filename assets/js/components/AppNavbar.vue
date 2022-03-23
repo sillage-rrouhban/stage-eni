@@ -54,7 +54,6 @@ export default {
 @import "styles/abstract/all";
 .navbar {
   padding:1.250rem 3.125rem 1.875rem;
-  text-transform:uppercase;
   &-brand {
     margin-right:3.125rem;
     img {
@@ -67,6 +66,7 @@ export default {
   }
   &-item {
     cursor: pointer;
+    text-transform:uppercase;
     &:not(:last-of-type) {
       margin-right: 2.5rem;
     }

@@ -4,13 +4,13 @@
       <div class="field is-one-third column">
         <label class="label">{{ $t("account.online_presence.website") }}</label>
         <div class="control">
-          <input class="input" type="text" placeholder="e.g Alex Smith" v-model="website">
+          <input class="input" type="text" v-model="website">
         </div>
       </div>
       <div class="field column is-one-third">
         <label class="label">{{ $t("account.online_presence.other") }}</label>
         <div class="control">
-          <input class="input" type="text" placeholder="e.g Alex Smith" v-model="other">
+          <input class="input" type="text"  v-model="other">
         </div>
       </div>
     </div>

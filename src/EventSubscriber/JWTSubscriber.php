@@ -15,7 +15,9 @@ class JWTSubscriber implements EventSubscriberInterface
         $user = $event->getUser();
         if(!$user instanceof UserInterface) return;
         $payload['roles'] = $user->getRoles();
-        $payload['id'] = $user->getId();
+        dd($user->getUserIdentifier());
+        $payload['username'] = $user->getUserIdentifier();
+        $payload['typeId'] = $user->getType()->getId();
         $expires = new DateTime("+2 months");
         $payload['exp'] = $expires->getTimestamp();
         $event->setData($payload);

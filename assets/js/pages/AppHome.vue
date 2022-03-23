@@ -28,13 +28,13 @@
       <div class="column is-one-third has-text-centered">
         <h2 class="is-size-2">{{ studentsCount }}</h2>
         <img :src="student">
-        <h3 class="is-size-3">{{ $t("home.students") }}</h3>
+        <h3 class="is-size-3 is-uppercase">{{ $t("home.students") }}</h3>
 
       </div>
       <div class="column is-one-third has-text-centered">
         <h2 class="is-size-2">{{ companiesCount }}</h2>
         <img :src="company">
-        <h3 class="is-size-3">{{ $t("home.companies") }}</h3>
+        <h3 class="is-size-3 is-uppercase">{{ $t("home.companies") }}</h3>
       </div>
     </div>
     <app-footer/>

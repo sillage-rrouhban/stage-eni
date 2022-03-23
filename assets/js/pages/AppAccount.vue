@@ -23,6 +23,7 @@ import AppAccountSettings from "../components/account/AppAccountSettings";
 import AppAccountOnlinePresence from "../components/account/AppAccountOnlinePresence";
 import AppAccountStudies from "../components/account/AppAccountStudies";
 
+
 export default {
   name: "AppAccount",
   components: {
