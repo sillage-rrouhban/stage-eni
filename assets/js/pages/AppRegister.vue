@@ -29,7 +29,6 @@
       <div class="control">
         <button class="button is-primary" type="button" @click="sumbitForm">Submit</button>
       </div>
-      {{ email }} {{ password }}
     </div>
   </div>
     <app-footer/>
@@ -74,11 +73,9 @@ export default {
 
     toggleForm(id){
       this.selectedType = id;
-      console.log(this.selectedType);
     },
 
     sumbitForm(){
-      console.log("click");
       let payload = {
         email: this.email,
         plainPassword: this.password,

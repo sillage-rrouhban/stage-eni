@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
-use JetBrains\PhpStorm\NoReturn;
 use JetBrains\PhpStorm\Pure;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -22,14 +21,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[HasLifecycleCallbacks]
 #[ORM\Table(name: '`user`')]
 #[ApiResource(
-    collectionOperations: ['me'=>[
+    collectionOperations: ['get', 'post',
+        'me'=>[
         'pagination_enable'=> false,
         'path'=> '/me',
         'method'=>'get',
         'controller'=> MeController::class,
         'read'=> false,
     ],
-        'get', 'post'],
+        ],
     itemOperations: ['get'=>[
         'controller' => NotFoundAction::class,
         'openapi_context' =>['summary'=> 'hidden'],
@@ -266,16 +266,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
         return $this->getUserIdentifier();
     }
 
-    public static function createFromPayload($id, array $payload): User
-    {
-        $user = new User();
-        $user->setId($id);
-        $user->setEmail($payload['username']);
-        $user->setRoles($payload['roles']);
-        $user->setTypeId($payload['typeId']);
-        $user->setTokenExp($payload['exp']);
-        return $user;
-    }
+
 
     public function getIsVerified(): ?bool
     {
@@ -290,4 +281,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
     }
 
 
+    public static function createFromPayload($username, array $payload): User|JWTUserInterface
+    {
+        //dd($payload);
+        return (new User())
+            ->setId($payload['id'])
+            ->setEmail($username)
+            ->setRoles($payload['roles'])
+            ->setType($payload['id'])
+            ->setTokenExp($payload['exp']);
+
+    }
 }

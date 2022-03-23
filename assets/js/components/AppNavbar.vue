@@ -1,7 +1,9 @@
 <template>
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
+      <a href="/">
         <img :src="logo" alt="">
+      </a>
     </div>
 
     <div class="navbar-menu">
