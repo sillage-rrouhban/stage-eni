@@ -26,28 +26,28 @@
 
     <div class="columns is-centered home-header__counters">
       <div class="column is-one-third has-text-centered">
-        <h2 class="is-size-2">{{ studentsCount }}</h2>
+        <h2 class="is-size-2" v-if="users && users.length > 0">{{ studentsCount }}</h2>
         <img :src="student">
         <h3 class="is-size-3 is-uppercase">{{ $t("home.students") }}</h3>
 
       </div>
       <div class="column is-one-third has-text-centered">
-        <h2 class="is-size-2">{{ companiesCount }}</h2>
+        <h2 class="is-size-2" v-if="users && users.length > 0">{{ companiesCount }}</h2>
         <img :src="company">
         <h3 class="is-size-3 is-uppercase">{{ $t("home.companies") }}</h3>
       </div>
     </div>
     <app-footer/>
-
-
   </div>
 </template>
 
 <script>
 import AppNavbar from "../components/AppNavbar";
 import AppFooter from "../components/AppFooter";
-import axios from "axios";
 import AppLoader from "../components/AppLoader";
+import {useStore} from "vuex";
+import {computed} from "vue";
+
 
 export default {
   name: "AppHome",
@@ -56,7 +56,6 @@ export default {
     return {
       student: require('/assets/images/home/student.svg'),
       company: require('/assets/images/home/company.svg'),
-      users: [],
       showLoader: false,
 
     }
@@ -65,22 +64,31 @@ export default {
     studentsCount(){
       return this.users.filter(user => user.type.id ===1).length;
     },
+
     companiesCount(){
       return this.users.filter(user => user.type.id === 2).length;
     }
-
   },
+
+  setup(){
+   const store = useStore()
+    const users = computed(()=> store.state.users.users)
+    const usersGetter = computed(()=> store.getters['users/users'])
+    store.dispatch('users/fetchUsers')
+    return{
+     users,
+      usersGetter
+    }
+  },
+
   mounted() {
-    console.log("mounted");
-    this.fetchStudents();
   },
   methods: {
     /*
     Appel axios.get => récup url api pour la partie concercnée
-     */
-    userApiGet(){
-      return axios.get('/api/users');
-    },
+
+
+
     fetchStudents() {
       /*
       add asynch devant methode
@@ -88,7 +96,7 @@ export default {
       donc promesses avec response qu'on va link à users
       On rajoute un loader pour aller récup les datas
       Une fois les datas récup, on rajoute finally => inqique la fin du loading
-       */
+
 
       // let response = await this.studentApi();
       //  this.users = response.data;
@@ -102,6 +110,8 @@ export default {
           });
 
     }
+  }
+  */
   }
 }
 </script>

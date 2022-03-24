@@ -289,7 +289,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
             ->setId($payload['id'])
             ->setEmail($username)
             ->setRoles($payload['roles'])
-            ->setTypeId($payload['id'])
+            ->setTypeId($payload['typeId'])
             ->setTokenExp($payload['exp']);
 
     }

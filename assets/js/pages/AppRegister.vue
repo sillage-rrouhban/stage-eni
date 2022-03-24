@@ -36,9 +36,10 @@
 </template>
 
 <script>
-import axios from "axios";
+
 import AppNavbar from "../components/AppNavbar";
 import AppFooter from "../components/AppFooter";
+import {mapGetters} from "vuex";
 const config = {
   headers: {
     'Content-Type': 'application/json;'
@@ -52,30 +53,29 @@ export default {
     return {
       email: '',
       password: '',
-      types:[],
       selectedType: 0
     }
   },
-  mounted() {
-    this.fetchTypes();
+  computed:{
+    ...mapGetters({
+      types : 'types/types'
+    })
+  },
+ async  mounted() {
+    await this.fetchTypes();
   },
 
   methods: {
-    userApiPost(payload){
-      return axios.post('/api/users',payload,config);
-    },
 
-    fetchTypes(){
-      return axios.get('/api/types',config).then((response)=>{
-        this.types = response.data;
-      });
+   async fetchTypes(){
+        await this.$store.dispatch('types/fetchTypes');
     },
 
     toggleForm(id){
       this.selectedType = id;
     },
 
-    sumbitForm(){
+   async sumbitForm(){
       let payload = {
         email: this.email,
         plainPassword: this.password,
@@ -83,9 +83,8 @@ export default {
         status: 0,
         roles:['ROLE_USER']
       };
-      this.userApiPost(payload).then((response)=>{
-        console.log(response);
-      });
+      await this.$store.dispatch('users/createUser',payload);
+
       /*
    "email": "string",
   "type": "string",

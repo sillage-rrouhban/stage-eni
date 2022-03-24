@@ -81,16 +81,19 @@ export default {
         password: this.password
       }
       this.jwtTokenApi(payload).then((response) => {
-        console.log('token:', response);
        localStorage.setItem('token',response.data.token);
        this.fetchUser(response.data.token).then((responseUser) =>{
-         console.log('user:', responseUser);
          localStorage.setItem('email', responseUser.data.email);
          localStorage.setItem('iri', '/api/users/' + responseUser.data.id);
-        // localStorage.setItem('type', responseUser.data.typeId);
+         localStorage.setItem('type', responseUser.data.typeId);
+       //  localStorage.setItem('expiration',)
+         const expirationDate = responseUser.data.tokenExp;
+         const expiredIn = expirationDate - new Date();
+         localStorage.setItem('expiration', expirationDate);
        });
       });
     },
+
   },
 }
 </script>

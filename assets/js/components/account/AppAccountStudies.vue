@@ -1,5 +1,5 @@
 <template>
-  <div class="column">
+  <div class="column account__studies">
     <div class="columns">
       <div class="field is-one-third column">
 
@@ -14,20 +14,20 @@
       </div>
     </div>
     <div class="columns">
-      <div class="column field is-half">
+      <div class="column field is-one-third">
         <label class="label">{{ $t("account.studies.domain") }}</label>
         <div class="select is-multiple">
-          <select multiple size="3">
+          <select  size="3" v-if="domains && domains.length > 0">
             <option :value="domain.id" v-for="domain of domains" :key="domain.id">
               {{ domain.label }}
             </option>
           </select>
         </div>
       </div>
-      <div class="field column is-half">
+      <div class="field column is-one-third">
         <label class="label">{{ $t("account.studies.level") }}</label>
         <div class="select is-multiple">
-          <select multiple size="3">
+          <select size="3" v-if="levels && levels.length > 0">
             <option :value="level.id" v-for="level of levels" :key="level.id">
               {{ level.label }}
             </option>
@@ -53,6 +53,8 @@
 
 <script>
 import axios from "axios";
+import {useStore} from "vuex";
+import {computed} from "vue";
 
 const config = {
   headers: {
@@ -64,20 +66,31 @@ export default {
   data() {
     return {
       professionalDesignation: '',
-      domains: [],
-      levels: [],
       toggleDropdown: false,
     }
   },
 
+  setup(){
+    const store = useStore()
+    const domains = computed(()=> store.state.domains.domains)
+    const domainsGetter = computed(()=> store.getters['domains/domains'])
+    const levels =computed(()=> store.state.levels.levels)
+    const levelsGetter = computed(()=> store.getters['levels/levels'])
+    store.dispatch('domains/fetchDomains')
+    store.dispatch('levels/fetchLevels')
+    return{
+      domains,
+      domainsGetter,
+      levels,
+      levelsGetter,
+    }
+  },
+
   mounted() {
-    this.fetchDomains();
     this.fetchLevels();
   },
   methods: {
-    domainsApiGet() {
-      return axios.get('/api/domains', config);
-    },
+
     levelsApiGet() {
       return axios.get('/api/levels', config)
     },
@@ -87,14 +100,20 @@ export default {
       this.levels = response.data;
     },
 
-    async fetchDomains() {
-      let response = await this.domainsApiGet();
-      this.domains = response.data;
-    },
   }
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.account{
+  &__studies{
+    .select{
+      width: 100%;
+      select{
+        height: 8rem;
+        width: 100%;
+      }
+    }
+  }
+}
 </style>
