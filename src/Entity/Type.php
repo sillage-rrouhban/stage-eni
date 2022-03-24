@@ -11,17 +11,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     collectionOperations: ['get'],
     itemOperations: ['get'],
+    denormalizationContext: ['groups' => ['write:type']],
+    normalizationContext: ['groups' => ['read:type']],
 )]
 class Type
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:user'])]
+    #[Groups(['read:type', 'read:user'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:user'])]
+    #[Groups(['read:type', 'read:user'])]
     private $label;
 
     public function getId(): ?int

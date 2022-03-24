@@ -61,7 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
 
     #[ORM\ManyToOne(targetEntity: Type::class)]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['read:user', 'write:user'])]
+    #[Groups(['write:user'])]
     private $type;
 
     #[Groups(['write:user'])]
@@ -82,6 +82,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
     /**
      * @return mixed
      */
+    #[Groups(['read:user'])]
     public function getTypeId()
     {
         return $this->typeId;
@@ -288,7 +289,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
             ->setId($payload['id'])
             ->setEmail($username)
             ->setRoles($payload['roles'])
-            ->setType($payload['id'])
+            ->setTypeId($payload['id'])
             ->setTokenExp($payload['exp']);
 
     }
