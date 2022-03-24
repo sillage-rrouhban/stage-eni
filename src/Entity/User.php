@@ -61,7 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
 
     #[ORM\ManyToOne(targetEntity: Type::class)]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['write:user'])]
+    #[Groups(['read:user', 'write:user'])]
     private $type;
 
     #[Groups(['write:user'])]
