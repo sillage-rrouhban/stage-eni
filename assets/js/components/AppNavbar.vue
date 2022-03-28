@@ -19,8 +19,11 @@
         </a>
       </div>
       <div class="navbar-end">
-        <div class="navbar-item" @click="emitModalClick">
+        <div class="navbar-item" @click="emitModalClick" v-if="!isAuthenticated">
           {{ $t("navbar.signup") }}
+        </div>
+        <div class="navbar-item" @click="emitModalClick" v-else>
+          ICH BIN CONNECTAY
         </div>
         <a class="navbar-item" href="#">
           {{ $t("navbar.languages") }}
@@ -53,9 +56,6 @@ export default {
   async created() {
    await this.$store.dispatch('security/tryLogin');
 
-  },
-   mounted() {
-    console.log(this.isAuthenticated);
   },
   methods: {
     emitModalClick() {

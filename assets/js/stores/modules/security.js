@@ -95,7 +95,7 @@ const actions = {
                 token: payload.token,
                 user: '/api/users/' + userResponse.data.id,
             })
-            const expirationDate = userResponse.data.tokenExp;
+            const expirationDate = userResponse.data.tokenExp * 1000;
             localStorage.setItem('expiration', expirationDate);
             localStorage.setItem('email', userResponse.data.email);
             localStorage.setItem('user', '/api/users/' + userResponse.data.id);
@@ -118,17 +118,16 @@ const actions = {
         const user = localStorage.getItem('user');
         const type = localStorage.getItem('type');
         const expiresIn = +expiration  - new Date();
-        console.log('expiration', expiration);
-      //  if (expiresIn < 0) return;
-        // timer = setTimeout(() => {
-        //     dispatch('autoLogout');
-        // }, expiresIn)
-     //  if (token && expiration && email && user && type) {
+        if (expiresIn < 0) return;
+         timer = setTimeout(() => {
+             dispatch('autoLogout');
+         }, expiresIn)
+       if (token && expiration && email && user && type) {
             commit('setUser', {
                 token: token,
                 user: user
             })
-        //}
+        }
     }),
 
     logout: (({commit}) => {

@@ -2,11 +2,8 @@
   <div class="modal " :class="{'is-active' : showModal}" v-if="showModal">
     <div class="modal-background"></div>
     <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title"></p>
-        <button class="delete" aria-label="close" @click="showModal = false"></button>
-      </header>
       <section class="modal-card-body has-text-centered">
+
         <div v-if="showConnectionForm" class="has-text-left">
           <button class="button is-white mb-3 is-small" type="button" @click="showConnectionForm = !showConnectionForm">
             &longleftarrow; {{ $t("modal.return") }}
@@ -26,12 +23,17 @@
           <button class="button mb-6" type="button" @click="submitForm">{{ $t("modal.validation") }}</button>
         </div>
 
-        <template v-if="!showConnectionForm">
-          <button class="button mx-3" @click="showConnectionForm = !showConnectionForm" type="button">
-            {{ $t("modal.login") }}
-          </button>
-          <a href="/register" class="button mx-3">{{ $t("modal.register") }}</a>
-        </template>
+          <div class="is-flex" v-if="!showConnectionForm">
+            <div style="flex: 1;height: 200px; background-color: #f4f5f8" >
+              <button class="button mx-3" @click="showConnectionForm = !showConnectionForm" type="button">
+                {{ $t("modal.login") }}
+              </button>
+            </div>
+            <div class="divider is-vertical">Or</div>
+            <div style="flex: 1;height: 200px; background-color: #f4f5f8">
+              <a href="/register" class="button mx-3">{{ $t("modal.register") }}</a>
+            </div>
+          </div>
       </section>
     </div>
   </div>
