@@ -1,6 +1,6 @@
 <template>
-  <div class="modal " :class="{'is-active' : showModal}" v-if="showModal">
-    <div class="modal-background"></div>
+  <div class="modal" :class="{'is-active' : showModal}" v-if="showModal">
+    <div class="modal-background" @click="showModal = !showModal"></div>
     <div class="modal-card">
       <section class="modal-card-body has-text-centered">
 
@@ -23,17 +23,23 @@
           <button class="button mb-6" type="button" @click="submitForm">{{ $t("modal.validation") }}</button>
         </div>
 
-          <div class="is-flex" v-if="!showConnectionForm">
-            <div style="flex: 1;height: 200px; background-color: #f4f5f8" >
+        <div class="is-flex" v-if="!showConnectionForm">
+          <figure class="modal-card-body__box">
+            <img :src="login" alt="" />
+            <figcaption>
               <button class="button mx-3" @click="showConnectionForm = !showConnectionForm" type="button">
                 {{ $t("modal.login") }}
               </button>
-            </div>
-            <div class="divider is-vertical">Or</div>
-            <div style="flex: 1;height: 200px; background-color: #f4f5f8">
+            </figcaption>
+          </figure>
+          <div class="divider is-vertical">Or</div>
+          <figure class="modal-card-body__box">
+            <img :src="signup" alt="" />
+            <figcaption>
               <a href="/register" class="button mx-3">{{ $t("modal.register") }}</a>
-            </div>
-          </div>
+            </figcaption>
+          </figure>
+        </div>
       </section>
     </div>
   </div>
@@ -51,6 +57,8 @@ export default {
       showConnectionForm: false,
       email: '',
       password: '',
+      signup: require('/assets/images/modal/add-user.svg'),
+      login: require('/assets/images/modal/login.svg'),
     }
   },
 
@@ -94,6 +102,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.modal-card-body {
+  &__box {
+    flex: 1 1 0;
+    img {
+      width: 60%;
+    }
+  }
+}
 
 </style>
