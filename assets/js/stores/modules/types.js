@@ -32,14 +32,14 @@ const mutations = {
 
     getTypes(state, payload){
         state.error = null
-        state.HasError = null
+        state.HasError = false
         state.type = null
         state.types = payload
     },
 
     getType(state, payload){
         state.error = null
-        state.HasError = null
+        state.HasError = false
         state.type = payload
         state.types = null
     },
@@ -49,6 +49,11 @@ const actions = {
     fetchTypes : (async ({commit}) => {
         let {data} = await typesApi.getAll();
         commit('getTypes', data);
+    }),
+
+    countStudent : (async ({commit}) => {
+        let {data} = await typesApi.get();
+        commit('getType', data)
     })
 }
 

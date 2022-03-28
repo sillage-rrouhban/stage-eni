@@ -32,7 +32,7 @@
 
       </div>
       <div class="column is-one-third has-text-centered">
-        <h2 class="is-size-2" v-if="users && users.length > 0">{{ companiesCount }}</h2>
+        <h2 class="is-size-2" v-if="users && users.length > 0">{{  }}</h2>
         <img :src="company">
         <h3 class="is-size-3 is-uppercase">{{ $t("home.companies") }}</h3>
       </div>
@@ -45,8 +45,8 @@
 import AppNavbar from "../components/AppNavbar";
 import AppFooter from "../components/AppFooter";
 import AppLoader from "../components/AppLoader";
-import {useStore} from "vuex";
-import {computed} from "vue";
+import {mapGetters} from 'vuex';
+
 
 
 export default {
@@ -61,15 +61,22 @@ export default {
     }
   },
   computed:{
-    studentsCount(){
+    ...mapGetters({
+      users: 'users/users'
+    })
+   /* studentsCount(){
       return this.users.filter(user => user.type.id ===1).length;
     },
 
+    */
+/*
     companiesCount(){
       return this.users.filter(user => user.type.id === 2).length;
     }
-  },
 
+ */
+  },
+/*
   setup(){
    const store = useStore()
     const users = computed(()=> store.state.users.users)
@@ -81,9 +88,22 @@ export default {
     }
   },
 
-  mounted() {
+ */
+
+ async mounted() {
+   await this.fetchTypes();
+   await this.studentsCount();
   },
   methods: {
+    async fetchTypes(){
+      await this.$store.dispatch('types/fetchTypes');
+    },
+
+    async studentsCount(){
+      await this.$store.dispatch('types/countStudent');
+    }
+
+
     /*
     Appel axios.get => récup url api pour la partie concercnée
 
@@ -112,6 +132,7 @@ export default {
     }
   }
   */
+
   }
 }
 </script>

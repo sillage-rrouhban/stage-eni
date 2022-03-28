@@ -9,5 +9,8 @@ const config = {
 export default {
     getAll() {
         return axios.get('/api/types', config);
+    },
+    get(){
+      return axios.get('api/types',config);
     }
 }

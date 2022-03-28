@@ -66,7 +66,8 @@ const actions = {
             //commit('setHasError', e.response.data())
         }
 
-    })
+    }),
+
 }
 
 
