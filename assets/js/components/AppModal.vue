@@ -9,7 +9,7 @@
       <section class="modal-card-body has-text-centered">
         <div v-if="showConnectionForm" class="has-text-left">
           <button class="button is-white mb-3 is-small" type="button" @click="showConnectionForm = !showConnectionForm">
-              &longleftarrow; {{$t("modal.return")}}
+            &longleftarrow; {{ $t("modal.return") }}
           </button>
           <div class="field">
             <label class="label">{{ $t("modal.email") }}</label>
@@ -23,7 +23,7 @@
               <input class="input" type="password" v-model="password">
             </div>
           </div>
-          <button class="button mb-6" type="button" @click="login">{{ $t("modal.validation") }}</button>
+          <button class="button mb-6" type="button" @click="submitForm">{{ $t("modal.validation") }}</button>
         </div>
 
         <template v-if="!showConnectionForm">
@@ -39,13 +39,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import {mapGetters} from "vuex";
 
-const config = {
-  headers:{
-    'Content-Type': 'application/json;'
-  }
-};
 export default {
   name: "AppModal",
   data() {
@@ -56,42 +51,40 @@ export default {
       password: '',
     }
   },
+
+  computed: {
+    ...mapGetters({
+      user:'security/user'
+    }),
+  },
+
+
   created() {
     this.emitter.on('modal-state', (e) => {
       this.showModal = e.modalState;
     })
   },
   methods: {
-    jwtTokenApi(payload) {
-      return axios.post('/auth_token', payload, config);
-    },
-    fetchUser(token) {
-      let configToken = {
-        headers:{
-          'Content-Type': 'application/json;',
-          'Authorization': 'bearer ' + token
-        }
-      };
-      return axios.get('/api/me', configToken);
-    },
 
-    login() {
+    async submitForm() {
       let payload = {
         email: this.email,
-        password: this.password
+        password: this.password,
       }
-      this.jwtTokenApi(payload).then((response) => {
-       localStorage.setItem('token',response.data.token);
-       this.fetchUser(response.data.token).then((responseUser) =>{
-         localStorage.setItem('email', responseUser.data.email);
-         localStorage.setItem('iri', '/api/users/' + responseUser.data.id);
-         localStorage.setItem('type', responseUser.data.typeId);
-       //  localStorage.setItem('expiration',)
-         const expirationDate = responseUser.data.tokenExp;
-         const expiredIn = expirationDate - new Date();
-         localStorage.setItem('expiration', expirationDate);
-       });
-      });
+      try {
+        await this.$store.dispatch('security/login', payload)
+      } catch (e) {
+        console.error(e);
+      }
+      /*
+    this.jwtTokenApi(payload).then((response) => {
+
+     this.fetchUser(response.data.token).then((responseUser) =>{
+
+     //  localStorage.setItem('expiration',)
+     });
+    });
+    */
     },
 
   },

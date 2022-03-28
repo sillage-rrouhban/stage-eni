@@ -87,12 +87,9 @@ export default {
     }
   },
   methods:{
-    firstnameApiPost(payload){
-      return axios.post('/api/firstnames',payload,config);
-    },
-    lastnameApiPost(payload){
-      return axios.post('/api/lastnames',payload,config);
-    },
+
+
+
     submitForm(){
       let payload = {};
       payload = {

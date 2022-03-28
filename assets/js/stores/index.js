@@ -4,6 +4,9 @@ import domains from './modules/domains';
 import levels from './modules/levels';
 import users from './modules/users';
 import types from './modules/types'
+import firstname from './modules/firstnames'
+import lastname from './modules/lastnames';
+import security from './modules/security';
 
 
 
@@ -15,6 +18,9 @@ export default createStore({
         levels,
         users,
         types,
+        firstname,
+        lastname,
+        security
     },
     strict: debug,
     plugins: debug?[createLogger()]: []

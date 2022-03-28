@@ -32,7 +32,7 @@
 
       </div>
       <div class="column is-one-third has-text-centered">
-        <h2 class="is-size-2" v-if="users && users.length > 0">{{  }}</h2>
+        <h2 class="is-size-2" v-if="users && users.length > 0">{{ companiesCount }}</h2>
         <img :src="company">
         <h3 class="is-size-3 is-uppercase">{{ $t("home.companies") }}</h3>
       </div>

@@ -33,56 +33,78 @@
 
 <script>
 import AppModal from "./AppModal";
+import {mapGetters} from "vuex";
+
 export default {
   name: "AppNavbar",
   components: {AppModal},
-  data(){
-    return{
+  data() {
+    return {
       logo: require('/assets/images/common/logo.svg'),
-      showModal:false,
+      showModal: false,
     }
-},
+  },
+  computed: {
+    ...mapGetters({
+      isAuthenticated :'security/isAuthenticated',
+      user: 'security/user'
+    }),
+  },
+  async created() {
+   await this.$store.dispatch('security/tryLogin');
+
+  },
+   mounted() {
+    console.log(this.isAuthenticated);
+  },
   methods: {
     emitModalClick() {
       this.emitter.emit('modal-state', {
         'modalState': true
       })
-    },
-  }
+    }
+  },
 }
 </script>
 
 <style scoped lang="scss">
 @import "styles/abstract/all";
+
 .navbar {
-  padding:1.250rem 3.125rem 1.875rem;
+  padding: 1.250rem 3.125rem 1.875rem;
+
   &-brand {
-    margin-right:3.125rem;
+    margin-right: 3.125rem;
+
     img {
       width: 6.542vw;
     }
   }
+
   &-menu {
-    font-size:1.125rem;
-    font-weight:400;
+    font-size: 1.125rem;
+    font-weight: 400;
   }
+
   &-item {
     cursor: pointer;
-    text-transform:uppercase;
+    text-transform: uppercase;
+
     &:not(:last-of-type) {
       margin-right: 2.5rem;
     }
+
     &:hover {
       background-color: transparent;
     }
   }
+
   &-end {
-    font-size:1rem;
-    font-weight:400;
+    font-size: 1rem;
+    font-weight: 400;
     align-items: flex-start;
   }
 }
-
 
 
 </style>
