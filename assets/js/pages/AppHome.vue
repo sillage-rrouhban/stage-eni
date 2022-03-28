@@ -57,59 +57,52 @@ export default {
       student: require('/assets/images/home/student.svg'),
       company: require('/assets/images/home/company.svg'),
       showLoader: false,
-
     }
   },
   computed:{
     ...mapGetters({
       users: 'users/users'
-    })
-   /* studentsCount(){
+    }),
+    studentsCount(){
       return this.users.filter(user => user.type.id ===1).length;
     },
-
-    */
-/*
     companiesCount(){
       return this.users.filter(user => user.type.id === 2).length;
     }
-
- */
   },
-/*
-  setup(){
-   const store = useStore()
-    const users = computed(()=> store.state.users.users)
-    const usersGetter = computed(()=> store.getters['users/users'])
-    store.dispatch('users/fetchUsers')
-    return{
-     users,
-      usersGetter
-    }
-  },
-
- */
-
- async mounted() {
-   await this.fetchTypes();
-   await this.studentsCount();
-  },
-  methods: {
-    async fetchTypes(){
-      await this.$store.dispatch('types/fetchTypes');
+  /*
+    setup(){
+     const store = useStore()
+      const users = computed(()=> store.state.users.users)
+      const usersGetter = computed(()=> store.getters['users/users'])
+      store.dispatch('users/fetchUsers')
+      return{
+       users,
+        usersGetter
+      }
     },
 
-    async studentsCount(){
-      await this.$store.dispatch('types/countStudent');
+   */
+
+  async mounted() {
+    await this.fetchUsers();
+  },
+  methods: {
+    async fetchUsers(){
+      this.showLoader = true;
+      try {
+        await this.$store.dispatch('users/fetchUsers');
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.showLoader = false;
+      }
     }
 
 
     /*
     Appel axios.get => récup url api pour la partie concercnée
-
-
-
-    fetchStudents() {
+fetchStudents() {
       /*
       add asynch devant methode
       récup le call api avec .then pour la promesse
@@ -120,13 +113,13 @@ export default {
 
       // let response = await this.studentApi();
       //  this.users = response.data;
-      this.showLoader = true;
+      this.showLoader = truis.showLoader = false;e;
       this.userApiGet().then((response)=>{
         this.users = response.data;
       }).catch((error) => {
       })
           .finally(()=>{
-            this.showLoader = false;
+            th
           });
 
     }
