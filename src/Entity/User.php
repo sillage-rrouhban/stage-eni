@@ -43,11 +43,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
     private $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Groups(['read:user', 'write:user'])]
+    #[Groups(['read:user'])]
     private $email;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['read:user', 'write:user'])]
+    #[Groups(['read:user'])]
     private $roles = [];
 
     #[ORM\Column(type: 'string')]

@@ -4,9 +4,12 @@ import domains from './modules/domains';
 import levels from './modules/levels';
 import users from './modules/users';
 import types from './modules/types'
-import firstname from './modules/firstnames'
-import lastname from './modules/lastnames';
+import firstnames from './modules/firstnames'
+import lastnames from './modules/lastnames';
 import security from './modules/security';
+import addresses from "./modules/addresses";
+import cities from "./modules/cities";
+import zipcodes from "./modules/zipcodes";
 
 
 
@@ -18,9 +21,13 @@ export default createStore({
         levels,
         users,
         types,
-        firstname,
-        lastname,
-        security
+        firstnames,
+        lastnames,
+        security,
+        addresses,
+        cities,
+        zipcodes
+
     },
     strict: debug,
     plugins: debug?[createLogger()]: []

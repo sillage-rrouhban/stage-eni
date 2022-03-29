@@ -1,5 +1,6 @@
 import zipcodesApi from "@/api/zipcodes";
 
+
 const state = {
     error : null,
     hasError : false,
@@ -49,7 +50,24 @@ const actions = {
     fetchZipcodes : (async ({commit}) => {
         let {data} = await zipcodesApi.getAll();
         commit('getZipcodes', data);
-    })
+    }),
+    createZipcode : (async ({state, commit}, payload)=>{
+        try {
+            const response = await zipcodesApi.create(payload);
+            commit('setZipcode', response.data);
+        } catch (e){
+            commit('setHasError', e.response.data.detail);
+        }
+    }),
+    editZipcode : (async ({state, commit}, payload)=>{
+        try {
+            const iri  = '/api/zipcodes/' + payload.id;
+            const response = await zipcodesApi.edit(iri,payload);
+            commit('setZipcode', response.data);
+        } catch (e){
+            commit('setHasError', e.response.data.detail);
+        }
+    }),
 }
 
 

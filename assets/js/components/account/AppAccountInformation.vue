@@ -18,7 +18,7 @@
       <div class="field is-one-third column">
         <label class="label">{{ $t("account.information.email") }}</label>
         <div class="control">
-          <input class="input" type="email" v-model="email">
+          <input class="input" type="email" disabled v-model="email">
         </div>
       </div>
     </div>
@@ -26,19 +26,19 @@
       <div class="field is-one-third column">
         <label class="label">{{ $t("account.information.address") }}</label>
         <div class="control">
-          <input class="input" type="text" v-model="address">
+          <input class="input" type="text" v-model="currentAddress">
         </div>
       </div>
       <div class="field column is-one-third">
         <label class="label">{{ $t("account.information.city") }}</label>
         <div class="control">
-          <input class="input" type="text" v-model="city">
+          <input class="input" type="text" v-model="currentCity">
         </div>
       </div>
       <div class="field column is-one-fifth">
         <label class="label">{{ $t("account.information.zipcode") }}</label>
         <div class="control">
-          <input class="input" type="number" v-model="zipcode">
+          <input class="input" type="number" v-model="currentZipcode">
         </div>
       </div>
     </div>
@@ -78,17 +78,21 @@ export default {
       firstname: null,
       lastname: null,
       email: '',
-      address: '',
-      city: '',
+      address: null,
+      city: null,
       zipcode: null,
       birthdate: null,
       currentFirstname: '',
       currentLastname: '',
+      currentCity: '',
+      currentZipcode: '',
+      currentAddress: '',
     }
   },
   computed: {
     ...mapGetters({
-      myDetails: 'users/user'
+      myDetails: 'users/user',
+      dbAddress: 'addresses/address'
     })
   },
   async mounted() {
@@ -103,7 +107,7 @@ export default {
           label: this.currentFirstname,
           user: this.me,
         };
-        if (!this.firstname && his.currentFirstname !== '') {
+        if (!this.firstname && this.currentFirstname !== '') {
           console.log('Creating firstname');
           await this.$store.dispatch('firstname/createFirstname', payload);
         } else if (this.firstname) {
@@ -126,14 +130,30 @@ export default {
           await this.$store.dispatch('lastname/editLastname', payload);
         }
       }
+      if (!this.address || !this.isEqual(this.address, this.currentAddress)) {
+        payload = {
+          label: this.currentAddress,
+          user: this.me,
+        };
+        console.log(this.address);
+        if (!this.address && this.currentAddress !== '') {
+          console.log('Creating address');
+          await this.$store.dispatch('addresses/createAddress', payload);
+        } else if (this.address) {
+          console.log('Editing address');
+          payload.id = this.myDetails.address.id;
+          await this.$store.dispatch('addresses/editAddress', payload);
+        }
+      }
     },
     populateForm() {
       this.firstname = this.myDetails.firstname ? this.myDetails.firstname.label : null;
       this.currentFirstname = this.firstname ? this.firstname : '';
       this.lastname = this.myDetails.lastname ? this.myDetails.lastname.label : null;
       this.currentLastname = this.lastname ? this.lastname : '';
-      // this.lastname = this.myDetails.lastname ? this.myDetails.lastname.label : '';
       this.email = this.myDetails.email ? this.myDetails.email : '';
+      this.address = this.myDetails.address ? this.myDetails.address.label : null;
+      this.currentAddress = this.address ? this.address : '';
       //this.address = this.myDetails.phone?this.myDetails.phone.label:'';
       //this.lastname = this.myDetails.lastname?this.myDetails.lastname.label:'';
       //this.lastname = this.myDetails.lastname?this.myDetails.lastname.label:'';

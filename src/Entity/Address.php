@@ -11,7 +11,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     collectionOperations: ['get','post'],
     itemOperations: ['get','patch','delete'],
-    denormalizationContext: ['groups' => ['write:address']],
     normalizationContext: ['groups' => ['read:address']],
 )]
 class Address

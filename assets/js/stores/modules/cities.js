@@ -49,7 +49,24 @@ const actions = {
     fetchCities : (async ({commit}) => {
         let {data} = await citiesApi.getAll();
         commit('getCities', data);
-    })
+    }),
+    createCity : (async ({state, commit}, payload)=>{
+        try {
+            const response = await citiesApi.create(payload);
+            commit('setCity', response.data);
+        } catch (e){
+            commit('setHasError', e.response.data.detail);
+        }
+    }),
+    editCity : (async ({state, commit}, payload)=>{
+        try {
+            const iri  = '/api/cities/' + payload.id;
+            const response = await citiesApi.edit(iri,payload);
+            commit('setCity', response.data);
+        } catch (e){
+            commit('setHasError', e.response.data.detail);
+        }
+    }),
 }
 
 
