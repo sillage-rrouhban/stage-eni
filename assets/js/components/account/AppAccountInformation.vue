@@ -10,7 +10,7 @@
       <div class="field column is-one-third">
         <label class="label">{{ $t("account.information.lastname") }}</label>
         <div class="control">
-          <input class="input" type="text" placeholder="e.g Alex Smith" v-model="currentLastname">
+          <input class="input" type="text" v-model="currentLastname">
         </div>
       </div>
     </div>
@@ -75,7 +75,8 @@ export default {
   },
   data() {
     return {
-      firstname: '',
+      firstname: null,
+      lastname: null,
       email: '',
       address: '',
       city: '',
@@ -87,11 +88,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      myDetails: 'users/user',
-      lastname: 'lastname/Lastname',
+      myDetails: 'users/user'
     })
   },
-
   async mounted() {
     await this.$store.dispatch('users/fetchUser', this.me);
     this.populateForm();
@@ -99,37 +98,40 @@ export default {
   methods: {
     async submitForm() {
       let payload = {};
-      if (!this.isEqual(this.firstname, this.currentFirstname)) {
+      if (!this.firstname || !this.isEqual(this.firstname, this.currentFirstname)) {
         payload = {
-          id: this.myDetails.firstname ? this.myDetails.firstname.id : null,
           label: this.currentFirstname,
           user: this.me,
         };
-        if (this.currentFirstname === '') {
+        if (!this.firstname && his.currentFirstname !== '') {
+          console.log('Creating firstname');
           await this.$store.dispatch('firstname/createFirstname', payload);
-        } else {
+        } else if (this.firstname) {
+          console.log('Editing firstname');
+          payload.id = this.myDetails.firstname.id;
           await this.$store.dispatch('firstname/editFirstname', payload);
         }
       }
-      if (!this.isEqual(this.lastname, this.currentLastname)) {
+      if (!this.lastname || !this.isEqual(this.lastname, this.currentLastname)) {
         payload = {
           label: this.currentLastname,
           user: this.me,
         };
-        console.log(this.currentLastname);
-        console.log(payload);
-        if (this.currentLastname === '') {
+        if (!this.lastname && this.currentLastname !== '') {
+          console.log('Creating lastname');
           await this.$store.dispatch('lastname/createLastname', payload);
-        } else {
+        } else if (this.lastname) {
+          console.log('Editing lastname');
           payload.id = this.myDetails.lastname.id;
           await this.$store.dispatch('lastname/editLastname', payload);
         }
       }
     },
     populateForm() {
-      this.firstname = this.myDetails.firstname ? this.myDetails.firstname.label : '';
-      this.currentFirstname = this.firstname;
-      this.currentLastname = this.lastname;
+      this.firstname = this.myDetails.firstname ? this.myDetails.firstname.label : null;
+      this.currentFirstname = this.firstname ? this.firstname : '';
+      this.lastname = this.myDetails.lastname ? this.myDetails.lastname.label : null;
+      this.currentLastname = this.lastname ? this.lastname : '';
       // this.lastname = this.myDetails.lastname ? this.myDetails.lastname.label : '';
       this.email = this.myDetails.email ? this.myDetails.email : '';
       //this.address = this.myDetails.phone?this.myDetails.phone.label:'';
@@ -139,7 +141,6 @@ export default {
     },
 
     isEqual(a, b) {
-      if(!a || !b) return false;
       return a.toLowerCase() === b.toLowerCase();
     },
   }

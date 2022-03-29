@@ -1,4 +1,4 @@
-import zipcodesApi from "@/api/Zipcodes";
+import zipcodesApi from "@/api/zipcodes";
 
 const state = {
     error : null,

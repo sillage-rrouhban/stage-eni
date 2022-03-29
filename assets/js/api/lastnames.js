@@ -19,8 +19,10 @@ export default {
     },
 
     edit(iri,payload) {
-        const editConfig = {headers: {'Content-Type': 'application/merge-patch+json;'}}
-        return axios.patch(iri, payload, editConfig);
+        const patchHeaders = {
+            headers: {'Content-Type': 'application/merge-patch+json;'}
+        };
+        return axios.patch(iri, payload, patchHeaders);
     },
 
     delete(payload) {
