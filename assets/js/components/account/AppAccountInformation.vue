@@ -79,6 +79,9 @@ export default {
       lastname: null,
       email: '',
       birthdate: null,
+      address: null,
+      city: null,
+      zipcode: null,
       currentFirstname: '',
       currentLastname: '',
       currentCity: '',
@@ -89,7 +92,8 @@ export default {
   computed: {
     ...mapGetters({
       myDetails: 'users/user',
-      dbAddress: 'addresses/address'
+      dbAddress: 'addresses/address',
+      dbCity: 'cities/city',
     })
   },
   async mounted() {
@@ -132,13 +136,38 @@ export default {
           label: this.currentAddress,
           user: this.me,
         };
-        if (!this.address && this.currentAddress !== '') {
+        if (!this.dbAddress && this.currentAddress !== '') {
           console.log('Creating address');
           await this.$store.dispatch('addresses/createAddress', payload);
-        } else if (this.address) {
+        } else if (this.dbAddress) {
           console.log('Editing address');
           payload.id = this.myDetails.address.id;
           await this.$store.dispatch('addresses/editAddress', payload);
+        }
+        if (this.dbAddress) {
+          payload = {
+            label: this.currentCity,
+            address: '/api/addresses/' + this.dbAddress,
+          }
+          if (!this.city && this.currentCity !== '') {
+            console.log('Creating city');
+            await this.$store.dispatch('cities/createCity', payload);
+          } else if (this.city) {
+            console.log('Editing city');
+            payload.id = this.myDetails.city.id;
+            await this.$store.dispatch('cities/editCity', payload);
+          }
+          if (this.dbCity) {
+            payload = {}
+            if (!this.zipcode && this.currentCity !== '') {
+              console.log('Creating city');
+              await this.$store.dispatch('cities/createCity', payload);
+            } else if (this.city) {
+              console.log('Editing city');
+              payload.id = this.myDetails.city.id;
+              await this.$store.dispatch('cities/editCity', payload);
+            }
+          }
         }
       }
     },
@@ -150,10 +179,13 @@ export default {
       this.email = this.myDetails.email ? this.myDetails.email : '';
       this.address = this.myDetails.address ? this.myDetails.address.label : null;
       this.currentAddress = this.address ? this.address : '';
-      //this.address = this.myDetails.phone?this.myDetails.phone.label:'';
-      //this.lastname = this.myDetails.lastname?this.myDetails.lastname.label:'';
-      //this.lastname = this.myDetails.lastname?this.myDetails.lastname.label:'';
+      this.city = this.myDetails.city ? this.myDetails.city.label : null;
+      this.currentCity = this.city ? this.city : '';
+      this.zipcode = this.myDetails.zipcode ? this.myDetails.zipcode.label : null;
+      this.currentZipcode = this.zipcode ? this.zipcode : '';
       if (this.myDetails.address) this.$store.dispatch('addresses/fetchAddress', this.myDetails.address.id);
+      if (this.myDetails.city) this.$store.dispatch('cities/fetchCity', this.myDetails.city.id);
+      if (this.myDetails.zipcode) this.$store.dispatch('zipcodes/fetchZipcode', this.myDetails.zipcode.id);
       console.log('USER DETAILS ', this.myDetails);
     },
 
