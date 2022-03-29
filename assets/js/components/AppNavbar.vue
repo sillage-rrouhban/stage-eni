@@ -22,9 +22,11 @@
         <div class="navbar-item" @click="emitModalClick" v-if="!isAuthenticated">
           {{ $t("navbar.signup") }}
         </div>
-        <div class="navbar-item" @click="emitModalClick" v-else>
-          ICH BIN CONNECTAY
-        </div>
+        <a class="navbar-item" href="/account" v-else>
+          <div class="navbar-item__circle">
+
+          </div>
+        </a>
         <a class="navbar-item" href="#">
           {{ $t("navbar.languages") }}
         </a>
@@ -92,17 +94,24 @@ export default {
 
     &:not(:last-of-type) {
       margin-right: 2.5rem;
+
     }
 
     &:hover {
       background-color: transparent;
     }
+    &__circle{
+      background-color: lightgrey;
+      border-radius: 50%;
+      width: 3.125rem;
+      height: 3.125rem;
+    }
+
   }
 
   &-end {
     font-size: 1rem;
     font-weight: 400;
-    align-items: flex-start;
   }
 }
 

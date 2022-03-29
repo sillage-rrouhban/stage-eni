@@ -18,8 +18,9 @@ export default {
         return axios.post('/api/firstnames', payload, config);
     },
 
-    edit(payload) {
-        return axios.put(payload.iri, payload, config);
+    edit(iri,payload) {
+        const editConfig = {headers: {'Content-Type': 'application/merge-patch+json;'}}
+        return axios.patch(iri, payload, editConfig);
     },
 
     delete(payload) {

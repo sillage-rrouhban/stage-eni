@@ -85,6 +85,8 @@ export default {
         await this.$store.dispatch('security/login', payload)
       } catch (e) {
         console.error(e);
+      } finally {
+        this.showModal = !this.showModal;
       }
       /*
     this.jwtTokenApi(payload).then((response) => {
@@ -106,7 +108,7 @@ export default {
   &__box {
     flex: 1 1 0;
     img {
-      width: 60%;
+      width: 40%;
     }
   }
 }

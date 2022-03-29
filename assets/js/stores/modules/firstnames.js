@@ -62,11 +62,19 @@ const actions = {
             const response = await firstnamesApi.create(payload);
             commit('setFirstname', response.data);
         } catch (e){
-            console.log(e.response.data.detail);
-            //commit('setHasError', e.response.data())
+            commit('setHasError', e.response.data.detail);
         }
-
     }),
+    editFirstname : (async ({state, commit}, payload)=>{
+        try {
+            const iri  = '/api/firstnames/' + payload.id;
+            const response = await firstnamesApi.edit(iri,payload);
+            commit('setFirstname', response.data);
+        } catch (e){
+            commit('setHasError', e.response.data.detail);
+        }
+    }),
+
 
 }
 

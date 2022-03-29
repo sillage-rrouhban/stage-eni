@@ -30,13 +30,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'read'=> false,
     ],
         ],
-    itemOperations: ['get'=>[
-        'controller' => NotFoundAction::class,
-        'openapi_context' =>['summary'=> 'hidden'],
-        'read' => false,
-        'output' => false
-    ],
-        'put', 'delete'],
+    itemOperations: ['get','put', 'delete'],
     denormalizationContext: ['groups' => ['write:user']],
     normalizationContext: ['groups' => ['read:user']],
 )]
@@ -79,6 +73,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
 
     private $typeId;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Firstname::class, cascade: ['persist', 'remove'])]
+    #[Groups(['read:user', 'write:user'])]
+    private $firstname;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Lastname::class, cascade: ['persist', 'remove'])]
+    #[Groups(['read:user', 'write:user'])]
+    private $lastname;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Address::class, cascade: ['persist', 'remove'])]
+    #[Groups(['read:user', 'write:user'])]
+    private $address;
+
     /**
      * @return mixed
      */
@@ -97,9 +106,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
         $this->typeId = $typeId;
         return $this;
     }
-
-    #[ORM\Column(type: 'boolean')]
-    private $isVerified;
 
     /**
      * @return mixed
@@ -292,5 +298,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
             ->setTypeId($payload['typeId'])
             ->setTokenExp($payload['exp']);
 
+    }
+
+    public function getFirstname(): ?Firstname
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(Firstname $firstname): self
+    {
+        // set the owning side of the relation if necessary
+        if ($firstname->getUser() !== $this) {
+            $firstname->setUser($this);
+        }
+
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?Lastname
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(Lastname $lastname): self
+    {
+        // set the owning side of the relation if necessary
+        if ($lastname->getUser() !== $this) {
+            $lastname->setUser($this);
+        }
+
+        $this->lastname = $lastname;
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(Address $address): self
+    {
+        // set the owning side of the relation if necessary
+        if ($address->getUser() !== $this) {
+            $address->setUser($this);
+        }
+
+        $this->address = $address;
+        return $this;
     }
 }

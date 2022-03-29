@@ -57,6 +57,10 @@ const actions = {
         let {data} = await usersApi.getAll();
         commit('getUsers', data);
     }),
+    fetchUser : (async ({commit},payload) => {
+        let {data} = await usersApi.get(payload);
+        commit('getUser', data);
+    }),
     createUser : (async ({state, commit}, payload)=>{
         try {
             const response = await usersApi.create(payload);
