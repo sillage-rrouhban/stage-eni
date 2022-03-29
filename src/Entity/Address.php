@@ -18,11 +18,11 @@ class Address
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:user'])]
+    #[Groups(['read:address', 'read:user'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:user'])]
+    #[Groups(['read:address', 'read:user'])]
     private $label;
 
     #[ORM\OneToOne(inversedBy: 'address',targetEntity: User::class, cascade: ['persist', 'remove'])]

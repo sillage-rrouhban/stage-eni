@@ -44,6 +44,12 @@ const mutations = {
         state.zipcode = payload
         state.zipcodes = null
     },
+    setZipcode(state, payload){
+        state.error = null
+        state.HasError = false
+        state.zipcode = payload
+        state.zipcodes = null
+    },
 }
 
 const actions = {
@@ -51,6 +57,10 @@ const actions = {
         let {data} = await zipcodesApi.getAll();
         commit('getZipcodes', data);
     }),
+    fetchZipcode: async ({commit}, payload) => {
+        let { data } = await zipcodesApi.get(payload);
+        commit("getZipcode", data);
+    },
     createZipcode : (async ({state, commit}, payload)=>{
         try {
             const response = await zipcodesApi.create(payload);

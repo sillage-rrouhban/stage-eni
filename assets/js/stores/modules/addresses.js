@@ -16,7 +16,6 @@ const getters = {
         return state.hasError
     },
     address(state){
-        console.log('Store Getter address', state);
         return state.address
     },
     addresses(state){
@@ -46,7 +45,6 @@ const mutations = {
         state.addresses = null
     },
     setAddress(state,payload){
-        console.log('Store Mutation address', payload);
         state.error = null
         state.HasError = false
         state.address = payload
@@ -59,11 +57,14 @@ const actions = {
         let {data} = await addressesApi.getAll();
         commit('getAddresses', data);
     }),
+    fetchAddress: async ({commit}, payload) => {
+        let { data } = await addressesApi.get(payload);
+        commit("getAddress", data);
+    },
     createAddress : (async ({state, commit}, payload)=>{
         try {
-            const {response} = await addressesApi.create(payload);
-            commit('setAddress', response);
-            console.log('Store Action Address',response);
+            const response = await addressesApi.create(payload);
+            commit('setAddress', response.data);
         } catch (e){
             commit('setHasError', e.response.data.detail);
         }

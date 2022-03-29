@@ -78,9 +78,6 @@ export default {
       firstname: null,
       lastname: null,
       email: '',
-      address: null,
-      city: null,
-      zipcode: null,
       birthdate: null,
       currentFirstname: '',
       currentLastname: '',
@@ -109,11 +106,11 @@ export default {
         };
         if (!this.firstname && this.currentFirstname !== '') {
           console.log('Creating firstname');
-          await this.$store.dispatch('firstname/createFirstname', payload);
+          await this.$store.dispatch('firstnames/createFirstname', payload);
         } else if (this.firstname) {
           console.log('Editing firstname');
           payload.id = this.myDetails.firstname.id;
-          await this.$store.dispatch('firstname/editFirstname', payload);
+          await this.$store.dispatch('firstnames/editFirstname', payload);
         }
       }
       if (!this.lastname || !this.isEqual(this.lastname, this.currentLastname)) {
@@ -123,11 +120,11 @@ export default {
         };
         if (!this.lastname && this.currentLastname !== '') {
           console.log('Creating lastname');
-          await this.$store.dispatch('lastname/createLastname', payload);
+          await this.$store.dispatch('lastnames/createLastname', payload);
         } else if (this.lastname) {
           console.log('Editing lastname');
           payload.id = this.myDetails.lastname.id;
-          await this.$store.dispatch('lastname/editLastname', payload);
+          await this.$store.dispatch('lastnames/editLastname', payload);
         }
       }
       if (!this.address || !this.isEqual(this.address, this.currentAddress)) {
@@ -135,7 +132,6 @@ export default {
           label: this.currentAddress,
           user: this.me,
         };
-        console.log(this.address);
         if (!this.address && this.currentAddress !== '') {
           console.log('Creating address');
           await this.$store.dispatch('addresses/createAddress', payload);
@@ -157,6 +153,7 @@ export default {
       //this.address = this.myDetails.phone?this.myDetails.phone.label:'';
       //this.lastname = this.myDetails.lastname?this.myDetails.lastname.label:'';
       //this.lastname = this.myDetails.lastname?this.myDetails.lastname.label:'';
+      if (this.myDetails.address) this.$store.dispatch('addresses/fetchAddress', this.myDetails.address.id);
       console.log('USER DETAILS ', this.myDetails);
     },
 

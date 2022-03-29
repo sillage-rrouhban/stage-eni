@@ -54,13 +54,17 @@ const mutations = {
 
 const actions = {
     fetchFirstnames : (async ({commit}) => {
-        let {data} = await firstnamesApi.getAll();
+        let { data } = await firstnamesApi.getAll();
         commit('getFirstnames', data);
     }),
+    fetchFirstname: async ({commit}, payload) => {
+        let { data } = await firstnamesApi.get(payload);
+        commit("getFirstname", data);
+    },
     createFirstname : (async ({state, commit}, payload)=>{
         try {
-            const response = await firstnamesApi.create(payload);
-            commit('setFirstname', response.data);
+            const { data } = await firstnamesApi.create(payload);
+            commit('setFirstname', data);
         } catch (e){
             commit('setHasError', e.response.data.detail);
         }

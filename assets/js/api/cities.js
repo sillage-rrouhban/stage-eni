@@ -11,6 +11,9 @@ export default {
         return axios.get('/api/cities', config);
 
     },
+    get(payload) {
+        return axios.get('/api/cities/' + payload, config);
+    },
     create(payload){
         return axios.post('/api/cities',payload , config);
     },

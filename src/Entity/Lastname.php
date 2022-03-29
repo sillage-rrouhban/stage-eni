@@ -11,17 +11,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     collectionOperations: ['get','post'],
     itemOperations: ['get','patch','delete'],
+    normalizationContext: ['groups' => ['read:lastname']],
 )]
 class Lastname
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:user'])]
+    #[Groups(['read:lastname', 'read:user'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:user'])]
+    #[Groups(['read:lastname', 'read:user'])]
     private $label;
 
     #[ORM\OneToOne(inversedBy: 'lastname', targetEntity: User::class, cascade: ['persist', 'remove'])]

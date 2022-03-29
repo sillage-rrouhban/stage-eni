@@ -11,6 +11,9 @@ export default {
         return axios.get('/api/zipcodes', config);
 
     },
+    get(payload) {
+        return axios.get('/api/zipcodes/' + payload, config);
+    },
     create(payload){
         return axios.post('/api/cities', payload, config);
     },

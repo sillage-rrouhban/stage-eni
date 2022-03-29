@@ -43,6 +43,12 @@ const mutations = {
         state.city = payload
         state.cities = null
     },
+    setCity(state,payload){
+        state.error = null
+        state.HasError = false
+        state.city = payload
+        state.cities = null
+    },
 }
 
 const actions = {
@@ -50,6 +56,10 @@ const actions = {
         let {data} = await citiesApi.getAll();
         commit('getCities', data);
     }),
+    fetchCity: async ({commit}, payload) => {
+        let { data } = await citiesApi.get(payload);
+        commit("getCity", data);
+    },
     createCity : (async ({state, commit}, payload)=>{
         try {
             const response = await citiesApi.create(payload);

@@ -11,15 +11,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     collectionOperations: ['get','post'],
     itemOperations: ['get','patch','delete'],
+    normalizationContext: ['groups' => ['read:city']],
 )]
 class City
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['read:city', 'read:user'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(['read:city', 'read:user'])]
     private $label;
 
     #[ORM\ManyToOne(targetEntity: Address::class)]
