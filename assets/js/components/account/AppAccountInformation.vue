@@ -102,73 +102,90 @@ export default {
   },
   methods: {
     async submitForm() {
-      let payload = {};
       if (!this.firstname || !this.isEqual(this.firstname, this.currentFirstname)) {
-        payload = {
-          label: this.currentFirstname,
-          user: this.me,
-        };
-        if (!this.firstname && this.currentFirstname !== '') {
-          console.log('Creating firstname');
-          await this.$store.dispatch('firstnames/createFirstname', payload);
-        } else if (this.firstname) {
-          console.log('Editing firstname');
-          payload.id = this.myDetails.firstname.id;
-          await this.$store.dispatch('firstnames/editFirstname', payload);
-        }
+        await this.setFirstname();
       }
       if (!this.lastname || !this.isEqual(this.lastname, this.currentLastname)) {
-        payload = {
-          label: this.currentLastname,
-          user: this.me,
-        };
-        if (!this.lastname && this.currentLastname !== '') {
-          console.log('Creating lastname');
-          await this.$store.dispatch('lastnames/createLastname', payload);
-        } else if (this.lastname) {
-          console.log('Editing lastname');
-          payload.id = this.myDetails.lastname.id;
-          await this.$store.dispatch('lastnames/editLastname', payload);
-        }
+        await this.setLastname();
       }
       if (!this.address || !this.isEqual(this.address, this.currentAddress)) {
-        payload = {
-          label: this.currentAddress,
-          user: this.me,
-        };
-        if (!this.dbAddress && this.currentAddress !== '') {
-          console.log('Creating address');
-          await this.$store.dispatch('addresses/createAddress', payload);
-        } else if (this.dbAddress) {
-          console.log('Editing address');
-          payload.id = this.myDetails.address.id;
-          await this.$store.dispatch('addresses/editAddress', payload);
-        }
-        if (this.dbAddress) {
-          payload = {
-            label: this.currentCity,
-            address: '/api/addresses/' + this.dbAddress,
-          }
-          if (!this.city && this.currentCity !== '') {
-            console.log('Creating city');
-            await this.$store.dispatch('cities/createCity', payload);
-          } else if (this.city) {
-            console.log('Editing city');
-            payload.id = this.myDetails.city.id;
-            await this.$store.dispatch('cities/editCity', payload);
-          }
-          if (this.dbCity) {
-            payload = {}
-            if (!this.zipcode && this.currentCity !== '') {
-              console.log('Creating city');
-              await this.$store.dispatch('cities/createCity', payload);
-            } else if (this.city) {
-              console.log('Editing city');
-              payload.id = this.myDetails.city.id;
-              await this.$store.dispatch('cities/editCity', payload);
-            }
-          }
-        }
+        await this.setAddress();
+      }
+      if (!this.city || !this.isEqual(this.city, this.currentCity)) {
+        if(this.dbAddress) await this.setCity();
+      }
+      if (!this.zipcode || !this.isEqual(this.zipcode, this.currentZipcode)) {
+        if(this.dbCity) await this.setZipcode();
+      }
+    },
+    async setFirstname() {
+      let payload = {
+        label: this.currentFirstname,
+        user: this.me
+      };
+      if (!this.firstname && this.currentFirstname !== '') {
+        console.log('Creating firstname');
+        await this.$store.dispatch('firstnames/createFirstname', payload);
+      } else if (this.firstname) {
+        console.log('Editing firstname');
+        payload.id = this.myDetails.firstname.id;
+        await this.$store.dispatch('firstnames/editFirstname', payload);
+      }
+    },
+    async setLastname() {
+      let payload = {
+        label: this.currentLastname,
+        user: this.me,
+      };
+      if (!this.lastname && this.currentLastname !== '') {
+        console.log('Creating lastname');
+        await this.$store.dispatch('lastnames/createLastname', payload);
+      } else if (this.lastname) {
+        console.log('Editing lastname');
+        payload.id = this.myDetails.lastname.id;
+        await this.$store.dispatch('lastnames/editLastname', payload);
+      }
+    },
+    async setAddress() {
+      let payload = {
+        label: this.currentAddress,
+        user: this.me,
+      };
+      if (!this.address && this.currentAddress !== '') {
+        console.log('Creating address');
+        await this.$store.dispatch('addresses/createAddress', payload);
+      } else if (this.address) {
+        console.log('Editing address');
+        payload.id = this.myDetails.address.id;
+        await this.$store.dispatch('addresses/editAddress', payload);
+      }
+    },
+    async setCity() {
+      let payload = {
+        label: this.currentCity,
+        address: '/api/addresses/' + this.dbAddress.id,
+      };
+      if (!this.city && this.currentCity !== '') {
+        console.log('Creating city');
+        await this.$store.dispatch('cities/createCity', payload);
+      } else if (this.city) {
+        console.log('Editing city');
+        payload.id = this.myDetails.city.id;
+        await this.$store.dispatch('cities/editCity', payload);
+      }
+    },
+    async setZipcode() {
+      let payload = {
+        label: this.currentZipcode,
+        address: '/api/cities/' + this.dbCity.id,
+      };
+      if (!this.zipcode && this.currentZipcode !== '') {
+        console.log('Creating city');
+        await this.$store.dispatch('zipcodes/createZipcode', payload);
+      } else if (this.city) {
+        console.log('Editing city');
+        payload.id = this.myDetails.zipcode.id;
+        await this.$store.dispatch('zipcodes/editZipcode', payload);
       }
     },
     populateForm() {
@@ -188,7 +205,6 @@ export default {
       if (this.myDetails.zipcode) this.$store.dispatch('zipcodes/fetchZipcode', this.myDetails.zipcode.id);
       console.log('USER DETAILS ', this.myDetails);
     },
-
     isEqual(a, b) {
       return a.toLowerCase() === b.toLowerCase();
     },

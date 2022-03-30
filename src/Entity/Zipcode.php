@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ZipcodeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -25,10 +27,13 @@ class Zipcode
     #[Groups(['read:zipcode', 'read:address'])]
     private $label;
 
-    #[ORM\OneToOne(targetEntity: City::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['read:address'])]
+    #[ORM\OneToMany(mappedBy: 'zipcode', targetEntity: City::class, orphanRemoval: true)]
     private $city;
+
+    public function __construct()
+    {
+        $this->city = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -47,15 +52,34 @@ class Zipcode
         return $this;
     }
 
-    public function getCity(): ?City
+    /**
+     * @return Collection<int, City>
+     */
+    public function getCity(): Collection
     {
         return $this->city;
     }
 
-    public function setCity(City $city): self
+    public function addCity(City $city): self
     {
-        $this->city = $city;
+        if (!$this->city->contains($city)) {
+            $this->city[] = $city;
+            $city->setZipcode($this);
+        }
 
         return $this;
     }
+
+    public function removeCity(City $city): self
+    {
+        if ($this->city->removeElement($city)) {
+            // set the owning side to null (unless already changed)
+            if ($city->getZipcode() === $this) {
+                $city->setZipcode(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
