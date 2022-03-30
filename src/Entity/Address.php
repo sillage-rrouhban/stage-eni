@@ -31,7 +31,7 @@ class Address
 
     #[ORM\ManyToOne(targetEntity: City::class, inversedBy: 'address')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['read:address'])]
+    #[Groups(['read:address', 'read:user'])]
     private $city;
 
 
@@ -75,11 +75,5 @@ class Address
 
         return $this;
     }
-    
-    public function __toString(): string
-    {
-        return $this->getCity()->getLabel();
-    }
-
 
 }

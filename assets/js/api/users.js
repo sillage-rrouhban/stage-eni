@@ -8,18 +8,18 @@ const config = {
 
 export default {
     getAll() {
-        return axios.get('/api/users');
+        return axios.get('/api/users', config);
     },
     get(payload) {
-        return axios.get(payload);
+        return axios.get(payload, config);
     },
 
     create(payload) {
-        return axios.post('/api/users', payload);
+        return axios.post('/api/users', payload, config);
     },
 
     edit(payload) {
-        return axios.put(payload.iri, payload);
+        return axios.put(payload.iri, payload, config);
     },
 
     delete(payload) {
