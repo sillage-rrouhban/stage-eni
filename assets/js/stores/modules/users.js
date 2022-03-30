@@ -61,7 +61,7 @@ const actions = {
         let {data} = await usersApi.get(payload);
         commit('getUser', data);
     }),
-    createUser : (async ({state, commit}, payload)=>{
+    createUser : (async ({commit}, payload)=>{
         try {
             const response = await usersApi.create(payload);
             commit('setUser', response.data);
@@ -69,8 +69,16 @@ const actions = {
             console.log(e.response.data.detail);
             //commit('setHasError', e.response.data())
         }
-
     }),
+
+    deleteUser : (async ({commit},payload)=>{
+        try{
+            console.log(payload);
+            await usersApi.delete(payload);
+        }catch(e) {
+            console.log(e.response);
+        }
+    })
 
 }
 

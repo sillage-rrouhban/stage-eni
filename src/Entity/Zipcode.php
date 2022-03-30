@@ -25,7 +25,7 @@ class Zipcode
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:zipcode', 'read:user'])]
+    #[Groups(['read:zipcode', 'read:user','write:zipcode'])]
     private $label;
 
     #[ORM\OneToMany(mappedBy: 'zipcode', targetEntity: City::class, orphanRemoval: true)]

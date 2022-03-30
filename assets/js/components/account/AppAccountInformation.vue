@@ -40,6 +40,7 @@
         <label class="label">{{ $t("account.information.zipcode") }}</label>
         <div class="control">
           <input class="input" type="text" v-model="currentZipcode">
+          {{currentZipcode}}
         </div>
       </div>
     </div>
@@ -223,9 +224,9 @@ export default {
       this.email = this.myDetails.email ? this.myDetails.email : '';
       this.address = this.myDetails.address ? this.myDetails.address.label : null;
       this.currentAddress = this.address ? this.address : '';
-      this.city = this.myDetails.address.city ? this.myDetails.address.city.label : null;
+      this.city = (this.myDetails.address && this.myDetails.address.city) ? this.myDetails.address.city.label : null;
       this.currentCity = this.city ? this.city : '';
-      this.zipcode = this.myDetails.address.city.zipcode ? this.myDetails.address.city.zipcode.label : null;
+      this.zipcode = (this.myDetails.address && this.myDetails.address.city && this.myDetails.address.city.zipcode ) ? this.myDetails.address.city.zipcode.label : null;
       this.currentZipcode = this.zipcode ? this.zipcode : '';
       this.birthdate = this.myDetails.birthdate ? this.myDetails.birthdate.date : null;
       this.currentBirthdate = this.birthdate ? this.birthdate : '';

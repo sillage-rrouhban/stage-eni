@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     collectionOperations: ['get','post'],
     itemOperations: ['get','patch','delete'],
+    denormalizationContext: ['groups' => ['write:address']],
     normalizationContext: ['groups' => ['read:address']],
 )]
 class Address
@@ -22,16 +23,17 @@ class Address
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:address', 'read:user'])]
+    #[Groups(['read:address', 'read:user', 'write:address'])]
     private $label;
 
     #[ORM\OneToOne(inversedBy: 'address',targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['write:address'])]
     private $user;
 
     #[ORM\ManyToOne(targetEntity: City::class, inversedBy: 'address')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['read:address', 'read:user'])]
+    #[Groups(['read:address', 'read:user', 'write:address'])]
     private $city;
 
 

@@ -35,31 +35,57 @@
     </div>
     <div class="columns">
       <div class="field is-one-third column">
-        <button class="button" type="button" @click="">{{ $t("account.setting.delete_button") }}</button>
+        <button class="button" type="button" @click="toggleModal(1)">{{ $t("account.setting.delete_button") }}</button>
       </div>
     </div>
+    <app-generic-modal :show-modal="showModal" v-if="typeModal === 1">
+      <template v-slot:title>
+        SUPPRESSION DE COMPTE
+      </template>
+      <template v-slot:body>
+        ETES VOUS SUR DE VOULOIR SUPPRIMER TON COMPTE TA MERE ?
+      </template>
+      <template v-slot:buttons>
+        <button class="button is-success" @click="deleteUser">Ok</button>
+        <button class="button">Cancel</button>
+      </template>
+    </app-generic-modal>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import AppGenericModal from "@/components/AppGenericModal";
+import {mapGetters} from "vuex";
 export default {
   name: "AppAccountSettings",
+  components: {AppGenericModal},
   data() {
     return {
       currentPassword: '',
       newPassword: '',
       passwordConfirmation: '',
+      showModal: false,
+      typeModal: 0,
     }
+  },
+  computed: {
+    ...mapGetters({
+      me: 'security/user',
+    }),
   },
 
   methods: {
-    deleteUser(){
-      return axios.delete('/api/users/'+ id);
+    toggleModal(id){
+      this.typeModal = id;
+      this.showModal = true;
     },
-
+    deleteUser(){
+      console.log(this.me);
+      this.$store.dispatch('users/deleteUser', this.me);
+      this.$store.dispatch('security/logout');
+    }
   }
-}
+  }
 </script>
 
 <style scoped lang="scss">
