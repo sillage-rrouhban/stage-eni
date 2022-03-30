@@ -47,7 +47,6 @@
         <label class="label">{{ $t("account.information.birthdate") }}</label>
         <div class="control">
           <input class="input" type="date" v-model="currentBirthdate">
-          {{currentBirthdate}}
         </div>
       </div>
     </div>
@@ -60,8 +59,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import { DateTime } from "luxon";
+import { mapGetters } from "vuex";
 
 const config = {
   headers: {
@@ -195,15 +193,12 @@ export default {
     },
 
     async setBirthdate() {
-      console.log(DateTime.fromSQL(this.currentBirthdate));
-      console.log(DateTime.fromFormat(this.currentBirthdate,'yyyy-mm-dd').toISO());
-    //  let date = DateTime.fromFormat(this.currentBirthdate,'yyyy-mm-dd').toISO();
-      let date = (DateTime.fromFormat(this.currentBirthdate,'yyyy-mm-dd'));
-      console.log(date);
       let payload = {
-        date: date,
+        date: this.currentBirthdate,
         user : this.me,
       };
+      console.log(this.birthdate);
+      console.log(this.currentBirthdate);
       if (!this.birthdate && this.currentBirthdate !== '') {
         console.log('Creating birthdate');
         await this.$store.dispatch('birthdates/createBirthdate', payload);
@@ -225,6 +220,8 @@ export default {
       this.currentCity = this.city ? this.city : '';
       this.zipcode = this.myDetails.address.city.zipcode ? this.myDetails.address.city.zipcode.label : null;
       this.currentZipcode = this.zipcode ? this.zipcode : '';
+      this.birthdate = this.myDetails.birthdate ? this.myDetails.birthdate.date : null;
+      this.currentBirthdate = this.birthdate ? this.birthdate : '';
       if (this.myDetails.address) this.$store.dispatch('addresses/fetchAddress', this.myDetails.address.id);
       if (this.myDetails.city) this.$store.dispatch('cities/fetchCity', this.myDetails.city.id);
       if (this.myDetails.zipcode) this.$store.dispatch('zipcodes/fetchZipcode', this.myDetails.zipcode.id);

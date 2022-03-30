@@ -67,10 +67,9 @@ const actions = {
 
     }),
     editLastname : (async ({state, commit}, payload)=>{
-        console.log("STORE", payload);
         try {
             const iri ='/api/lastnames/'+ payload.id;
-            const response = await LastnamesApi.create(iri,payload);
+            const response = await LastnamesApi.edit(iri,payload);
             commit('setLastname', response.data);
         } catch (e){
             commit('setHasError', e.response.data.detail);
