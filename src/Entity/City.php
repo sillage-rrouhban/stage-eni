@@ -20,11 +20,11 @@ class City
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:city', 'read:user'])]
+    #[Groups(['read:city','read:address', 'read:user'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:city', 'read:user'])]
+    #[Groups(['read:city','read:address', 'read:user'])]
     private $label;
 
     #[ORM\OneToMany(mappedBy: 'city', targetEntity: Address::class, orphanRemoval: true)]

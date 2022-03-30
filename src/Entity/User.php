@@ -88,6 +88,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
     #[Groups(['read:user', 'write:user'])]
     private $address;
 
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Birthdate::class, cascade: ['persist', 'remove'])]
+    #[Groups(['read:user', 'write:user'])]
+    private $birthdate;
+
     /**
      * @return mixed
      */
@@ -346,6 +350,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
         }
 
         $this->address = $address;
+        return $this;
+    }
+
+    public function getBirthdate(): ?Birthdate
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(Birthdate $birthdate): self
+    {
+        // set the owning side of the relation if necessary
+        if ($birthdate->getUser() !== $this) {
+            $birthdate->setUser($this);
+        }
+
+        $this->birthdate = $birthdate;
         return $this;
     }
 }

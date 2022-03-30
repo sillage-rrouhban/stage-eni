@@ -46,7 +46,8 @@
       <div class="field is-one-third column">
         <label class="label">{{ $t("account.information.birthdate") }}</label>
         <div class="control">
-          <input class="input" type="date" v-model="birthdate">
+          <input class="input" type="date" v-model="currentBirthdate">
+          {{currentBirthdate}}
         </div>
       </div>
     </div>
@@ -59,8 +60,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import {mapGetters} from "vuex";
+import { DateTime } from "luxon";
 
 const config = {
   headers: {
@@ -87,14 +88,14 @@ export default {
       currentCity: '',
       currentZipcode: '',
       currentAddress: '',
+      currentBirthdate: null,
     }
   },
   computed: {
     ...mapGetters({
       myDetails: 'users/user',
-      dbAddress: 'addresses/address',
       dbCity: 'cities/city',
-      dbZipcode: 'zipcodes/zipcode'
+      dbZipcode: 'zipcodes/zipcode',
     })
   },
   async mounted() {
@@ -111,6 +112,9 @@ export default {
       }
       if (!this.zipcode || !this.isEqual(this.zipcode, this.currentZipcode)) {
         await this.setZipcode();
+      }
+      if (!this.birthdate || !this.isEqual(this.birthdate, this.currentBirthdate)) {
+        await this.setBirthdate();
       }
     },
     async setFirstname() {
@@ -189,6 +193,26 @@ export default {
         await this.setCity();
       }
     },
+
+    async setBirthdate() {
+      console.log(DateTime.fromSQL(this.currentBirthdate));
+      console.log(DateTime.fromFormat(this.currentBirthdate,'yyyy-mm-dd').toISO());
+    //  let date = DateTime.fromFormat(this.currentBirthdate,'yyyy-mm-dd').toISO();
+      let date = (DateTime.fromFormat(this.currentBirthdate,'yyyy-mm-dd'));
+      console.log(date);
+      let payload = {
+        date: date,
+        user : this.me,
+      };
+      if (!this.birthdate && this.currentBirthdate !== '') {
+        console.log('Creating birthdate');
+        await this.$store.dispatch('birthdates/createBirthdate', payload);
+      } else if (this.birthdate) {
+        console.log('Editing birthdate');
+        payload.id = this.myDetails.birthdate.id;
+        await this.$store.dispatch('birthdates/editBirthdate', payload);
+      }
+    },
     populateForm() {
       this.firstname = this.myDetails.firstname ? this.myDetails.firstname.label : null;
       this.currentFirstname = this.firstname ? this.firstname : '';
@@ -197,9 +221,9 @@ export default {
       this.email = this.myDetails.email ? this.myDetails.email : '';
       this.address = this.myDetails.address ? this.myDetails.address.label : null;
       this.currentAddress = this.address ? this.address : '';
-      this.city = this.myDetails.city ? this.myDetails.city.label : null;
+      this.city = this.myDetails.address.city ? this.myDetails.address.city.label : null;
       this.currentCity = this.city ? this.city : '';
-      this.zipcode = this.myDetails.zipcode ? this.myDetails.zipcode.label : null;
+      this.zipcode = this.myDetails.address.city.zipcode ? this.myDetails.address.city.zipcode.label : null;
       this.currentZipcode = this.zipcode ? this.zipcode : '';
       if (this.myDetails.address) this.$store.dispatch('addresses/fetchAddress', this.myDetails.address.id);
       if (this.myDetails.city) this.$store.dispatch('cities/fetchCity', this.myDetails.city.id);
