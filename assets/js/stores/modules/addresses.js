@@ -66,7 +66,7 @@ const actions = {
             const response = await addressesApi.create(payload);
             commit('setAddress', response.data);
         } catch (e){
-            commit('setHasError', e.response.data.detail);
+            commit('setHasError', e);
         }
     }),
     editAddress : (async ({state, commit}, payload)=>{
@@ -75,7 +75,7 @@ const actions = {
             const response = await addressesApi.edit(iri,payload);
             commit('setAddress', response.data);
         } catch (e){
-            commit('setHasError', e.response.data.detail);
+            commit('setHasError', e);
         }
     }),
 }

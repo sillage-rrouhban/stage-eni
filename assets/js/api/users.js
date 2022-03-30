@@ -1,28 +1,28 @@
 import axios from 'axios';
 
 const config = {
-    headers: {
-        'Content-Type': 'application/json;'
+    headers : {
+        'Content-Type': 'application/ld+json;'
     }
 }
 
 export default {
     getAll() {
-        return axios.get('/api/users', config);
+        return axios.get('/api/users');
     },
     get(payload) {
-        return axios.get(payload, config);
+        return axios.get(payload);
     },
 
     create(payload) {
-        return axios.post('/api/users', payload, config);
+        return axios.post('/api/users', payload);
     },
 
     edit(payload) {
-        return axios.put(payload.iri, payload, config);
+        return axios.put(payload.iri, payload);
     },
 
     delete(payload) {
-        return axios.delete(payload, config);
+        return axios.delete(payload);
     }
 }

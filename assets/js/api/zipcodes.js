@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const config = {
     headers : {
-        'Content-Type': 'application/json;'
+        'Content-Type': 'application/ld+json;'
     }
 }
 
@@ -15,7 +15,7 @@ export default {
         return axios.get('/api/zipcodes/' + payload, config);
     },
     create(payload){
-        return axios.post('/api/cities', payload, config);
+        return axios.post('/api/zipcodes', payload, config);
     },
 
     edit(iri,payload) {

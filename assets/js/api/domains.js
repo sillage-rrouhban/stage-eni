@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const config = {
     headers : {
-        'Content-Type': 'application/json;'
+        'Content-Type': 'application/ld+json;'
     }
 }
 

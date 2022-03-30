@@ -38,7 +38,7 @@
       <div class="field column is-one-fifth">
         <label class="label">{{ $t("account.information.zipcode") }}</label>
         <div class="control">
-          <input class="input" type="number" v-model="currentZipcode">
+          <input class="input" type="text" v-model="currentZipcode">
         </div>
       </div>
     </div>
@@ -94,6 +94,7 @@ export default {
       myDetails: 'users/user',
       dbAddress: 'addresses/address',
       dbCity: 'cities/city',
+      dbZipcode: 'zipcodes/zipcode'
     })
   },
   async mounted() {
@@ -108,14 +109,8 @@ export default {
       if (!this.lastname || !this.isEqual(this.lastname, this.currentLastname)) {
         await this.setLastname();
       }
-      if (!this.address || !this.isEqual(this.address, this.currentAddress)) {
-        await this.setAddress();
-      }
-      if (!this.city || !this.isEqual(this.city, this.currentCity)) {
-        if(this.dbAddress) await this.setCity();
-      }
       if (!this.zipcode || !this.isEqual(this.zipcode, this.currentZipcode)) {
-        if(this.dbCity) await this.setZipcode();
+        await this.setZipcode();
       }
     },
     async setFirstname() {
@@ -150,6 +145,7 @@ export default {
       let payload = {
         label: this.currentAddress,
         user: this.me,
+        city : '/api/cities/' + this.dbCity.id,
       };
       if (!this.address && this.currentAddress !== '') {
         console.log('Creating address');
@@ -163,7 +159,7 @@ export default {
     async setCity() {
       let payload = {
         label: this.currentCity,
-        address: '/api/addresses/' + this.dbAddress.id,
+        zipcode: '/api/zipcodes/' + this.dbZipcode.id,
       };
       if (!this.city && this.currentCity !== '') {
         console.log('Creating city');
@@ -173,19 +169,24 @@ export default {
         payload.id = this.myDetails.city.id;
         await this.$store.dispatch('cities/editCity', payload);
       }
+      if(this.dbCity){
+        await this.setAddress();
+      }
     },
     async setZipcode() {
       let payload = {
         label: this.currentZipcode,
-        address: '/api/cities/' + this.dbCity.id,
       };
       if (!this.zipcode && this.currentZipcode !== '') {
-        console.log('Creating city');
+        console.log('Creating zipcode');
         await this.$store.dispatch('zipcodes/createZipcode', payload);
-      } else if (this.city) {
-        console.log('Editing city');
+      } else if (this.zipcode) {
+        console.log('Editing zipcode');
         payload.id = this.myDetails.zipcode.id;
         await this.$store.dispatch('zipcodes/editZipcode', payload);
+      }
+      if(this.dbZipcode){
+        await this.setCity();
       }
     },
     populateForm() {

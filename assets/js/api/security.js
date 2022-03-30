@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const config = {
     headers : {
-        'Content-Type': 'application/json;'
+        'Content-Type': 'application/ld+json;'
     }
 }
 
@@ -15,7 +15,7 @@ export default {
     fetchUser(token) {
         let configToken = {
             headers:{
-                'Content-Type': 'application/json;',
+                'Content-Type': 'application/ld+json;',
                 'Authorization': 'bearer ' + token
             }
         };
