@@ -1,5 +1,6 @@
 <template>
   <div class="column">
+    <app-loader v-if="showLoader"/>
     <div class="columns">
       <div class="field is-one-third column">
         <label class="label">{{ $t("account.information.firstname") }}</label>
@@ -59,7 +60,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
+import AppLoader from "@/components/AppLoader";
 
 const config = {
   headers: {
@@ -69,6 +71,7 @@ const config = {
 
 export default {
   name: "AppAccountInformation",
+  components: {AppLoader},
   props: {
     me: String,
   },
@@ -87,6 +90,7 @@ export default {
       currentZipcode: '',
       currentAddress: '',
       currentBirthdate: null,
+      showLoader: false,
     }
   },
   computed: {
@@ -97,11 +101,13 @@ export default {
     })
   },
   async mounted() {
-    await this.$store.dispatch('users/fetchUser', this.me);
-    this.populateForm();
+    this.showLoader = true;
+    await this.populateForm();
+    this.showLoader = false;
   },
   methods: {
     async submitForm() {
+      this.showLoader = true;
       if (!this.firstname || !this.isEqual(this.firstname, this.currentFirstname)) {
         await this.setFirstname();
       }
@@ -114,6 +120,8 @@ export default {
       if (!this.birthdate || !this.isEqual(this.birthdate, this.currentBirthdate)) {
         await this.setBirthdate();
       }
+      await this.populateForm();
+      this.showLoader = false;
     },
     async setFirstname() {
       let payload = {
@@ -147,7 +155,7 @@ export default {
       let payload = {
         label: this.currentAddress,
         user: this.me,
-        city : '/api/cities/' + this.dbCity.id,
+        city: '/api/cities/' + this.dbCity.id,
       };
       if (!this.address && this.currentAddress !== '') {
         console.log('Creating address');
@@ -168,10 +176,10 @@ export default {
         await this.$store.dispatch('cities/createCity', payload);
       } else if (this.city) {
         console.log('Editing city');
-        payload.id = this.myDetails.city.id;
+        payload.id = this.myDetails.address.city.id;
         await this.$store.dispatch('cities/editCity', payload);
       }
-      if(this.dbCity){
+      if (this.dbCity) {
         await this.setAddress();
       }
     },
@@ -184,10 +192,10 @@ export default {
         await this.$store.dispatch('zipcodes/createZipcode', payload);
       } else if (this.zipcode) {
         console.log('Editing zipcode');
-        payload.id = this.myDetails.zipcode.id;
+        payload.id = this.myDetails.address.city.zipcode.id;
         await this.$store.dispatch('zipcodes/editZipcode', payload);
       }
-      if(this.dbZipcode){
+      if (this.dbZipcode) {
         await this.setCity();
       }
     },
@@ -195,10 +203,8 @@ export default {
     async setBirthdate() {
       let payload = {
         date: this.currentBirthdate,
-        user : this.me,
+        user: this.me,
       };
-      console.log(this.birthdate);
-      console.log(this.currentBirthdate);
       if (!this.birthdate && this.currentBirthdate !== '') {
         console.log('Creating birthdate');
         await this.$store.dispatch('birthdates/createBirthdate', payload);
@@ -208,7 +214,8 @@ export default {
         await this.$store.dispatch('birthdates/editBirthdate', payload);
       }
     },
-    populateForm() {
+    async populateForm() {
+      await this.$store.dispatch('users/fetchUser', this.me);
       this.firstname = this.myDetails.firstname ? this.myDetails.firstname.label : null;
       this.currentFirstname = this.firstname ? this.firstname : '';
       this.lastname = this.myDetails.lastname ? this.myDetails.lastname.label : null;
