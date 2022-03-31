@@ -23,7 +23,7 @@
     </div>
     <div class="columns">
       <div class="field is-one-third column">
-        <button class="button" type="button" :disabled="!validPasswordChange">CONFIRMATION</button>
+        <button class="button" type="button" :disabled="!validPasswordChange" @click="sumbitForm">CONFIRMATION</button>
       </div>
     </div>
     <div class="columns">
@@ -87,12 +87,18 @@ export default {
     },
     async sumbitForm() {
       let payload = {
-        plainPassword: this.password,
+        plainPassword: this.newPassword,
+        iri: this.me,
       };
-      await this.$store.dispatch('users/createUser', payload);
+      await this.$store.dispatch('users/editUser', payload);
+      this.resetForm();
     },
     comparePasswords(a, b) {
       if(b.length > 0) this.validPasswordChange = (a === b);
+    },
+    resetForm(){
+      this.newPassword = '';
+      this.passwordConfirmation = '';
     },
   }
 }
