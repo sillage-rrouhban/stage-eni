@@ -73,16 +73,14 @@ const actions = {
     }),
     editUser : (async ({commit}, payload)=>{
         try {
-            const response = await usersApi.edit(payload.iri,payload);
+            const response = await usersApi.edit(payload);
             commit('setUser', response.data);
         } catch (e){
-            console.log(e);
             commit('setHasError', e.response);
         }
     }),
     deleteUser : (async ({commit},payload)=>{
         try{
-            console.log(payload);
             await usersApi.delete(payload);
         }catch(e) {
             console.log(e.response);

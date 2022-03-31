@@ -40,7 +40,6 @@
         <label class="label">{{ $t("account.information.zipcode") }}</label>
         <div class="control">
           <input class="input" type="text" v-model="currentZipcode">
-          {{currentZipcode}}
         </div>
       </div>
     </div>

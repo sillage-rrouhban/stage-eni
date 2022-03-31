@@ -24,7 +24,7 @@
         </div>
         <a class="navbar-item" href="/account" v-else>
           <div class="navbar-item__circle">
-            {{initials}}
+            <span>{{ initials }}</span>
           </div>
         </a>
         <a class="navbar-item" href="#">
@@ -63,7 +63,6 @@ export default {
  async mounted() {
     if(this.user) {
       await this.$store.dispatch('users/fetchUser', this.user);
-      console.log(this.myDetails);
       let firstname = this.myDetails.firstname.label.charAt(0);
       let lastname = this.myDetails.lastname.label.charAt(0);
       this.initials = firstname + lastname;
@@ -111,10 +110,17 @@ export default {
       background-color: transparent;
     }
     &__circle{
+      align-items: center;
       background-color: lightgrey;
       border-radius: 50%;
-      width: 3.125rem;
+      display: flex;
       height: 3.125rem;
+      justify-content: center;
+      width: 3.125rem;
+      span {
+        font-weight: 700;
+        font-size: 1.5rem;
+      }
     }
 
   }
