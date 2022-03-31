@@ -77,9 +77,7 @@
 </template>
 
 <script>
-import axios from "axios";
-import {mapGetters, useStore} from "vuex";
-import {computed} from "vue";
+import { mapGetters } from "vuex";
 
 const config = {
   headers: {
@@ -96,7 +94,6 @@ export default {
       cvFile: '',
     }
   },
-
   computed: {
     ...mapGetters({
       domains: 'domains/domains',
@@ -104,7 +101,6 @@ export default {
       error: 'cvs/error',
     }),
   },
-
   async mounted() {
     await this.$store.dispatch('domains/fetchDomains')
     await this.$store.dispatch('levels/fetchLevels')
