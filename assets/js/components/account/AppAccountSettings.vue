@@ -81,7 +81,6 @@ export default {
       this.showModal = true;
     },
     deleteUser() {
-      console.log(this.me);
       this.$store.dispatch('users/deleteUser', this.me);
       this.$store.dispatch('security/logout');
     },

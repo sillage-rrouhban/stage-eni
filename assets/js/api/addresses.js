@@ -14,7 +14,7 @@ export default {
         return axios.get('/api/addresses/' + payload, config);
     },
     create(payload){
-        return axios.post('/api/addresses',payload, config).then((res) => console.log(res) )
+        return axios.post('/api/addresses',payload, config);
     },
     edit(iri,payload) {
         const patchHeaders = {

@@ -62,7 +62,7 @@ const actions = {
             const response = await LastnamesApi.create(payload);
             commit('setLastname', response.data);
         } catch (e){
-            commit('setHasError', e.response.data.detail)
+            commit('setHasError', e);
         }
 
     }),
@@ -72,7 +72,7 @@ const actions = {
             const response = await LastnamesApi.edit(iri,payload);
             commit('setLastname', response.data);
         } catch (e){
-            commit('setHasError', e.response.data.detail);
+            commit('setHasError', e);
         }
 
     }),

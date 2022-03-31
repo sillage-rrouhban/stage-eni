@@ -83,7 +83,7 @@ const actions = {
             commit('setAuthSuccess', authResponse.data);
             await dispatch('fetchUser', {token: token});
         } catch (e) {
-            console.warn(e.response.data);
+            commit('setHasError', e);
         }
 
     }),
@@ -106,7 +106,7 @@ const actions = {
             }, expiresIn)
 
         } catch (e) {
-            console.warn(e.response.data.message);
+            commit('setHasError', e);
         }
 
     }),

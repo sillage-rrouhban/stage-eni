@@ -66,7 +66,7 @@ const actions = {
             const response = await zipcodesApi.create(payload);
             commit('setZipcode', response.data);
         } catch (e){
-            commit('setHasError', e.response.data.detail);
+            commit('setHasError', e);
         }
     }),
     editZipcode : (async ({commit}, payload)=>{
@@ -75,7 +75,7 @@ const actions = {
             const response = await zipcodesApi.edit(iri,payload);
             commit('setZipcode', response.data);
         } catch (e){
-            commit('setHasError', e.response.data.detail);
+            commit('setHasError', e);
         }
     }),
 }

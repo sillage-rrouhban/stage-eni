@@ -232,7 +232,6 @@ export default {
       if (this.myDetails.address) this.$store.dispatch('addresses/fetchAddress', this.myDetails.address.id);
       if (this.myDetails.city) this.$store.dispatch('cities/fetchCity', this.myDetails.city.id);
       if (this.myDetails.zipcode) this.$store.dispatch('zipcodes/fetchZipcode', this.myDetails.zipcode.id);
-      console.log('USER DETAILS ', this.myDetails);
     },
     isEqual(a, b) {
       return a.toLowerCase() === b.toLowerCase();

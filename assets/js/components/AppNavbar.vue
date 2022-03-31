@@ -22,11 +22,23 @@
         <div class="navbar-item" @click="emitModalClick" v-if="!isAuthenticated">
           {{ $t("navbar.signup") }}
         </div>
-        <a class="navbar-item" href="/account" v-else>
-          <div class="navbar-item__circle">
+        <div class="navbar-item is-relative" v-else>
+          <div class="navbar-item__circle" @click="showDropdown = !showDropdown">
             <span>{{ initials }}</span>
           </div>
-        </a>
+          <div class="dropdown" :class="{'is-active' : showDropdown}">
+            <div class="dropdown-menu">
+              <div class="dropdown-content">
+                <a href="/account" class="dropdown-item">
+                  tableau de bord
+                </a>
+                <div class="dropdown-item" @click="logout">
+                  déco
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <a class="navbar-item" href="#">
           {{ $t("navbar.languages") }}
         </a>
@@ -48,6 +60,7 @@ export default {
       logo: require('/assets/images/common/logo.svg'),
       showModal: false,
       initials : '',
+      showDropdown : false,
     }
   },
   computed: {
@@ -73,7 +86,10 @@ export default {
       this.emitter.emit('modal-state', {
         'modalState': true
       })
-    }
+    },
+    logout(){
+      this.$store.dispatch('security/logout');
+    },
   },
 }
 </script>
@@ -108,6 +124,12 @@ export default {
 
     &:hover {
       background-color: transparent;
+    }
+    &.is-relative{
+      .dropdown{
+        position: absolute;
+        top: 4.125rem;
+      }
     }
     &__circle{
       align-items: center;

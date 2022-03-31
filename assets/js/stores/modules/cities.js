@@ -65,7 +65,7 @@ const actions = {
             const response = await citiesApi.create(payload);
             commit('setCity', response.data);
         } catch (e){
-            commit('setHasError', e.response.data.detail);
+            commit('setHasError', e);
         }
     }),
     editCity : (async ({state, commit}, payload)=>{
@@ -74,7 +74,7 @@ const actions = {
             const response = await citiesApi.edit(iri,payload);
             commit('setCity', response.data);
         } catch (e){
-            commit('setHasError', e.response.data.detail);
+            commit('setHasError', e);
         }
     }),
 }
