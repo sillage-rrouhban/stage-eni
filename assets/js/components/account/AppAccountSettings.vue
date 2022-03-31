@@ -4,7 +4,7 @@
       <div class="field is-one-third column">
         <label class="label">{{ $t("account.setting.new_password") }}</label>
         <div class="control">
-          <input class="input" type="password" v-model="newPassword">
+          <input class="input" type="password" v-model="newPassword" @input="comparePasswords(this.newPassword, this.passwordConfirmation)">
         </div>
       </div>
     </div>
@@ -12,15 +12,18 @@
       <div class="field is-one-third column">
         <label class="label">{{ $t("account.setting.confirmation") }}</label>
         <div class="control">
-          <input class="input" type="password" v-model="passwordConfirmation"
-                 @change="isEqual(newPassword,passwordConfirmation)">
+          <input class="input" type="password" v-model="passwordConfirmation" @input="comparePasswords(this.newPassword, this.passwordConfirmation)">
         </div>
       </div>
     </div>
-    <div class="tag is-danger is-normal" v-if="passwordConfirmation !== '' && !validPasswordChanged">Vos mots de passe de sont pas similaire</div>
+    <div class="columns" v-if="(!validPasswordChange) && passwordConfirmation.length > 0">
+      <div class="field is-one-third column">
+        <div class="tag is-danger is-normal">Vos mots de passe de sont pas similaires</div>
+      </div>
+    </div>
     <div class="columns">
       <div class="field is-one-third column">
-        <button class="button" type="button" :disabled="!validPasswordChanged">CONFIRMATION</button>
+        <button class="button" type="button" :disabled="!validPasswordChange">CONFIRMATION</button>
       </div>
     </div>
     <div class="columns">
@@ -64,7 +67,7 @@ export default {
       passwordConfirmation: '',
       showModal: false,
       typeModal: 0,
-      validPasswordChanged: false,
+      validPasswordChange: false,
     }
   },
   computed: {
@@ -72,12 +75,6 @@ export default {
       me: 'security/user',
     }),
   },
-  watch: {
-    passwordConfirmation(oldValue, newValue){
-      this
-    }
-  },
-
   methods: {
     toggleModal(id) {
       this.typeModal = id;
@@ -94,9 +91,8 @@ export default {
       };
       await this.$store.dispatch('users/createUser', payload);
     },
-    isEqual(a, b) {
-      console.log(a === b);
-      this.validPasswordChanged = a === b;
+    comparePasswords(a, b) {
+      if(b.length > 0) this.validPasswordChange = (a === b);
     },
   }
 }
