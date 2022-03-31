@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CvTitleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -21,9 +23,13 @@ class CvTitle
     #[Groups(['read:user'])]
     private $title;
 
-    #[ORM\OneToOne(inversedBy: 'cvTitle', targetEntity: CV::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private $cv;
+    #[ORM\ManyToMany(targetEntity: Cv::class, mappedBy: 'title')]
+    private $cvs;
+
+    public function __construct()
+    {
+        $this->cvs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -42,14 +48,29 @@ class CvTitle
         return $this;
     }
 
-    public function getCv(): ?CV
+    /**
+     * @return Collection<int, Cv>
+     */
+    public function getCvs(): Collection
     {
-        return $this->cv;
+        return $this->cvs;
     }
 
-    public function setCv(CV $cv): self
+    public function addCv(Cv $cv): self
     {
-        $this->cv = $cv;
+        if (!$this->cvs->contains($cv)) {
+            $this->cvs[] = $cv;
+            $cv->addTitle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCv(Cv $cv): self
+    {
+        if ($this->cvs->removeElement($cv)) {
+            $cv->removeTitle($this);
+        }
 
         return $this;
     }

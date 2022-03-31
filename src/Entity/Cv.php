@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\CreateCvObjectAction;
 use App\Repository\CVRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
@@ -13,6 +15,7 @@ use Doctrine\ORM\Mapping\PreUpdate;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Vich\Uploadable()
@@ -82,6 +85,14 @@ class Cv
     /**
      * @Vich\UploadableField(mapping="user_cv", fileNameProperty="filename")
      */
+    #[Assert\File(
+        mimeTypes: [
+            'application/pdf',
+            'application/x-pdf'
+        ],
+        mimeTypesMessage: 'Please upload Pdf file'
+
+    )]
     private $file;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -97,9 +108,15 @@ class Cv
     #[Groups(['read:cv','write:cv'])]
     private $user;
 
-    #[ORM\OneToOne(mappedBy: 'cv', targetEntity: CvTitle::class, cascade: ['persist', 'remove'])]
-    #[Groups(['read:user'])]
-    private $cvTitle;
+    #[ORM\ManyToMany(targetEntity: CvTitle::class, inversedBy: 'cvs')]
+    private $title;
+
+    public function __construct()
+    {
+        $this->title = new ArrayCollection();
+    }
+
+
 
     public function getId(): ?int
     {
@@ -174,21 +191,27 @@ class Cv
         return $this;
     }
 
-    public function getCvTitle(): ?CvTitle
+    /**
+     * @return Collection<int, CvTitle>
+     */
+    public function getTitle(): Collection
     {
-        return $this->cvTitle;
+        return $this->title;
     }
 
-    public function setCvTitle(CvTitle $cvTitle): self
+    public function addTitle(CvTitle $title): self
     {
-        // set the owning side of the relation if necessary
-        if ($cvTitle->getCv() !== $this) {
-            $cvTitle->setCv($this);
+        if (!$this->title->contains($title)) {
+            $this->title[] = $title;
         }
-
-        $this->cvTitle = $cvTitle;
 
         return $this;
     }
 
+    public function removeTitle(CvTitle $title): self
+    {
+        $this->title->removeElement($title);
+
+        return $this;
+    }
 }

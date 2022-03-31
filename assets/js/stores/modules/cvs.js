@@ -25,29 +25,30 @@ const getters = {
 
 const mutations = {
     setHasError(state, payload){
+        console.log(payload);
         state.error = payload
-        state.HasError = true
+        state.hasError = true
         state.cv = null
         state.cvs = null
     },
 
     getCvs(state, payload){
         state.error = null
-        state.HasError = false
+        state.hasError = false
         state.cv = null
         state.cvs = payload
     },
 
     getCv(state, payload){
         state.error = null
-        state.HasError = false
+        state.hasError = false
         state.cv = payload
         state.cvs = null
     },
 
     setCv(state,payload){
         state.error = null
-        state.HasError = false
+        state.hasError = false
         state.cv = payload
         state.cvs = null
     },
@@ -67,7 +68,7 @@ const actions = {
             const response = await cvsApi.create(payload);
             commit('setCv', response.data);
         } catch (e){
-            commit('setHasError', e);
+            commit('setHasError', e.response.data.detail);
 
         }
     }),

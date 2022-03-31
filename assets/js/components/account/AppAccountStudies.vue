@@ -2,7 +2,6 @@
   <div class="column account__studies">
     <div class="columns">
       <div class="field is-one-third column">
-
         <label class="label">{{ $t("account.studies.resume_title") }}</label>
         <div class="control">
           <input class="input" type="text" v-model="resumeTitle">
@@ -48,6 +47,32 @@
         <button class="button" type="button" @click="submitForm">{{ $t("account.studies.update") }}</button>
       </div>
     </div>
+    <div class="columns">
+      <div class="column is-full">
+      <table class="table is-striped is-fullwidth">
+        <thead>
+        <tr>
+          <th>
+            titre cv
+          </th>
+          <th>
+            fichier
+          </th>
+          <th>
+            mise en ligne
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -76,6 +101,7 @@ export default {
     ...mapGetters({
       domains: 'domains/domains',
       levels: 'levels/levels',
+      error: 'cvs/error',
     }),
   },
 
