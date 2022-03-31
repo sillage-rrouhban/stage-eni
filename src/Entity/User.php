@@ -30,7 +30,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'read'=> false,
     ],
         ],
-    itemOperations: ['get','put', 'delete'],
+    itemOperations: ['get','patch', 'delete'],
     denormalizationContext: ['groups' => ['write:user']],
     normalizationContext: ['groups' => ['read:user']],
 )]

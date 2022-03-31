@@ -2,15 +2,6 @@
   <div class="column">
     <div class="columns">
       <div class="field is-one-third column">
-        <h5 class="title is-5">{{ $t("account.setting.password") }}</h5>
-        <label class="label">{{ $t("account.setting.actual_password") }}</label>
-        <div class="control">
-          <input class="input" type="password" v-model="currentPassword">
-        </div>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="field is-one-third column">
         <label class="label">{{ $t("account.setting.new_password") }}</label>
         <div class="control">
           <input class="input" type="password" v-model="newPassword">
@@ -21,8 +12,15 @@
       <div class="field is-one-third column">
         <label class="label">{{ $t("account.setting.confirmation") }}</label>
         <div class="control">
-          <input class="input" type="password" v-model="passwordConfirmation">
+          <input class="input" type="password" v-model="passwordConfirmation"
+                 @change="isEqual(newPassword,passwordConfirmation)">
         </div>
+      </div>
+    </div>
+    <div class="tag is-danger is-normal" v-if="passwordConfirmation !== '' && !validPasswordChanged">Vos mots de passe de sont pas similaire</div>
+    <div class="columns">
+      <div class="field is-one-third column">
+        <button class="button" type="button" :disabled="!validPasswordChanged">CONFIRMATION</button>
       </div>
     </div>
     <div class="columns">
@@ -56,16 +54,17 @@
 <script>
 import AppGenericModal from "@/components/AppGenericModal";
 import {mapGetters} from "vuex";
+
 export default {
   name: "AppAccountSettings",
   components: {AppGenericModal},
   data() {
     return {
-      currentPassword: '',
       newPassword: '',
       passwordConfirmation: '',
       showModal: false,
       typeModal: 0,
+      validPasswordChanged: false,
     }
   },
   computed: {
@@ -73,19 +72,34 @@ export default {
       me: 'security/user',
     }),
   },
+  watch: {
+    passwordConfirmation(oldValue, newValue){
+      this
+    }
+  },
 
   methods: {
-    toggleModal(id){
+    toggleModal(id) {
       this.typeModal = id;
       this.showModal = true;
     },
-    deleteUser(){
+    deleteUser() {
       console.log(this.me);
       this.$store.dispatch('users/deleteUser', this.me);
       this.$store.dispatch('security/logout');
-    }
+    },
+    async sumbitForm() {
+      let payload = {
+        plainPassword: this.password,
+      };
+      await this.$store.dispatch('users/createUser', payload);
+    },
+    isEqual(a, b) {
+      console.log(a === b);
+      this.validPasswordChanged = a === b;
+    },
   }
-  }
+}
 </script>
 
 <style scoped lang="scss">
