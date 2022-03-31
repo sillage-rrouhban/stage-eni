@@ -94,14 +94,12 @@ class Cv
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['write:cv'])]
+    #[Groups(['read:cv','write:cv'])]
     private $user;
 
-    #[ORM\OneToOne(mappedBy: 'cv', targetEntity: Cv::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'cv', targetEntity: CvTitle::class, cascade: ['persist', 'remove'])]
     #[Groups(['read:user'])]
     private $cvTitle;
-    
-
 
     public function getId(): ?int
     {
@@ -192,6 +190,5 @@ class Cv
 
         return $this;
     }
-    
-    
+
 }

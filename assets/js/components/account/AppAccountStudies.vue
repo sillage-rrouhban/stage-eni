@@ -85,16 +85,15 @@ export default {
   },
   methods: {
     handleFileUpload() {
-      console.log(this.$refs);
       this.cvFile = this.$refs.cvFile.files[0];
-      console.log(this.cvFile);
     },
-
     async submitForm() {
       this.handleFileUpload();
       let formData = new FormData();
+      const userIri = localStorage.getItem('user');
+      const userId = userIri.substring(userIri.lastIndexOf('/') + 1);
       formData.append('id', '0');
-      formData.append('user', localStorage.getItem('user'));
+      formData.append('user', userId);
       formData.append('file', this.cvFile);
       await this.$store.dispatch('cvs/createCv', formData);
     },

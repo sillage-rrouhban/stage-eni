@@ -21,7 +21,7 @@ class CvTitle
     #[Groups(['read:user'])]
     private $title;
 
-    #[ORM\OneToOne(inversedBy: 'cvTitle', targetEntity: Cv::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'cvTitle', targetEntity: CV::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private $cv;
 
@@ -42,12 +42,12 @@ class CvTitle
         return $this;
     }
 
-    public function getCv(): ?Cv
+    public function getCv(): ?CV
     {
         return $this->cv;
     }
 
-    public function setCv(Cv $cv): self
+    public function setCv(CV $cv): self
     {
         $this->cv = $cv;
 

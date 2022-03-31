@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Cv;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,9 +16,9 @@ class CreateCvObjectAction extends AbstractController
         // Nous stockons le fichier envoyé dans une variable.
         $uploadedFile = $request->files->get('file');
 
-
         // Nous récupérons l'id de l'objet. Si il n'existe pas, l'id sera égal à null
-        $id = $request->attributes->get('id');
+        $id = $request->request->get('id');
+        $userId = $request->request->get('user');
 
         // Si $uploadedFile est vide on renvoie une erreur et on arrête le code
         if (!$uploadedFile)
@@ -33,7 +34,11 @@ class CreateCvObjectAction extends AbstractController
         if (!$cv)
             $cv = new Cv();
 
+        $user = $entityManager->getRepository(User::class)
+            ->find($userId);
+
         $cv->setFile($uploadedFile);
+        $cv->setUser($user);
 
         return $cv;
     }
