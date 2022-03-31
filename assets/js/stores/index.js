@@ -11,6 +11,7 @@ import addresses from "./modules/addresses";
 import cities from "./modules/cities";
 import zipcodes from "./modules/zipcodes";
 import birthdates from "./modules/birthdates";
+import cvs from "./modules/cvs";
 
 
 
@@ -29,6 +30,7 @@ export default createStore({
         cities,
         zipcodes,
         birthdates,
+        cvs,
 
     },
     strict: debug,

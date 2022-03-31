@@ -5,19 +5,19 @@
 
         <label class="label">{{ $t("account.studies.resume_title") }}</label>
         <div class="control">
-          <input class="input" type="text" placeholder="">
+          <input class="input" type="text" v-model="resumeTitle">
         </div>
       </div>
       <div class="field column is-one-third">
         <label class="label">{{ $t("account.studies.resume") }}</label>
-        <input class="input" type="file">
+        <input class="input" type="file" ref="cvFile">
       </div>
     </div>
     <div class="columns">
       <div class="column field is-one-third">
         <label class="label">{{ $t("account.studies.domain") }}</label>
         <div class="select is-multiple">
-          <select  size="3" v-if="domains && domains.length > 0">
+          <select size="3" v-if="domains && domains.length > 0">
             <option :value="domain.id" v-for="domain of domains" :key="domain.id">
               {{ domain.label }}
             </option>
@@ -45,7 +45,7 @@
     </div>
     <div class="columns">
       <div class="field is-one-third column">
-        <button class="button" type="button" @click="">{{ $t("account.studies.update") }}</button>
+        <button class="button" type="button" @click="submitForm">{{ $t("account.studies.update") }}</button>
       </div>
     </div>
   </div>
@@ -53,7 +53,7 @@
 
 <script>
 import axios from "axios";
-import {useStore} from "vuex";
+import {mapGetters, useStore} from "vuex";
 import {computed} from "vue";
 
 const config = {
@@ -67,37 +67,36 @@ export default {
     return {
       professionalDesignation: '',
       toggleDropdown: false,
+      resumeTitle: '',
+      cvFile: '',
     }
   },
 
-  setup(){
-    const store = useStore()
-    const domains = computed(()=> store.state.domains.domains)
-    const domainsGetter = computed(()=> store.getters['domains/domains'])
-    const levels =computed(()=> store.state.levels.levels)
-    const levelsGetter = computed(()=> store.getters['levels/levels'])
-    store.dispatch('domains/fetchDomains')
-    store.dispatch('levels/fetchLevels')
-    return{
-      domains,
-      domainsGetter,
-      levels,
-      levelsGetter,
-    }
+  computed: {
+    ...mapGetters({
+      domains: 'domains/domains',
+      levels: 'levels/levels',
+    }),
   },
 
-  mounted() {
-    this.fetchLevels();
+  async mounted() {
+    await this.$store.dispatch('domains/fetchDomains')
+    await this.$store.dispatch('levels/fetchLevels')
   },
   methods: {
-
-    levelsApiGet() {
-      return axios.get('/api/levels', config)
+    handleFileUpload() {
+      console.log(this.$refs);
+      this.cvFile = this.$refs.cvFile.files[0];
+      console.log(this.cvFile);
     },
 
-    async fetchLevels() {
-      let response = await this.levelsApiGet();
-      this.levels = response.data;
+    async submitForm() {
+      this.handleFileUpload();
+      let formData = new FormData();
+      formData.append('id', '0');
+      formData.append('user', localStorage.getItem('user'));
+      formData.append('file', this.cvFile);
+      await this.$store.dispatch('cvs/createCv', formData);
     },
 
   }
@@ -105,11 +104,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.account{
-  &__studies{
-    .select{
+.account {
+  &__studies {
+    .select {
       width: 100%;
-      select{
+
+      select {
         height: 8rem;
         width: 100%;
       }

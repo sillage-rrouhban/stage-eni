@@ -85,18 +85,22 @@ class Cv
     private $file;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['read:cv','write:cv'])]
+    #[Groups(['read:cv','write:cv','read:user'])]
     private $filename;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Groups(['read:user'])]
     private $uploadedAt;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['write:cv'])]
     private $user;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $title;
+    #[ORM\OneToOne(mappedBy: 'cv', targetEntity: Cv::class, cascade: ['persist', 'remove'])]
+    #[Groups(['read:user'])]
+    private $cvTitle;
+    
 
 
     public function getId(): ?int
@@ -172,16 +176,22 @@ class Cv
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getCvTitle(): ?CvTitle
     {
-        return $this->title;
+        return $this->cvTitle;
     }
 
-    public function setTitle(string $title): self
+    public function setCvTitle(CvTitle $cvTitle): self
     {
-        $this->title = $title;
+        // set the owning side of the relation if necessary
+        if ($cvTitle->getCv() !== $this) {
+            $cvTitle->setCv($this);
+        }
+
+        $this->cvTitle = $cvTitle;
 
         return $this;
     }
-
+    
+    
 }
