@@ -6,6 +6,8 @@ use ApiPlatform\Core\Action\NotFoundAction;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\MeController;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
@@ -91,6 +93,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Birthdate::class, cascade: ['persist', 'remove'])]
     #[Groups(['read:user'])]
     private $birthdate;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Cv::class, orphanRemoval: true)]
+    #[Groups(['read:user'])]
+    private $cvs;
+
+    public function __construct()
+    {
+        $this->cvs = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -366,6 +377,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
         }
 
         $this->birthdate = $birthdate;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cv>
+     */
+    public function getCvs(): Collection
+    {
+        return $this->cvs;
+    }
+
+    public function addCv(Cv $cv): self
+    {
+        if (!$this->cvs->contains($cv)) {
+            $this->cvs[] = $cv;
+            $cv->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCv(Cv $cv): self
+    {
+        if ($this->cvs->removeElement($cv)) {
+            // set the owning side to null (unless already changed)
+            if ($cv->getUser() === $this) {
+                $cv->setUser(null);
+            }
+        }
+
         return $this;
     }
 }

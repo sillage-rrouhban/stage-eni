@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Identifier\Normalizer\DateTimeIdentifierDenormalizer;
 use App\Controller\CreateCvObjectAction;
 use App\Repository\CVRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,7 +14,9 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -100,16 +103,17 @@ class Cv
     private $filename;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
     #[Groups(['read:user'])]
     private $uploadedAt;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['read:cv','write:cv'])]
-    private $user;
 
     #[ORM\ManyToMany(targetEntity: CvTitle::class, inversedBy: 'cvs')]
     private $title;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'cvs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
 
     public function __construct()
     {
@@ -179,18 +183,6 @@ class Cv
         $this->uploadedAt = new \DateTimeImmutable();
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, CvTitle>
      */
@@ -211,6 +203,18 @@ class Cv
     public function removeTitle(CvTitle $title): self
     {
         $this->title->removeElement($title);
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

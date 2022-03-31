@@ -48,8 +48,8 @@
       </div>
     </div>
     <div class="columns">
-      <div class="column is-full">
-      <table class="table is-striped is-fullwidth">
+      <div class="column is-two-thirds">
+      <table class="table is-striped is-fullwidth is-bordered">
         <thead>
         <tr>
           <th>
@@ -64,10 +64,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <tr v-for="cv of myDetails.cvs" v-if="myDetails">
           <td></td>
-          <td></td>
-          <td></td>
+          <td>{{cv.filename}}</td>
+          <td>{{cv.uploadedAt}}</td>
         </tr>
         </tbody>
       </table>
@@ -99,11 +99,14 @@ export default {
       domains: 'domains/domains',
       levels: 'levels/levels',
       error: 'cvs/error',
+      myDetails : 'users/user',
     }),
   },
   async mounted() {
     await this.$store.dispatch('domains/fetchDomains')
     await this.$store.dispatch('levels/fetchLevels')
+    await this.$store.dispatch('users/fetchUser',localStorage.getItem('user'))
+    console.log(this.myDetails)
   },
   methods: {
     handleFileUpload() {
