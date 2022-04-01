@@ -75,7 +75,9 @@
       "new_password": "Nouveau mot de passe",
       "confirmation": "Confirmation de mot de passe",
       "delete_title": "Supprimer votre compte",
-      "delete_button": "Supprimer"
+      "delete_button": "Supprimer",
+      "delete_cancel": "Annuler",
+      "delete_confirmation" : "Êtes vous sur de vouloir supprimer votre compte ?"
     }
   },
 

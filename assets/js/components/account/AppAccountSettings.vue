@@ -41,14 +41,14 @@
     </div>
     <app-generic-modal :show-modal="showModal" v-if="typeModal === 1">
       <template v-slot:title>
-        SUPPRESSION DE COMPTE
+        {{$t('account.setting.delete_title')}}
       </template>
       <template v-slot:body>
-        ETES VOUS SUR DE VOULOIR SUPPRIMER TON COMPTE TA MERE ?
+        {{ $t('account.setting.delete_confirmation') }}
       </template>
       <template v-slot:buttons>
-        <button class="button is-success" @click="deleteUser">Ok</button>
-        <button class="button">Cancel</button>
+        <button class="button is-success" @click="deleteUser">{{$t('account.setting.delete_button')}}</button>
+        <button class="button">{{ $t('account.setting.delete_cancel') }}</button>
       </template>
     </app-generic-modal>
   </div>
@@ -74,6 +74,12 @@ export default {
     ...mapGetters({
       me: 'security/user',
     }),
+  },
+  async created() {
+    this.emitter.on('toggle-modal', (e) => {
+      console.log('APP SETTING',e);
+      this.showModal = e.modalState;
+    })
   },
   methods: {
     toggleModal(id) {

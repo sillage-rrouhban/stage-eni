@@ -56,7 +56,8 @@
       "actual_password": "Current password",
       "new_password": "Your new password",
       "confirmation": "Confirm your password",
-      "delete": "Delete your account"
+      "delete": "Delete your account",
+      "delete_confirmation" : "Are you sur to delete your account ?"
     }
   },
   "modal": {
