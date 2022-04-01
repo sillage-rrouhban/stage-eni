@@ -1,5 +1,6 @@
 <template>
   <div class="column account__studies">
+    <app-loader v-if="showLoader"/>
     <div class="columns">
       <div class="field is-one-third column">
         <label class="label">{{ $t("account.studies.resume_title") }}</label>
@@ -56,10 +57,14 @@
             titre cv
           </th>
           <th>
+
             fichier
           </th>
           <th>
             mise en ligne
+          </th>
+          <th>
+            actions
           </th>
         </tr>
         </thead>
@@ -68,6 +73,7 @@
           <td></td>
           <td>{{cv.filename}}</td>
           <td>{{cv.uploadedAt}}</td>
+          <td> <img :src="deleteFile" alt=""> <img :src="editFile" alt=""></td>
         </tr>
         </tbody>
       </table>
@@ -78,6 +84,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import AppLoader from "@/components/AppLoader";
 
 const config = {
   headers: {
@@ -86,12 +93,17 @@ const config = {
 };
 export default {
   name: "AppAccountStudies",
+  components: {AppLoader},
   data() {
     return {
       professionalDesignation: '',
       toggleDropdown: false,
       resumeTitle: '',
       cvFile: '',
+      showLoader: false,
+      deleteFile: require('/assets/images/account/delete.svg'),
+      editFile: require('/assets/images/account/pencil.svg'),
+      file: require('/assets/images/account/file.svg'),
     }
   },
   computed: {
@@ -113,6 +125,7 @@ export default {
       this.cvFile = this.$refs.cvFile.files[0];
     },
     async submitForm() {
+      this.showLoader = true;
       this.handleFileUpload();
       let formData = new FormData();
       const userIri = localStorage.getItem('user');
@@ -121,6 +134,8 @@ export default {
       formData.append('user', userId);
       formData.append('file', this.cvFile);
       await this.$store.dispatch('cvs/createCv', formData);
+      //await this.$store.dispatch('users/fetchUser', localStorage.getItem('user'))
+      this.showLoader = false;
     },
 
   }
@@ -129,7 +144,14 @@ export default {
 
 <style scoped lang="scss">
 .account {
+
   &__studies {
+    img{
+      width: 1.8rem;
+      &+img{
+        margin-left: .5rem;
+      }
+    }
     .select {
       width: 100%;
 

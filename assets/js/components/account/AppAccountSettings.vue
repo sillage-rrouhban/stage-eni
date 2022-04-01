@@ -48,7 +48,7 @@
       </template>
       <template v-slot:buttons>
         <button class="button is-success" @click="deleteUser">{{$t('account.setting.delete_button')}}</button>
-        <button class="button">{{ $t('account.setting.delete_cancel') }}</button>
+        <button class="button" @click="emitModalClick(0)"> {{ $t('account.setting.delete_cancel') }}</button>
       </template>
     </app-generic-modal>
   </div>

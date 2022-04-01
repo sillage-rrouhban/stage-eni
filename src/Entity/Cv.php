@@ -89,11 +89,12 @@ class Cv
      * @Vich\UploadableField(mapping="user_cv", fileNameProperty="filename")
      */
     #[Assert\File(
+        maxSize: '5M',
         mimeTypes: [
             'application/pdf',
             'application/x-pdf'
         ],
-        mimeTypesMessage: 'Please upload Pdf file'
+        mimeTypesMessage: 'Please upload Pdf file',
 
     )]
     private $file;
