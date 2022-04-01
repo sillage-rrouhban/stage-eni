@@ -5,7 +5,7 @@
       <div class="field is-one-third column">
         <label class="label">{{ $t("account.studies.resume_title") }}</label>
         <div class="control">
-          <input class="input" type="text" v-model="resumeTitle">
+          <input class="input" type="text" v-model="currentResumeTitle">
         </div>
       </div>
       <div class="field column is-one-third">
@@ -70,7 +70,11 @@
         </thead>
         <tbody>
         <tr v-for="cv of myDetails.cvs" v-if="myDetails">
-          <td></td>
+          <td>
+            <template v-if="cv.title.length > 0 && cv">
+              {{cv.title[0].title}}
+            </template>
+          </td>
           <td>{{cv.filename}}</td>
           <td>{{cv.uploadedAt}}</td>
           <td> <img :src="deleteIcon" alt="" @click="deleteFile(cv.id)"> <img :src="editIcon" alt=""></td>
@@ -98,7 +102,8 @@ export default {
     return {
       professionalDesignation: '',
       toggleDropdown: false,
-      resumeTitle: '',
+      resumeTitle: null,
+      currentResumeTitle : '',
       cvFile: '',
       showLoader: false,
       deleteIcon: require('/assets/images/account/delete.svg'),
@@ -112,6 +117,7 @@ export default {
       levels: 'levels/levels',
       error: 'cvs/error',
       myDetails : 'users/user',
+      cv : 'cvs/cv',
     }),
   },
   async mounted() {
@@ -133,15 +139,22 @@ export default {
       formData.append('id', '0');
       formData.append('user', userId);
       formData.append('file', this.cvFile);
-      await this.$store.dispatch('cvs/createCv', formData);
-      //await this.$store.dispatch('users/fetchUser', localStorage.getItem('user'))
+     await this.$store.dispatch('cvs/createCv', formData);
+      if(this.currentResumeTitle.length > 0) {
+        let payload = {
+          title : this.currentResumeTitle,
+          cvs : ['/api/cvs/' + this.cv.id],
+          }
+        await this.$store.dispatch('cvTitles/createCvTitle', payload);
+        }
+      await this.$store.dispatch('users/fetchUser', localStorage.getItem('user'))
       this.showLoader = false;
     },
 
     async deleteFile(id){
         let payload = '/api/cvs/' + id;
         await this.$store.dispatch('cvs/deleteCv',payload);
-        //await this.$store.dispatch('users/fetchUser', localStorage.getItem('user'));
+        await this.$store.dispatch('users/fetchUser', localStorage.getItem('user'));
     }
 
   }

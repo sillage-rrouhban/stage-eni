@@ -25,7 +25,6 @@ const getters = {
 
 const mutations = {
     setHasError(state, payload){
-        console.log(payload);
         state.error = payload
         state.hasError = true
         state.cv = null

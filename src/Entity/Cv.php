@@ -111,9 +111,10 @@ class Cv
 
 
     #[ORM\ManyToMany(targetEntity: CvTitle::class, inversedBy: 'cvs')]
+    #[Groups(['read:user'])]
     private $title;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'cvs')]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist', 'remove'], inversedBy: 'cvs')]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 

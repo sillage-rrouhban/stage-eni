@@ -23,7 +23,7 @@ class CvTitle
     #[Groups(['read:user'])]
     private $title;
 
-    #[ORM\ManyToMany(targetEntity: Cv::class, mappedBy: 'title')]
+    #[ORM\ManyToMany(targetEntity: Cv::class, mappedBy: 'title' ,cascade: ['persist', 'remove'])]
     private $cvs;
 
     public function __construct()
