@@ -2,30 +2,30 @@
 
 namespace App\Repository;
 
-use App\Entity\Title;
+use App\Entity\CvCvTitle;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Title|null find($id, $lockMode = null, $lockVersion = null)
- * @method Title|null findOneBy(array $criteria, array $orderBy = null)
- * @method Title[]    findAll()
- * @method Title[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method CvCvTitle|null find($id, $lockMode = null, $lockVersion = null)
+ * @method CvCvTitle|null findOneBy(array $criteria, array $orderBy = null)
+ * @method CvCvTitle[]    findAll()
+ * @method CvCvTitle[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CvTitleRepository extends ServiceEntityRepository
+class CvCvTitleRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Title::class);
+        parent::__construct($registry, CvCvTitle::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(Title $entity, bool $flush = true): void
+    public function add(CvCvTitle $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -37,7 +37,7 @@ class CvTitleRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(Title $entity, bool $flush = true): void
+    public function remove(CvCvTitle $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -46,7 +46,7 @@ class CvTitleRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return CvTitle[] Returns an array of CvTitle objects
+    //  * @return CvCvTitle[] Returns an array of CvCvTitle objects
     //  */
     /*
     public function findByExampleField($value)
@@ -63,7 +63,7 @@ class CvTitleRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?CvTitle
+    public function findOneBySomeField($value): ?CvCvTitle
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

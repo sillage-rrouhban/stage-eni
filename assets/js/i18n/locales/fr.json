@@ -60,7 +60,9 @@
       "professional_designation": "Titre professionnel",
       "domain": "Domaine",
       "update": "Mettre à jour",
-      "level": "Niveau d'étude"
+      "level": "Niveau d'étude",
+      "delete_title": "Supprimer ce CV",
+      "delete_confirmation" : "Êtes vous sur de vouloir supprimer ce CV ?"
     },
 
     "online_presence": {
@@ -75,8 +77,6 @@
       "new_password": "Nouveau mot de passe",
       "confirmation": "Confirmation de mot de passe",
       "delete_title": "Supprimer votre compte",
-      "delete_button": "Supprimer",
-      "delete_cancel": "Annuler",
       "delete_confirmation" : "Êtes vous sur de vouloir supprimer votre compte ?"
     }
   },
@@ -87,7 +87,9 @@
     "email": "Email",
     "password": "Password",
     "validation": "Valider",
-    "return": "Retour"
+    "return": "Retour",
+    "delete": "Supprimer",
+    "cancel": "Annuler"
   }
 
 

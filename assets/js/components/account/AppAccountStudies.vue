@@ -71,8 +71,8 @@
           <tbody>
           <tr v-for="cv of myDetails.cvs" v-if="myDetails">
             <td>
-              <template v-if="cv.title.length > 0">
-                {{cv.title[0].title}}
+              <template v-if="cv.cvTitle">
+                {{cv.cvTitle.title.label}}
               </template>
               <template v-else>
                 N/A
@@ -80,7 +80,19 @@
             </td>
             <td>{{cv.filename}}</td>
             <td>{{cv.uploadedAt}}</td>
-            <td> <img :src="deleteIcon" alt="" @click="deleteFile(cv.id)"> <img :src="editIcon" alt=""></td>
+            <td> <img :src="deleteIcon" alt="" @click="emitModalClick(1)"> <img :src="editIcon" alt=""></td>
+            <app-generic-modal v-if="typeModal === 1 && showModal">
+              <template v-slot:title>
+                {{$t('account.studies.delete_title')}}
+              </template>
+              <template v-slot:body>
+                {{ $t('account.studies.delete_confirmation') }}
+              </template>
+              <template v-slot:buttons>
+                <button class="button is-success" @click="deleteFile(cv.id)">{{$t('modal.delete')}}</button>
+                <button class="button" @click="emitModalClick(0)"> {{$t('modal.cancel')}}</button>
+              </template>
+            </app-generic-modal>
           </tr>
           </tbody>
         </table>
@@ -92,6 +104,7 @@
 <script>
 import { mapGetters } from "vuex";
 import AppLoader from "@/components/AppLoader";
+import AppGenericModal from "@/components/AppGenericModal";
 
 const config = {
   headers: {
@@ -100,18 +113,22 @@ const config = {
 };
 export default {
   name: "AppAccountStudies",
-  components: {AppLoader},
+  components: {
+    AppLoader,
+    AppGenericModal
+  },
   data() {
     return {
       professionalDesignation: '',
       toggleDropdown: false,
-      resumeTitle: null,
       currentResumeTitle : '',
       cvFile: '',
       showLoader: false,
       deleteIcon: require('/assets/images/account/delete.svg'),
       editIcon: require('/assets/images/account/pencil.svg'),
       file: require('/assets/images/account/file.svg'),
+      showModal: false,
+      typeModal: 0,
     }
   },
   computed: {
@@ -121,7 +138,13 @@ export default {
       error: 'cvs/error',
       myDetails : 'users/user',
       cv : 'cvs/cv',
+      title : 'titles/title',
     }),
+  },
+  created() {
+    this.emitter.on('toggle-modal', (value) => {
+      this.showModal = value;
+    })
   },
   async mounted() {
     await this.$store.dispatch('domains/fetchDomains')
@@ -144,20 +167,28 @@ export default {
       formData.append('file', this.cvFile);
       await this.$store.dispatch('cvs/createCv', formData);
       if(this.currentResumeTitle.length > 0) {
-        let payload = {
-          title : this.currentResumeTitle,
-          cvs : ['/api/cvs/' + this.cv.id],
+        let titlePayload = {
+          label : this.currentResumeTitle
         }
-        await this.$store.dispatch('cvTitles/createCvTitle', payload);
+        await this.$store.dispatch('titles/createTitle', titlePayload);
+        let cvTitlePayload = {
+          cv : 'api/cvs/' + this.cv.id,
+          title : 'api/titles/' + this.title.id,
+        }
+        await this.$store.dispatch('titles/createLinkCVTitle', cvTitlePayload);
       }
       await this.$store.dispatch('users/fetchUser', localStorage.getItem('user'))
       this.showLoader = false;
     },
-
+    emitModalClick(id){
+      this.typeModal = id;
+      this.emitter.emit('toggle-modal', !this.showModal);
+    },
     async deleteFile(id){
       let payload = '/api/cvs/' + id;
       await this.$store.dispatch('cvs/deleteCv',payload);
       await this.$store.dispatch('users/fetchUser', localStorage.getItem('user'));
+      this.showModal = false;
     }
 
   }

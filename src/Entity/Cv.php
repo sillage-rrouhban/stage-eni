@@ -83,7 +83,7 @@ class Cv
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:cv','write:cv','read:user'])]
+    #[Groups(['read:cv', 'read:user'])]
     private $id;
 
     /**
@@ -109,10 +109,9 @@ class Cv
     #[Groups(['read:user'])]
     private $uploadedAt;
 
-
-    #[ORM\ManyToMany(targetEntity: CvTitle::class, inversedBy: 'cvs')]
+    #[ORM\OneToOne(mappedBy: 'cv', targetEntity: CvTitle::class, cascade: ['persist', 'remove'])]
     #[Groups(['read:user'])]
-    private $title;
+    private $cvTitle;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'cvs')]
     #[ORM\JoinColumn(nullable: false)]
@@ -179,30 +178,6 @@ class Cv
         $this->uploadedAt = new \DateTimeImmutable();
     }
 
-    /**
-     * @return Collection<int, CvTitle>
-     */
-    public function getTitle(): Collection
-    {
-        return $this->title;
-    }
-
-    public function addTitle(CvTitle $title): self
-    {
-        if (!$this->title->contains($title)) {
-            $this->title[] = $title;
-        }
-
-        return $this;
-    }
-
-    public function removeTitle(CvTitle $title): self
-    {
-        $this->title->removeElement($title);
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -211,6 +186,23 @@ class Cv
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCvTitle(): ?CvTitle
+    {
+        return $this->cvTitle;
+    }
+
+    public function setCvTitle(CvTitle $cvTitle): self
+    {
+        // set the owning side of the relation if necessary
+        if ($cvTitle->getCv() !== $this) {
+            $cvTitle->setCv($this);
+        }
+
+        $this->cvTitle = $cvTitle;
 
         return $this;
     }

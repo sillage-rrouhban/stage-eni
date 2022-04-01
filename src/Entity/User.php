@@ -98,7 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
     #[Groups(['read:user'])]
     private $cvs;
 
-    public function __construct()
+    #[Pure] public function __construct()
     {
         $this->cvs = new ArrayCollection();
     }

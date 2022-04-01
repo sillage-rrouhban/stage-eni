@@ -9,12 +9,15 @@ const config = {
 
 export default {
     getAll() {
-        return axios.get('/api/cv_titles', config);
+        return axios.get('/api/titles', config);
     },
     get(payload) {
-        return axios.get('/api/cv_titles/' + payload, config);
+        return axios.get('/api/titles/' + payload, config);
     },
     create(payload){
+        return axios.post('/api/titles', payload, config);
+    },
+    linkCvTitle(payload){
         return axios.post('/api/cv_titles', payload, config);
     },
     edit(iri,payload) {

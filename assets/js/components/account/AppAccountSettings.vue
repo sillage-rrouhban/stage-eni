@@ -47,8 +47,8 @@
         {{ $t('account.setting.delete_confirmation') }}
       </template>
       <template v-slot:buttons>
-        <button class="button is-success" @click="deleteUser">{{$t('account.setting.delete_button')}}</button>
-        <button class="button" @click="emitModalClick(0)"> {{ $t('account.setting.delete_cancel') }}</button>
+        <button class="button is-success" @click="deleteUser">{{$t('modal.delete')}}</button>
+        <button class="button" @click="emitModalClick(0)">{{ $t('modal.cancel') }}</button>
       </template>
     </app-generic-modal>
   </div>
@@ -60,7 +60,9 @@ import {mapGetters} from "vuex";
 
 export default {
   name: "AppAccountSettings",
-  components: {AppGenericModal},
+  components: {
+    AppGenericModal
+  },
   data() {
     return {
       newPassword: '',

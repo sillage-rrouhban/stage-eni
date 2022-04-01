@@ -3,74 +3,57 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\CvTitleRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\CvCvTitleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: CvTitleRepository::class)]
-#[ApiResource]
+#[ORM\Entity(repositoryClass: CvCvTitleRepository::class)]
+#[ApiResource(
+    denormalizationContext: ['groups'=>['write:cv:title']],
+    normalizationContext: ['groups'=>['read:cv:title']],
+)]
 class CvTitle
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:user'])]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:user'])]
+    #[ORM\OneToOne(inversedBy: 'cvTitle', targetEntity: Cv::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['write:cv:title'])]
+    private $cv;
+
+    #[ORM\OneToOne(inversedBy: 'cvTitle', targetEntity: Title::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['write:cv:title', 'read:user'])]
     private $title;
-
-    #[ORM\ManyToMany(targetEntity: Cv::class, mappedBy: 'title' ,cascade: ['persist', 'remove'])]
-    private $cvs;
-
-    public function __construct()
-    {
-        $this->cvs = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getCv(): ?Cv
+    {
+        return $this->cv;
+    }
+
+    public function setCv(Cv $cv): self
+    {
+        $this->cv = $cv;
+
+        return $this;
+    }
+
+    public function getTitle(): ?Title
     {
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(Title $title): self
     {
         $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Cv>
-     */
-    public function getCvs(): Collection
-    {
-        return $this->cvs;
-    }
-
-    public function addCv(Cv $cv): self
-    {
-        if (!$this->cvs->contains($cv)) {
-            $this->cvs[] = $cv;
-            $cv->addTitle($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCv(Cv $cv): self
-    {
-        if ($this->cvs->removeElement($cv)) {
-            $cv->removeTitle($this);
-        }
 
         return $this;
     }
