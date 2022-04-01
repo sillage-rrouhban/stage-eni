@@ -114,16 +114,9 @@ class Cv
     #[Groups(['read:user'])]
     private $title;
 
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist', 'remove'], inversedBy: 'cvs')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'cvs')]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
-
-    public function __construct()
-    {
-        $this->title = new ArrayCollection();
-    }
-
-
 
     public function getId(): ?int
     {

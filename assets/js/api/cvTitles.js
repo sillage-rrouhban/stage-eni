@@ -15,7 +15,7 @@ export default {
         return axios.get('/api/cv_titles/' + payload, config);
     },
     create(payload){
-        return axios.post('/api/cv_titles',payload, config);
+        return axios.post('/api/cv_titles', payload, config);
     },
     edit(iri,payload) {
         const patchHeaders = {

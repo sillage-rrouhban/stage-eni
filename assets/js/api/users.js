@@ -13,11 +13,9 @@ export default {
     get(payload) {
         return axios.get(payload, config);
     },
-
     create(payload) {
         return axios.post('/api/users', payload, config);
     },
-
     edit(payload) {
         const patchHeaders = {
             headers: {'Content-Type': 'application/merge-patch+json;'}

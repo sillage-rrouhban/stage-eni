@@ -50,37 +50,40 @@
     </div>
     <div class="columns">
       <div class="column is-two-thirds">
-      <table class="table is-striped is-fullwidth is-bordered">
-        <thead>
-        <tr>
-          <th>
-            titre cv
-          </th>
-          <th>
+        <table class="table is-striped is-fullwidth is-bordered">
+          <thead>
+          <tr>
+            <th>
+              titre cv
+            </th>
+            <th>
 
-            fichier
-          </th>
-          <th>
-            mise en ligne
-          </th>
-          <th>
-            actions
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="cv of myDetails.cvs" v-if="myDetails">
-          <td>
-            <template v-if="cv.title.length > 0 && cv">
-              {{cv.title[0].title}}
-            </template>
-          </td>
-          <td>{{cv.filename}}</td>
-          <td>{{cv.uploadedAt}}</td>
-          <td> <img :src="deleteIcon" alt="" @click="deleteFile(cv.id)"> <img :src="editIcon" alt=""></td>
-        </tr>
-        </tbody>
-      </table>
+              fichier
+            </th>
+            <th>
+              mise en ligne
+            </th>
+            <th>
+              actions
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="cv of myDetails.cvs" v-if="myDetails">
+            <td>
+              <template v-if="cv.title.length > 0">
+                {{cv.title[0].title}}
+              </template>
+              <template v-else>
+                N/A
+              </template>
+            </td>
+            <td>{{cv.filename}}</td>
+            <td>{{cv.uploadedAt}}</td>
+            <td> <img :src="deleteIcon" alt="" @click="deleteFile(cv.id)"> <img :src="editIcon" alt=""></td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -139,22 +142,22 @@ export default {
       formData.append('id', '0');
       formData.append('user', userId);
       formData.append('file', this.cvFile);
-     await this.$store.dispatch('cvs/createCv', formData);
+      await this.$store.dispatch('cvs/createCv', formData);
       if(this.currentResumeTitle.length > 0) {
         let payload = {
           title : this.currentResumeTitle,
           cvs : ['/api/cvs/' + this.cv.id],
-          }
-        await this.$store.dispatch('cvTitles/createCvTitle', payload);
         }
+        await this.$store.dispatch('cvTitles/createCvTitle', payload);
+      }
       await this.$store.dispatch('users/fetchUser', localStorage.getItem('user'))
       this.showLoader = false;
     },
 
     async deleteFile(id){
-        let payload = '/api/cvs/' + id;
-        await this.$store.dispatch('cvs/deleteCv',payload);
-        await this.$store.dispatch('users/fetchUser', localStorage.getItem('user'));
+      let payload = '/api/cvs/' + id;
+      await this.$store.dispatch('cvs/deleteCv',payload);
+      await this.$store.dispatch('users/fetchUser', localStorage.getItem('user'));
     }
 
   }
