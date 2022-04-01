@@ -83,6 +83,7 @@ class Cv
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['read:cv','write:cv','read:user'])]
     private $id;
 
     /**

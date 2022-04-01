@@ -73,7 +73,7 @@
           <td></td>
           <td>{{cv.filename}}</td>
           <td>{{cv.uploadedAt}}</td>
-          <td> <img :src="deleteFile" alt=""> <img :src="editFile" alt=""></td>
+          <td> <img :src="deleteIcon" alt="" @click="deleteFile(cv.id)"> <img :src="editIcon" alt=""></td>
         </tr>
         </tbody>
       </table>
@@ -101,8 +101,8 @@ export default {
       resumeTitle: '',
       cvFile: '',
       showLoader: false,
-      deleteFile: require('/assets/images/account/delete.svg'),
-      editFile: require('/assets/images/account/pencil.svg'),
+      deleteIcon: require('/assets/images/account/delete.svg'),
+      editIcon: require('/assets/images/account/pencil.svg'),
       file: require('/assets/images/account/file.svg'),
     }
   },
@@ -137,6 +137,13 @@ export default {
       //await this.$store.dispatch('users/fetchUser', localStorage.getItem('user'))
       this.showLoader = false;
     },
+
+    async deleteFile(id){
+        console.log(id);
+        let payload = '/api/cvs/' + id;
+        await this.$store.dispatch('cvs/deleteCv',payload);
+        //await this.$store.dispatch('users/fetchUser', localStorage.getItem('user'));
+    }
 
   }
 }
