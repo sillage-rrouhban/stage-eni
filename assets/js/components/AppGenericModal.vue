@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" :class="{'is-active' : showModalInModal}" v-if="showModalInModal">
+  <div class="modal is-active">
     <div class="modal-background" @click="emitModalClick()"></div>
     <div class="modal-card">
       <header class="modal-card-head">
@@ -24,22 +24,19 @@
 <script>
 export default {
   name: "AppGenericModal",
-  props: {
-    showModal : Boolean,
-  },
   data(){
     return{
-      showModalInModal: false,
+      showModal: true,
     }
   },
-  mounted() {
-    this.showModalInModal = this.showModal;
+  created() {
+    this.emitter.on('toggle-modal', (value) => {
+      this.showModal = value;
+    })
   },
   methods:{
     emitModalClick(){
-      this.emitter.emit('toggle-modal',{
-        'modalState': !this.showModalInModal
-      })
+      this.emitter.emit('toggle-modal', !this.showModal);
     }
   }
 }

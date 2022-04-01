@@ -36,10 +36,10 @@
     </div>
     <div class="columns">
       <div class="field is-one-third column">
-        <button class="button" type="button" @click="toggleModal(1)">{{ $t("account.setting.delete_button") }}</button>
+        <button class="button" type="button" @click="emitModalClick(1)">{{ $t("account.setting.delete_button") }}</button>
       </div>
     </div>
-    <app-generic-modal :show-modal="showModal" v-if="typeModal === 1">
+    <app-generic-modal v-if="typeModal === 1 && showModal">
       <template v-slot:title>
         {{$t('account.setting.delete_title')}}
       </template>
@@ -75,17 +75,12 @@ export default {
       me: 'security/user',
     }),
   },
-  async created() {
-    this.emitter.on('toggle-modal', (e) => {
-      console.log('APP SETTING',e);
-      this.showModal = e.modalState;
+  created() {
+    this.emitter.on('toggle-modal', (value) => {
+      this.showModal = value;
     })
   },
   methods: {
-    toggleModal(id) {
-      this.typeModal = id;
-      this.showModal = true;
-    },
     deleteUser() {
       this.$store.dispatch('users/deleteUser', this.me);
       this.$store.dispatch('security/logout');
@@ -105,6 +100,10 @@ export default {
       this.newPassword = '';
       this.passwordConfirmation = '';
     },
+    emitModalClick(id){
+      this.typeModal = id;
+      this.emitter.emit('toggle-modal', !this.showModal);
+    }
   }
 }
 </script>
