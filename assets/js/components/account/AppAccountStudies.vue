@@ -139,7 +139,6 @@ export default {
     },
 
     async deleteFile(id){
-        console.log(id);
         let payload = '/api/cvs/' + id;
         await this.$store.dispatch('cvs/deleteCv',payload);
         //await this.$store.dispatch('users/fetchUser', localStorage.getItem('user'));
@@ -154,6 +153,7 @@ export default {
 
   &__studies {
     img{
+      cursor: pointer;
       width: 1.8rem;
       &+img{
         margin-left: .5rem;

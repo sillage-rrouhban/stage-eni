@@ -95,7 +95,7 @@ class Cv
             'application/pdf',
             'application/x-pdf'
         ],
-        mimeTypesMessage: 'Please upload Pdf file',
+        mimeTypesMessage: 'Please upload a PDF file',
 
     )]
     private $file;
@@ -134,7 +134,7 @@ class Cv
         return $this->filename;
     }
 
-    public function setFilename(string $filename): self
+    public function setFilename(?string $filename): self
     {
         $this->filename = $filename;
 
