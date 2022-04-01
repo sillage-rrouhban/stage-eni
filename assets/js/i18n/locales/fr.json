@@ -25,9 +25,11 @@
   "register": {
     "email": "Email",
     "password": "Mot de passe",
-    "choose-type": "Avant de pouvoir vous inscrire, dites-nous qui vous êtes ?"
+    "choose-type": "Avant de pouvoir vous inscrire, dites-nous qui vous êtes ?",
+    "creation_title": "Félicitations !",
+    "creation_confirmation": "Votre compte a bien été créé. Il ne vous rester plus qu'à confirmer sa création en cliquant sur le lien reçu par email.",
+    "redirection": "Redirection en cours..."
   },
-
   "account": {
     "navigation": {
       "account": "Mon compte",
@@ -88,6 +90,7 @@
     "password": "Password",
     "validation": "Valider",
     "return": "Retour",
+    "ok": "ok",
     "delete": "Supprimer",
     "cancel": "Annuler"
   }

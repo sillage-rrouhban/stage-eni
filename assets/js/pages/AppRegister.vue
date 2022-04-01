@@ -11,34 +11,47 @@
         </div>
       </div>
     </div>
-  <div class="columns is-centered" v-if="selectedType > 0">
-    <div class=" column is-one-third">
-      <div class="field">
-        <label class="label">{{ $t("register.email") }}</label>
-        <div class="control">
-          <input class="input" type="email" :placeholder="$t('register.email')" v-model="email">
+    <div class="columns is-centered" v-if="selectedType > 0">
+      <div class=" column is-one-third">
+        <div class="field">
+          <label class="label">{{ $t("register.email") }}</label>
+          <div class="control">
+            <input class="input" type="email" :placeholder="$t('register.email')" v-model="email">
+          </div>
         </div>
-      </div>
 
-      <div class="field">
-        <label class="label">{{ $t("register.password") }}</label>
-        <div class="control">
-          <input class="input" type="password" :placeholder="$t('register.password')" v-model="password">
+        <div class="field">
+          <label class="label">{{ $t("register.password") }}</label>
+          <div class="control">
+            <input class="input" type="password" :placeholder="$t('register.password')" v-model="password">
+          </div>
         </div>
-      </div>
-      <div class="control">
-        <button class="button is-primary" type="button" @click="sumbitForm">Submit</button>
+        <div class="control">
+          <button class="button is-primary" type="button" @click="sumbitForm">Submit</button>
+        </div>
       </div>
     </div>
-  </div>
     <app-footer/>
+    <app-generic-modal v-if="showModal">
+      <template v-slot:title>
+        {{ $t("register.creation_title") }}
+      </template>
+      <template v-slot:body>
+        {{ $t('register.creation_confirmation') }}
+      </template>
+      <template v-slot:buttons>
+        <button class="button" type="button" disabled>{{ $t('register.redirection') }}</button>
+      </template>
+    </app-generic-modal>
   </div>
 </template>
 
 <script>
 
-import AppNavbar from "../components/AppNavbar";
-import AppFooter from "../components/AppFooter";
+import AppGenericModal from "@/components/AppGenericModal";
+import AppFooter from "@/components/AppFooter";
+import AppNavbar from "@/components/AppNavbar";
+
 import {mapGetters} from "vuex";
 const config = {
   headers: {
@@ -48,12 +61,17 @@ const config = {
 
 export default {
   name: "AppRegister",
-  components: {AppFooter, AppNavbar},
+  components: {
+    AppGenericModal,
+    AppFooter,
+    AppNavbar
+  },
   data() {
     return {
       email: '',
       password: '',
-      selectedType: 0
+      selectedType: 0,
+      showModal: false
     }
   },
   computed:{
@@ -61,21 +79,25 @@ export default {
       types : 'types/types'
     })
   },
- async  mounted() {
+  created() {
+    this.emitter.on('toggle-modal', (value) => {
+      this.showModal = value;
+    })
+  },
+  async mounted() {
     await this.fetchTypes();
   },
-
   methods: {
-
-   async fetchTypes(){
-        await this.$store.dispatch('types/fetchTypes');
+    emitModalClick(){
+      this.emitter.emit('toggle-modal', !this.showModal);
     },
-
+    async fetchTypes(){
+      await this.$store.dispatch('types/fetchTypes');
+    },
     toggleForm(id){
       this.selectedType = id;
     },
-
-   async sumbitForm(){
+    async sumbitForm(){
       let payload = {
         email: this.email,
         plainPassword: this.password,
@@ -84,14 +106,13 @@ export default {
         roles:['ROLE_USER']
       };
       await this.$store.dispatch('users/createUser',payload);
-
-      /*
-   "email": "string",
-  "type": "string",
-  "plainPassword": "string"
-       */
-      },
-    }
+      this.emitModalClick();
+      setTimeout(() => {
+        this.showModal = false;
+        location.replace('/');
+      }, 3000)
+    },
+  }
 }
 </script>
 
