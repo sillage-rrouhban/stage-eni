@@ -2,18 +2,9 @@
   <div class="column">
     <div class="columns">
       <div class="field is-one-third column">
-        <h5 class="title is-5">{{ $t("account.setting.password") }}</h5>
-        <label class="label">{{ $t("account.setting.actual_password") }}</label>
-        <div class="control">
-          <input class="input" type="password" v-model="currentPassword">
-        </div>
-      </div>
-    </div>
-    <div class="columns">
-      <div class="field is-one-third column">
         <label class="label">{{ $t("account.setting.new_password") }}</label>
         <div class="control">
-          <input class="input" type="password" v-model="newPassword">
+          <input class="input" type="password" v-model="newPassword" @input="comparePasswords(this.newPassword, this.passwordConfirmation)">
         </div>
       </div>
     </div>
@@ -21,8 +12,18 @@
       <div class="field is-one-third column">
         <label class="label">{{ $t("account.setting.confirmation") }}</label>
         <div class="control">
-          <input class="input" type="password" v-model="passwordConfirmation">
+          <input class="input" type="password" v-model="passwordConfirmation" @input="comparePasswords(this.newPassword, this.passwordConfirmation)">
         </div>
+      </div>
+    </div>
+    <div class="columns" v-if="(!validPasswordChange) && passwordConfirmation.length > 0">
+      <div class="field is-one-third column">
+        <div class="tag is-danger is-normal">Vos mots de passe de sont pas similaires</div>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="field is-one-third column">
+        <button class="button" type="button" :disabled="!validPasswordChange" @click="sumbitForm">CONFIRMATION</button>
       </div>
     </div>
     <div class="columns">
@@ -35,29 +36,69 @@
     </div>
     <div class="columns">
       <div class="field is-one-third column">
-        <button class="button" type="button" @click="">{{ $t("account.setting.delete_button") }}</button>
+        <button class="button" type="button" @click="toggleModal(1)">{{ $t("account.setting.delete_button") }}</button>
       </div>
     </div>
+    <app-generic-modal :show-modal="showModal" v-if="typeModal === 1">
+      <template v-slot:title>
+        SUPPRESSION DE COMPTE
+      </template>
+      <template v-slot:body>
+        ETES VOUS SUR DE VOULOIR SUPPRIMER TON COMPTE TA MERE ?
+      </template>
+      <template v-slot:buttons>
+        <button class="button is-success" @click="deleteUser">Ok</button>
+        <button class="button">Cancel</button>
+      </template>
+    </app-generic-modal>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import AppGenericModal from "@/components/AppGenericModal";
+import {mapGetters} from "vuex";
+
 export default {
   name: "AppAccountSettings",
+  components: {AppGenericModal},
   data() {
     return {
-      currentPassword: '',
       newPassword: '',
       passwordConfirmation: '',
+      showModal: false,
+      typeModal: 0,
+      validPasswordChange: false,
     }
   },
-
+  computed: {
+    ...mapGetters({
+      me: 'security/user',
+    }),
+  },
   methods: {
-    deleteUser(){
-      return axios.delete('/api/users/'+ id);
+    toggleModal(id) {
+      this.typeModal = id;
+      this.showModal = true;
     },
-
+    deleteUser() {
+      this.$store.dispatch('users/deleteUser', this.me);
+      this.$store.dispatch('security/logout');
+    },
+    async sumbitForm() {
+      let payload = {
+        plainPassword: this.newPassword,
+        iri: this.me,
+      };
+      await this.$store.dispatch('users/editUser', payload);
+      this.resetForm();
+    },
+    comparePasswords(a, b) {
+      if(b.length > 0) this.validPasswordChange = (a === b);
+    },
+    resetForm(){
+      this.newPassword = '';
+      this.passwordConfirmation = '';
+    },
   }
 }
 </script>

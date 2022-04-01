@@ -21,11 +21,11 @@ class Zipcode
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:zipcode', 'read:address', 'read:user'])]
+    #[Groups(['read:zipcode', 'read:user'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:zipcode', 'read:address', 'write:zipcode', 'read:user'])]
+    #[Groups(['read:zipcode', 'read:user','write:zipcode'])]
     private $label;
 
     #[ORM\OneToMany(mappedBy: 'zipcode', targetEntity: City::class, orphanRemoval: true)]

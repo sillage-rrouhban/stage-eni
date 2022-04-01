@@ -10,6 +10,7 @@ import security from './modules/security';
 import addresses from "./modules/addresses";
 import cities from "./modules/cities";
 import zipcodes from "./modules/zipcodes";
+import birthdates from "./modules/birthdates";
 
 
 
@@ -26,7 +27,8 @@ export default createStore({
         security,
         addresses,
         cities,
-        zipcodes
+        zipcodes,
+        birthdates,
 
     },
     strict: debug,

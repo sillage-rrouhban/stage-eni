@@ -20,11 +20,11 @@ class City
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Groups(['read:city', 'read:address'])]
+    #[Groups(['read:city', 'read:user'])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Groups(['read:city', 'read:address'])]
+    #[Groups(['read:city', 'read:user', 'write:city'])]
     private $label;
 
     #[ORM\OneToMany(mappedBy: 'city', targetEntity: Address::class, orphanRemoval: true)]
@@ -32,6 +32,7 @@ class City
 
     #[ORM\ManyToOne(targetEntity: Zipcode::class, inversedBy: 'city')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:user','write:city'])]
     private $zipcode;
 
     public function __construct()

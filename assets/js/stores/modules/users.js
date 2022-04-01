@@ -1,5 +1,6 @@
 import usersApi from '@/api/users'
 
+
 const state = {
     error : null,
     hasError : false,
@@ -61,15 +62,29 @@ const actions = {
         let {data} = await usersApi.get(payload);
         commit('getUser', data);
     }),
-    createUser : (async ({state, commit}, payload)=>{
+    createUser : (async ({commit}, payload)=>{
         try {
             const response = await usersApi.create(payload);
             commit('setUser', response.data);
-        } catch (e){
-            console.log(e.response.data.detail);
-            //commit('setHasError', e.response.data())
-        }
+        } catch (e){N
+            commit('setHasError', e);
 
+        }
+    }),
+    editUser : (async ({commit}, payload)=>{
+        try {
+            const response = await usersApi.edit(payload);
+            commit('setUser', response.data);
+        } catch (e){
+            commit('setHasError', e);
+        }
+    }),
+    deleteUser : (async ({commit},payload)=>{
+        try{
+            await usersApi.delete(payload);
+        }catch(e) {
+            commit('setHasError', e);
+        }
     }),
 
 }

@@ -30,7 +30,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'read'=> false,
     ],
         ],
-    itemOperations: ['get','put', 'delete'],
+    itemOperations: ['get','patch', 'delete'],
     denormalizationContext: ['groups' => ['write:user']],
     normalizationContext: ['groups' => ['read:user']],
 )]
@@ -43,11 +43,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
     private $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Groups(['read:user'])]
+    #[Groups(['read:user', 'write:user'])]
     private $email;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['read:user'])]
+    #[Groups(['read:user', 'write:user'])]
     private $roles = [];
 
     #[ORM\Column(type: 'string')]
@@ -58,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
     #[Groups(['read:user', 'write:user'])]
     private $type;
 
-    #[Groups(['write:user'])]
+    #[Groups(['read:user', 'write:user'])]
     private $plainPassword;
 
     #[ORM\Column(type: 'datetime_immutable')]
@@ -77,16 +77,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
     private $isVerified;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Firstname::class, cascade: ['persist', 'remove'])]
-    #[Groups(['read:user', 'write:user'])]
+    #[Groups(['read:user'])]
     private $firstname;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Lastname::class, cascade: ['persist', 'remove'])]
-    #[Groups(['read:user', 'write:user'])]
+    #[Groups(['read:user'])]
     private $lastname;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Address::class, cascade: ['persist', 'remove'])]
-    #[Groups(['read:user', 'write:user'])]
+    #[Groups(['read:user'])]
     private $address;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Birthdate::class, cascade: ['persist', 'remove'])]
+    #[Groups(['read:user'])]
+    private $birthdate;
 
     /**
      * @return mixed
@@ -346,6 +350,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, JWTUser
         }
 
         $this->address = $address;
+        return $this;
+    }
+
+    public function getBirthdate(): ?Birthdate
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(Birthdate $birthdate): self
+    {
+        // set the owning side of the relation if necessary
+        if ($birthdate->getUser() !== $this) {
+            $birthdate->setUser($this);
+        }
+
+        $this->birthdate = $birthdate;
         return $this;
     }
 }
