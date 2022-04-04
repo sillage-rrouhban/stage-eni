@@ -3,16 +3,22 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Identifier\Normalizer\DateTimeIdentifierDenormalizer;
 use App\Controller\CreateCvObjectAction;
 use App\Repository\CVRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @Vich\Uploadable()
@@ -77,27 +83,39 @@ class Cv
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['read:cv', 'read:user'])]
     private $id;
 
     /**
      * @Vich\UploadableField(mapping="user_cv", fileNameProperty="filename")
      */
+    #[Assert\File(
+        maxSize: '5M',
+        mimeTypes: [
+            'application/pdf',
+            'application/x-pdf'
+        ],
+        mimeTypesMessage: 'Please upload a PDF file',
+
+    )]
     private $file;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Groups(['read:cv','write:cv'])]
+    #[Groups(['read:cv','write:cv','read:user'])]
     private $filename;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
+    #[Groups(['read:user'])]
     private $uploadedAt;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\OneToOne(mappedBy: 'cv', targetEntity: CvTitle::class, cascade: ['persist', 'remove'])]
+    #[Groups(['read:user'])]
+    private $cvTitle;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'cvs')]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $title;
-
 
     public function getId(): ?int
     {
@@ -109,7 +127,7 @@ class Cv
         return $this->filename;
     }
 
-    public function setFilename(string $filename): self
+    public function setFilename(?string $filename): self
     {
         $this->filename = $filename;
 
@@ -172,16 +190,20 @@ class Cv
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getCvTitle(): ?CvTitle
     {
-        return $this->title;
+        return $this->cvTitle;
     }
 
-    public function setTitle(string $title): self
+    public function setCvTitle(CvTitle $cvTitle): self
     {
-        $this->title = $title;
+        // set the owning side of the relation if necessary
+        if ($cvTitle->getCv() !== $this) {
+            $cvTitle->setCv($this);
+        }
+
+        $this->cvTitle = $cvTitle;
 
         return $this;
     }
-
 }

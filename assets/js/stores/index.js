@@ -11,7 +11,8 @@ import addresses from "./modules/addresses";
 import cities from "./modules/cities";
 import zipcodes from "./modules/zipcodes";
 import birthdates from "./modules/birthdates";
-
+import cvs from "./modules/cvs";
+import titles from "./modules/titles";
 
 
 const debug = process.env.NODE_ENV !== 'production'
@@ -29,7 +30,8 @@ export default createStore({
         cities,
         zipcodes,
         birthdates,
-
+        cvs,
+        titles
     },
     strict: debug,
     plugins: debug?[createLogger()]: []

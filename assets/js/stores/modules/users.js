@@ -66,7 +66,7 @@ const actions = {
         try {
             const response = await usersApi.create(payload);
             commit('setUser', response.data);
-        } catch (e){N
+        } catch (e){
             commit('setHasError', e);
 
         }

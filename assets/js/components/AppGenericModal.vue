@@ -1,13 +1,13 @@
 <template>
-  <div class="modal" :class="{'is-active' : showModal}" v-if="showModal">
-    <div class="modal-background"></div>
+  <div class="modal is-active">
+    <div class="modal-background" @click="emitModalClick()"></div>
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">
           <slot name="title">
           </slot>
         </p>
-        <button class="delete" aria-label="close"></button>
+        <button class="delete" aria-label="close" @click="emitModalClick()"></button>
       </header>
       <section class="modal-card-body">
         <slot name="body">
@@ -24,8 +24,20 @@
 <script>
 export default {
   name: "AppGenericModal",
-  props: {
-    showModal : Boolean,
+  data(){
+    return{
+      showModal: true,
+    }
+  },
+  created() {
+    this.emitter.on('toggle-modal', (value) => {
+      this.showModal = value;
+    })
+  },
+  methods:{
+    emitModalClick(){
+      this.emitter.emit('toggle-modal', !this.showModal);
+    }
   }
 }
 </script>

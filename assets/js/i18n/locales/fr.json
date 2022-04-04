@@ -9,6 +9,7 @@
     "companies": "Recruteurs",
     "schools": "Centres de formation",
     "signup": "Se connecter",
+    "logout": "Déconnexion",
     "languages": "Langues"
   },
   "footer": {
@@ -25,9 +26,11 @@
   "register": {
     "email": "Email",
     "password": "Mot de passe",
-    "choose-type": "Avant de pouvoir vous inscrire, dites-nous qui vous êtes ?"
+    "choose-type": "Avant de pouvoir vous inscrire, dites-nous qui vous êtes ?",
+    "creation_title": "Félicitations !",
+    "creation_confirmation": "Votre compte a bien été créé. Il ne vous rester plus qu'à confirmer sa création en cliquant sur le lien reçu par email.",
+    "redirection": "Redirection en cours..."
   },
-
   "account": {
     "navigation": {
       "account": "Mon compte",
@@ -60,7 +63,9 @@
       "professional_designation": "Titre professionnel",
       "domain": "Domaine",
       "update": "Mettre à jour",
-      "level": "Niveau d'étude"
+      "level": "Niveau d'étude",
+      "delete_title": "Supprimer ce CV",
+      "delete_confirmation" : "Êtes vous sur de vouloir supprimer ce CV ?"
     },
 
     "online_presence": {
@@ -75,7 +80,7 @@
       "new_password": "Nouveau mot de passe",
       "confirmation": "Confirmation de mot de passe",
       "delete_title": "Supprimer votre compte",
-      "delete_button": "Supprimer"
+      "delete_confirmation" : "Êtes vous sur de vouloir supprimer votre compte ?"
     }
   },
 
@@ -85,7 +90,10 @@
     "email": "Email",
     "password": "Password",
     "validation": "Valider",
-    "return": "Retour"
+    "return": "Retour",
+    "ok": "ok",
+    "delete": "Supprimer",
+    "cancel": "Annuler"
   }
 
 

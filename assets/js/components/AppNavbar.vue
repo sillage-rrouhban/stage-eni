@@ -33,7 +33,7 @@
                   tableau de bord
                 </a>
                 <div class="dropdown-item" @click="logout">
-                  déco
+                  {{$t("navbar.logout")}}
                 </div>
               </div>
             </div>

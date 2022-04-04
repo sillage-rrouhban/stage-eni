@@ -1,14 +1,14 @@
 <template>
   <div class="account">
     <app-navbar/>
-    <div class="columns is-multiline">
+    <div class="columns is-marginless is-multiline">
       <template v-if="isAuthenticated">
         <app-account-navigation/>
         <app-account-aside class="column is-one-fifth"/>
         <app-account-information class="column is-four-fifths" :me="me" v-if="selectedPanel === 1"/>
-        <app-account-studies v-if="selectedPanel=== 2"/>
-        <app-account-online-presence v-if="selectedPanel=== 3"/>
-        <app-account-settings v-if="selectedPanel === 4"/>
+        <app-account-studies class="column is-four-fifths" v-if="selectedPanel=== 2"/>
+        <app-account-online-presence class="column is-four-fifths" v-if="selectedPanel=== 3"/>
+        <app-account-settings class="column is-four-fifths" v-if="selectedPanel === 4"/>
       </template>
       <div class="is-full" v-else>
         Connectez vous pour avoir accès à cette page.
