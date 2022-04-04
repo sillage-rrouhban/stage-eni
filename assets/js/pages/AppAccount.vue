@@ -44,7 +44,7 @@ export default {
   },
   data() {
     return {
-      selectedPanel: 2
+      selectedPanel: 1
     }
   },
   computed: {
