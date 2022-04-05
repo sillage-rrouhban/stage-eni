@@ -46,27 +46,27 @@ class UserDataPersister implements ContextAwareDataPersisterInterface
 
         $data->setIsVerified(false);
         $this->entityManager->persist($data);
+        $this->entityManager->flush();
+
         if($data instanceof User) {
             $this->sendConfirmationEmail($data);
         }
-        $this->entityManager->flush();
-
     }
 
     /**
      * @throws TransportExceptionInterface
      */
     public function sendConfirmationEmail(User $user){
-//        $signatureComponents = $this->emailHelper->generateSignature(
-//            'registration_confirmation',
-//            $user->getId(),
-//            $user->getEmail(),
-//        );
+        $signatureComponents = $this->emailHelper->generateSignature(
+            'registration_confirmation',
+            $user->getId(),
+            $user->getEmail(),
+        );
         $email= new TemplatedEmail();
         $email->from('audrey@tasqs-by.europtima.com');
         $email->to($user->getEmail());
         $email->htmlTemplate('email/confirmation_email.html.twig');
-      //  $email->context(['signedUrl'=>$signatureComponents->getSignedUrl()]);
+        $email->context(['signedUrl'=>$signatureComponents->getSignedUrl()]);
         $this->mailer->send($email);
 
     }

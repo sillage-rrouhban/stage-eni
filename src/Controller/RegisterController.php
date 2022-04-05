@@ -32,14 +32,14 @@ class RegisterController extends AbstractController
         $id = $request->get('id'); // retrieve the user id from the url
         // Verify the user id exists and is not null
         if (null === $id) {
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_homepage');
         }
 
         $user = $userRepository->find($id);
 
         // Ensure the user exists in persistence
         if (null === $user) {
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_homepage');
         }
         // Do not get the User's Id or Email Address from the Request object
         try {
@@ -59,7 +59,7 @@ class RegisterController extends AbstractController
 
         $this->addFlash('success', 'Your e-mail address has been verified.');
 
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_homepage');
     }
 }
 
