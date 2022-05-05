@@ -36,7 +36,7 @@
     </div>
     <div class="columns">
       <div class="field is-one-third column">
-        <button class="button" type="button" @click="emitModalClick(1)">{{ $t("account.setting.delete_button") }}</button>
+        <button class="button" type="button" @click="emitModalClick(1)">{{ $t("account.setting.delete_title") }}</button>
       </div>
     </div>
     <app-generic-modal v-if="typeModal === 1 && showModal">
